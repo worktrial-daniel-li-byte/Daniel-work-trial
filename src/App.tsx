@@ -60,6 +60,7 @@ type SidebarItem = { id: SidebarItemId; label: string }
 type SidebarSection = {
   id: string
   label?: string
+  labelAction?: { label: string; message: string }
   items: SidebarItem[]
 }
 
@@ -82,6 +83,7 @@ const SIDEBAR_SECTIONS: SidebarSection[] = [
   {
     id: 'spaces',
     label: 'Spaces',
+    labelAction: { label: 'Create space', message: 'Create space (demo).' },
     items: [
       { id: 'autoloop', label: 'Autoloop' },
       { id: 'more-spaces', label: 'More spaces' },
@@ -1115,6 +1117,19 @@ export default function App() {
               )}
             </Popover>
           </div>
+          <button
+            type="button"
+            className="jira-icon-btn"
+            aria-label="Help"
+            title="Help"
+            onClick={() => flash('Help center opened.')}
+          >
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7">
+              <circle cx="12" cy="12" r="9" />
+              <path d="M9.5 9.5a2.5 2.5 0 1 1 3.5 2.3c-.8.4-1 .9-1 1.7" />
+              <circle cx="12" cy="17" r="0.6" fill="currentColor" />
+            </svg>
+          </button>
           <div className="jira-rel">
             <button
               type="button"
@@ -1177,7 +1192,24 @@ export default function App() {
           <div className="jira-sidebar__scroll">
             {SIDEBAR_SECTIONS.map((section) => (
               <div key={section.id} className="jira-sidebar__section">
-                {section.label ? <div className="jira-sidebar__label">{section.label}</div> : null}
+                {section.label ? (
+                  <div className="jira-sidebar__label">
+                    <span className="jira-sidebar__label-text">{section.label}</span>
+                    {section.labelAction ? (
+                      <button
+                        type="button"
+                        className="jira-sidebar__label-action"
+                        aria-label={section.labelAction.label}
+                        title={section.labelAction.label}
+                        onClick={() => flash(section.labelAction!.message)}
+                      >
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                          <path d="M12 5v14M5 12h14" />
+                        </svg>
+                      </button>
+                    ) : null}
+                  </div>
+                ) : null}
                 <ul>
                   {section.items.map((item) => {
                     const active = item.id === activeSidebar
@@ -1188,7 +1220,13 @@ export default function App() {
                           className={active ? 'jira-sb-link is-active' : 'jira-sb-link'}
                           onClick={() => setActiveSidebar(item.id)}
                         >
-                          {item.label}
+                          <span className="jira-sb-link__icon" aria-hidden>
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6">
+                              <circle cx="12" cy="12" r="8" />
+                            </svg>
+                          </span>
+                          <span className="jira-sb-link__label">{item.label}</span>
+                          <span className="jira-sb-link__chev" aria-hidden />
                         </button>
                       </li>
                     )
@@ -1196,6 +1234,24 @@ export default function App() {
                 </ul>
               </div>
             ))}
+            <div className="jira-sidebar__footer">
+              <button type="button" className="jira-sb-link jira-sb-link--footer" onClick={() => flash('Feedback sent (demo).')}>
+                <span className="jira-sb-link__icon" aria-hidden>
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6">
+                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+                  </svg>
+                </span>
+                <span className="jira-sb-link__label">Give feedback</span>
+              </button>
+              <button type="button" className="jira-sb-link jira-sb-link--footer" onClick={() => flash('Full screen not implemented in this demo.')}>
+                <span className="jira-sb-link__icon" aria-hidden>
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6">
+                    <path d="M3 9V3h6M21 9V3h-6M3 15v6h6M21 15v6h-6" />
+                  </svg>
+                </span>
+                <span className="jira-sb-link__label">Enter full screen</span>
+              </button>
+            </div>
           </div>
         </aside>
 

@@ -24,7 +24,7 @@ const MEANINGFUL_TAGS = [
   'li','td','th','label','span','textarea','select',
 ]
 
-// ── DOM extraction (mirror of verifier/visual_color_check.py extract_dom_info) ──
+// ── DOM extraction ────────────────────────────────────────────────────────────
 
 function extractDomInPage(tagsList) {
   const meaningfulTags = new Set(tagsList)
