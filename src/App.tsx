@@ -861,7 +861,7 @@ export default function App() {
 
     return (
       <>
-        <div className="jira-project-top">
+        <div className="jira-project-top" data-region="project-header" data-testid="horizontal-nav-header.ui.project-header.header">
           <div className="jira-eyebrow"><span><span>Spaces</span></span></div>
           <div className="jira-title-row">
             <span className="jira-project-swatch" aria-hidden>
@@ -955,7 +955,7 @@ export default function App() {
             </button>
             </div>
           </div>
-          <nav className="jira-tabs" aria-label="Project">
+          <nav className="jira-tabs" aria-label="Project" data-region="horizontal-nav" data-testid="horizontal-nav.ui.content.horizontal-nav">
             <div className="tab-list-inner" style={{ display: 'contents' }}>
             {TABS.map((tab) => (
               <span key={tab} className="tab-wrapper" style={{ display: 'contents' }}>
@@ -990,7 +990,7 @@ export default function App() {
             </button>
           </nav>
           {activeTab === 'Board' || activeTab === 'List' ? (
-            <div className="jira-board-bar">
+            <div className="jira-board-bar" data-region="board-toolbar">
               <div className="jira-board-bar__left">
                 <div className="jira-field jira-field--search">
                   <span className="jira-field__icon" aria-hidden>
@@ -1015,6 +1015,7 @@ export default function App() {
                   role="img"
                   aria-label="Assigned members"
                   title="1 member assigned"
+                  data-testid="business-filters.ui.filters.assignee-filter"
                 >
                   <span><span className="jira-board-bar__avatar jira-board-bar__avatar--pink" aria-hidden /></span>
                   <span><span className="jira-board-bar__avatar jira-board-bar__avatar--dl">DL</span></span>
@@ -1101,7 +1102,7 @@ export default function App() {
                 <div className="jira-rel">
                   <button
                     type="button"
-                    className="jira-btn jira-btn--ghost jira-btn--sm"
+                    className="jira-btn jira-btn--ghost jira-btn--sm jira-group-status-btn"
                     aria-label="Group by"
                     title="Group by"
                     onClick={() => toggleMenu('group')}
@@ -1296,8 +1297,8 @@ export default function App() {
   }
 
   return (
-    <div className="jira-app">
-      <header className="jira-topbar">
+    <div className="jira-app" data-region="app-shell" data-testid="page-layout.root">
+      <header className="jira-topbar" data-region="top-nav" data-testid="page-layout.top-nav">
         <div className="jira-topbar__left">
           <button
             type="button"
@@ -1619,7 +1620,7 @@ export default function App() {
       </header>
 
       <div className="jira-body">
-        <aside className="jira-sidebar">
+        <aside className="jira-sidebar" data-region="left-nav" data-testid="page-layout.sidebar">
           <div className="jira-sidebar__scroll">
             {SIDEBAR_SECTIONS.map((section) => (
               <div
@@ -1684,9 +1685,9 @@ export default function App() {
                           <button
                             type="button"
                             className={
-                              active
+                              (active
                                 ? 'jira-sb-link is-active'
-                                : 'jira-sb-link'
+                                : 'jira-sb-link') + ` jira-sb-link--${item.id}`
                             }
                             title={item.label}
                             aria-label={item.label}
@@ -1756,11 +1757,13 @@ export default function App() {
         />
       ) : null}
 
-      <div className="jira-fab" role="presentation" title="Rovo">
+      <div className="jira-fab" role="presentation" title="Rovo" data-region="rovo-fab" data-testid="layout-controller.ui.bottom-right-corner.container.styled-container">
         <span><span><span><span className="jira-fab__ring" /></span></span></span>
       </div>
 
       {toast ? <div className="jira-toast" role="status">{toast}</div> : null}
+
+      <div data-region="modal-portal" />
     </div>
   )
 }
@@ -1814,7 +1817,7 @@ function BoardView({
   void columnMenuFor
   void onOpenColumnMenu
   return (
-    <div className="jira-board-canvas">
+    <div className="jira-board-canvas" data-region="board-canvas" data-testid="board.content.board-wrapper">
       <div className="jira-columns">
         {groups.map((group) => (
           <div
@@ -1898,9 +1901,10 @@ function BoardView({
                         title="Task"
                       >
                         <span className="icon-wrap">
-                          <svg width="10" height="10" viewBox="0 0 16 16" fill="none" stroke="#ffffff" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                             <title>Task</title>
-                            <path d="M3 8.5l3 3 7-7" />
+                            <rect x="1.5" y="1.5" width="13" height="13" rx="2" stroke="#4688EC" strokeWidth="1.5" fill="none"/>
+                            <path d="M4.5 8.5L7 11L11.5 5.5" stroke="#4688EC" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
                           </svg>
                         </span>
                         <span className="sr-only">Task</span>

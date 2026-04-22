@@ -44,7 +44,9 @@ export const dispatchTool = {
       rationale: {
         type: "string",
         description:
-          "Short explanation of which sub-score (ssim/text/color) you expect to rise.",
+          "Short explanation of which sub-score (ssim/text/color/pqgram) you " +
+          "expect to rise and why. If an operator focus is set, the rationale " +
+          "must name that sub-score.",
       },
     },
     required: ["task", "rationale"],
@@ -224,6 +226,7 @@ export async function runVerifyLoop({
   mcp,
   appUrl,
   extraGuidance,
+  focusGuidance,
   verifierMcpTools,
   workerTools,
   config,
@@ -235,14 +238,16 @@ export async function runVerifyLoop({
     targetReward: config.targetReward,
   });
 
+  const kickoff =
+    `Begin. Score the app at ${appUrl}, look at the diff, and dispatch the ` +
+    `first focused change.`;
+  const focusBlock = focusGuidance ? `\n\n${focusGuidance}` : "";
+  const extraBlock = extraGuidance
+    ? `\n\nOperator guidance: ${extraGuidance}`
+    : "";
+
   const verifierMsgs = [
-    {
-      role: "user",
-      content:
-        `Begin. Score the app at ${appUrl}, look at the diff, and dispatch the ` +
-        `first focused change.` +
-        (extraGuidance ? `\n\nOperator guidance: ${extraGuidance}` : ""),
-    },
+    { role: "user", content: kickoff + focusBlock + extraBlock },
   ];
 
   const state = {

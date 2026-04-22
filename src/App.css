@@ -6,8 +6,8 @@
   --jira-text-muted: #6b6e76;
   --jira-border: rgba(11, 18, 14, 0.14);
   --jira-surface: #ffffff;
-  --jira-board-bg: #f8eefe;
-  --jira-col-bg: #f1e6fb;
+  --jira-board-bg: #f3eefc;
+  --jira-col-bg: #ede4f8;
   --jira-col-header-bg: #e9d8fd;
   --jira-active-tab: #803fa5;
   --jira-sidebar-active: #e9f2fe;
@@ -772,6 +772,30 @@
   gap: 8px;
 }
 
+/* Force lavender background on the main workspace and board canvas so they
+   match the reference palette. These are large visible regions. */
+.jira-workspace {
+  background-color: #f3eefc !important;
+}
+
+.jira-project-top {
+  background-color: #f3eefc !important;
+}
+
+.jira-board-canvas {
+  background-color: #f3eefc !important;
+}
+
+.jira-body {
+  background-color: #f3eefc;
+}
+
+main.jira-workspace,
+[data-region="board-canvas"],
+[data-testid="board.content.board-wrapper"] {
+  background-color: #f3eefc !important;
+}
+
 .jira-field {
   display: flex;
   align-items: center;
@@ -840,7 +864,7 @@
 .jira-col {
   width: 272px;
   flex-shrink: 0;
-  background-color: #E9DEFF;
+  background-color: #ede4f8;
   border-radius: 6px;
   padding: 8px;
   display: flex;
@@ -864,7 +888,7 @@
   gap: 8px;
   padding: 8px 10px;
   margin: -8px -8px 8px;
-  background: #E9DEFF;
+  background: #ede4f8;
   border-radius: 6px 6px 0 0;
   font-weight: 500;
   font-size: 14px;
@@ -934,7 +958,7 @@
   border-radius: 8px;
   padding: 10px 12px;
   box-shadow: 0 1px 2px rgba(9, 30, 66, 0.08), 0 0 1px rgba(9, 30, 66, 0.31);
-  border: 1px solid #dfe1e6;
+  border: none;
   cursor: grab;
   display: flex;
   flex-direction: column;
@@ -997,21 +1021,18 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  background-color: #f4f5f7;
-  border-radius: 4px;
-  padding: 2px 6px;
 }
 
 .jira-issue-type {
   width: 16px;
   height: 16px;
   border-radius: 2px;
-  background: #1868DB;
+  background: transparent;
   flex-shrink: 0;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  color: #ffffff;
+  color: #4688EC;
 }
 
 .jira-user-silhouette {
@@ -1158,25 +1179,6 @@
 
 .jira-col-add:hover {
   background: rgba(255, 255, 255, 0.9);
-}
-
-.jira-fab {
-  position: fixed;
-  right: 20px;
-  bottom: 20px;
-  width: 40px;
-  height: 40px;
-  z-index: 10;
-  pointer-events: none;
-}
-
-.jira-fab__ring {
-  display: block;
-  width: 100%;
-  height: 100%;
-  border-radius: 50%;
-  background: conic-gradient(from 120deg, #6554c0, #00b8d9, #36b37e, #ffab00, #6554c0);
-  box-shadow: 0 2px 8px rgba(9, 30, 66, 0.2);
 }
 
 .jira-modal-backdrop {
@@ -1814,4 +1816,77 @@
   .jira-detail {
     grid-template-columns: 1fr;
   }
+}
+
+/* Sidebar external-link icons: brand colors */
+.jira-sb-link--goals .jira-sb-link__icon,
+.jira-sb-link--goals .jira-sb-link__icon svg,
+.jira-sb-link--goals .jira-sb-link__icon svg * {
+  color: #22A06B !important;
+  fill: #22A06B !important;
+  stroke: #22A06B !important;
+}
+
+.jira-sb-link--teams .jira-sb-link__icon,
+.jira-sb-link--teams .jira-sb-link__icon svg,
+.jira-sb-link--teams .jira-sb-link__icon svg * {
+  color: #E774BB !important;
+  fill: none !important;
+  stroke: #E774BB !important;
+}
+
+.jira-sb-link--teams .jira-sb-link__icon svg circle,
+.jira-sb-link--teams .jira-sb-link__icon svg path {
+  stroke: #E774BB !important;
+}
+
+/* Priority icon on cards — amber/orange so it reads as a Jira "medium" chevron */
+.jira-card__priority,
+.jira-card__priority svg,
+.jira-card__priority svg *,
+.jira-priority-chip,
+.jira-priority-chip svg,
+.jira-priority-chip svg * {
+  color: #F59E0B !important;
+  fill: #F59E0B !important;
+  stroke: #F59E0B !important;
+}
+
+/* Notification bell "3+" badge */
+.topbar-bell .badge,
+.jira-notif-badge,
+.jira-topbar__badge {
+  background: #0052CC !important;
+  color: #ffffff !important;
+}
+
+/* Create button — vivid Atlassian blue */
+.jira-btn--create,
+button.jira-btn--primary,
+.jira-create-btn {
+  background-color: #0C66E4 !important;
+  color: #ffffff !important;
+  border-color: #0C66E4 !important;
+}
+
+/* Active top tab underline — Atlassian blue */
+.jira-tab.is-active,
+.jira-tabs__item.is-active,
+.jira-tab--active {
+  border-bottom-color: #0C66E4 !important;
+  color: #0C66E4 !important;
+}
+
+/* Ensure Create button text is white on its blue background */
+.jira-create-btn,
+button.jira-btn--primary,
+.jira-btn--create,
+.jira-top-nav__create {
+  color: #ffffff !important;
+}
+
+.jira-create-btn *,
+button.jira-btn--primary *,
+.jira-btn--create * {
+  color: #ffffff !important;
 }

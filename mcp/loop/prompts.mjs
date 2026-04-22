@@ -2,6 +2,77 @@
  * System prompts for the two agents in the verify→write loop.
  */
 
+// Valid sub-scores the operator can target via --focus.
+export const FOCUS_SUB_SCORES = ['pqgram', 'ssim', 'text', 'color'];
+
+/**
+ * Build an opinionated directive telling the agent to drive ONE specific
+ * sub-score up this run. Returned as a standalone paragraph that gets
+ * prepended to the kickoff user message (and to any --guidance the operator
+ * also passes). Designed to be loud enough to bias tool-call choice without
+ * rewriting the whole system prompt.
+ *
+ * @param {string} sub  One of FOCUS_SUB_SCORES.
+ * @returns {string}
+ */
+export function buildFocusGuidance(sub) {
+  const header =
+    `OPERATOR FOCUS: \`${sub}\`. Raise the \`${sub}\` sub-score as your top ` +
+    `priority this run. Do NOT spend dispatches on other sub-scores until ` +
+    `\`${sub}\` has moved meaningfully. Every dispatched task's rationale ` +
+    `should name \`${sub}\` and a concrete mechanism by which the change ` +
+    `raises it.`;
+
+  const bodies = {
+    pqgram:
+      `\n\nHow to move pqgram:\n` +
+      `  - Call score_app and inspect details.pqgram.regions. Any region ` +
+        `showing 0.0000 means the reference has a [data-testid] anchor your ` +
+        `DOM is missing entirely. Fix those first — they are the biggest wins.\n` +
+      `  - Call get_reward_config once to see the full pqgram_regions array ` +
+        `(region id → testid / selector).\n` +
+      `  - Dispatch tasks that tell the worker the exact file, tag, and ` +
+        `data-testid to emit. Example task: 'In src/App.tsx, wrap the top ` +
+        `navigation in <header data-testid="page-layout.top-nav">'.\n` +
+      `  - Once every region is non-zero, raise details.pqgram.whole by ` +
+        `mirroring the reference's wrapper-div nesting depth inside each ` +
+        `anchor (add the intermediate divs the reference uses).\n` +
+      `  - Class-name hashes do NOT affect pqgram — only tag names and ` +
+        `data-testid values do. Don't waste dispatches on class tokens when ` +
+        `focus=pqgram.`,
+    ssim:
+      `\n\nHow to move ssim:\n` +
+      `  - Visually diff the reference vs current screenshot. Identify the ` +
+        `largest region of mismatch (missing block, wrong position, wrong ` +
+        `size, wrong color).\n` +
+      `  - ssim rewards elements placed in the right locations with roughly ` +
+        `the right sizes and colors. Prioritize layout and sizing fixes; ` +
+        `fine typography/borders move it less.\n` +
+      `  - ssim is gated by content (max(text, color)). If both text and ` +
+        `color are low, ssim gains are dampened — consider one content fix ` +
+        `before chasing pixel-level layout.`,
+    text:
+      `\n\nHow to move text:\n` +
+      `  - text compares document.body.innerText only. To raise it, change ` +
+        `the literal strings rendered in JSX to match the reference's ` +
+        `visible copy exactly.\n` +
+      `  - aria-label, title, alt, placeholder, data-*, and CSS ` +
+        `::before/::after content do NOT count. Hidden elements don't count.\n` +
+      `  - Pull the reference copy from the screenshot or from reading ` +
+        `reference_app/html/reference.html directly.`,
+    color:
+      `\n\nHow to move color:\n` +
+      `  - color compares backgroundColor and color (getComputedStyle) on ` +
+        `visible, non-tiny elements as a palette histogram.\n` +
+      `  - To raise it, change actual CSS color values on reasonably-sized ` +
+        `visible elements so the palette matches the reference's.\n` +
+      `  - Tiny elements (<10px in either dimension) are skipped; changing ` +
+        `colors there won't move the score.`,
+  };
+
+  return header + (bodies[sub] ?? '');
+}
+
 export const workerSystemPrompt = `
 You are a code worker in a verify→write loop. You receive ONE focused task from
 the planner and implement it by editing files. You have no scoring or planning
@@ -53,9 +124,10 @@ from reference_app/html/reference.html.
 Your workflow every turn:
   1. Optionally call score_app to see the current reward + both screenshots.
      The reward is in [-1, 1] and breaks down into:
-        ssim   — overall visual similarity   (weight 0.60, gated by content)
-        text   — visible text match          (weight 0.25)
-        color  — palette match               (weight 0.15)
+        ssim   — overall visual similarity    (weight 0.50, gated by content)
+        text   — visible text match           (weight 0.20)
+        color  — palette match                (weight 0.10)
+        pqgram — DOM structure match          (weight 0.20)
 
   What each sub-score actually measures (do NOT waste dispatches on changes
   outside these definitions):
@@ -69,6 +141,17 @@ Your workflow every turn:
       actual CSS colors on reasonably-sized visible elements.
     - ssim: screenshot comparison — moves when elements are placed in the
       right locations with roughly the right sizes and colors.
+    - pqgram: structural DOM similarity. Compares (p=2, q=3) tuples of
+      tag+data-testid labels between the reference DOM and yours, as a
+      multiset Dice score. Reported as {whole, regions, combined}; 'combined'
+      = 0.5*whole + 0.5*mean(present regions) is what feeds the reward.
+      A region scoring 0.0000 means the reference has that anchor but your
+      DOM is missing the matching [data-testid] element entirely. To move
+      pqgram: emit the reference's data-testid values verbatim on the
+      matching tag (e.g. <header data-testid="page-layout.top-nav">), and
+      mirror the reference's wrapper-div nesting depth inside each anchor.
+      Class-name hashes do NOT matter — only tag names and data-testid do.
+      Call get_reward_config for the full region → testid list.
   2. Compare the reference screenshot against the current app screenshot.
      Decide the ONE highest-leverage change. Prefer the lowest sub-score.
   3. Call dispatch_to_worker with a specific task and a short rationale naming

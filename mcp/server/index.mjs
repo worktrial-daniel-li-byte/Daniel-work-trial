@@ -84,9 +84,13 @@ server.registerTool(
   {
     title: "Score app against reference",
     description:
-      "Run the reward function. Returns the numeric reward plus SSIM / text / color sub-scores, " +
-      "and attaches both the reference screenshot and the current app screenshot as images " +
-      "so you can compare them visually. " +
+      "Run the reward function. Returns the numeric reward plus four sub-scores " +
+      "(ssim, text, color, pqgram) and attaches both the reference screenshot and " +
+      "the current app screenshot as images so you can compare them visually. " +
+      "pqgram includes a per-region breakdown (app-shell, top-nav, left-nav, " +
+      "horizontal-nav, project-header, board-toolbar, board-canvas, modal-portal, " +
+      "rovo-fab) that measures how closely the DOM tree under each data-testid " +
+      "anchor matches the reference. " +
       "If the dev server isn't running yet, it will be auto-started.",
     inputSchema: {
       app_url: z
@@ -149,8 +153,19 @@ server.registerTool(
         gen: result.gen,
       };
 
+      const pqHint =
+        "pqgram measures how closely your DOM's tag/testid hierarchy matches the " +
+        "reference (Augsten pq-grams over tag+data-testid labels). " +
+        "details.pqgram.regions[id]=0 means the reference has that region but your " +
+        "DOM is missing the matching [data-testid] anchor — e.g. region 'top-nav' " +
+        "needs <header data-testid=\"page-layout.top-nav\">. " +
+        "To raise pqgram: (a) emit the reference's data-testid values verbatim on " +
+        "the matching elements, and (b) mirror its wrapper-div nesting depth. " +
+        "Class-name hashes don't matter here — only tag + data-testid do.";
+
       const content = [
         { type: "text", text: JSON.stringify(summary, null, 2) },
+        { type: "text", text: pqHint },
       ];
 
       if (include_screenshots !== false) {
@@ -210,9 +225,43 @@ server.registerTool(
     const info = {
       repo_root: repoRoot,
       viewport: { width: 1920, height: 1080 },
-      weights: { ssim: 0.6, text: 0.25, color: 0.15 },
+      weights: { ssim: 0.5, text: 0.2, color: 0.1, pqgram: 0.2 },
       content_gate:
         "0.2 + 0.8 * max(text, color) — gates SSIM so blank pages can't hack reward",
+      reward_formula:
+        "raw = 0.50*gated_ssim + 0.20*text + 0.10*color + 0.20*pqgram; reward = 2*raw - 1",
+      sub_scores: {
+        ssim: "Visual similarity of the two 256x256 screenshots (mssim).",
+        text: "Gestalt pattern similarity of document.body.innerText only. " +
+          "Attribute text (aria-label, alt, title, placeholder) and CSS " +
+          "::before/::after content do NOT count. To move this, change " +
+          "visible JSX copy.",
+        color: "Palette-histogram similarity of backgroundColor + color " +
+          "(getComputedStyle) on visible, non-tiny elements.",
+        pqgram:
+          "Structural DOM similarity (Augsten pq-grams, Dice over multisets). " +
+          "Node label = lowercase tag + optional `#data-testid`. " +
+          `Params p=2, q=3. Excludes script/style/noscript/link/meta/template. ` +
+          "Reported as {whole, regions, combined}: 'whole' compares the full " +
+          "body tree; 'regions' compares the subtree under each testid anchor; " +
+          "'combined' = 0.5*whole + 0.5*mean(present regions) and is what " +
+          "feeds into reward. To move pqgram, emit the same data-testid " +
+          "values and wrapper-div hierarchy the reference uses.",
+      },
+      pqgram_regions: [
+        { id: "app-shell",      testid: "page-layout.root" },
+        { id: "top-nav",        testid: "page-layout.top-nav" },
+        { id: "left-nav",       testid: "page-layout.sidebar" },
+        { id: "horizontal-nav", testid: "horizontal-nav.ui.content.horizontal-nav" },
+        { id: "project-header", testid: "horizontal-nav-header.ui.project-header.header" },
+        { id: "board-toolbar",  testid: "business-filters.ui.filters.assignee-filter" },
+        { id: "board-canvas",   testid: "board.content.board-wrapper" },
+        { id: "modal-portal",   selector: "body > .atlaskit-portal-container" },
+        { id: "rovo-fab",       testid: "layout-controller.ui.bottom-right-corner.container.styled-container" },
+      ],
+      pqgram_scoring_rules:
+        "A region present on ref + missing on gen scores 0. A region absent " +
+        "from ref is skipped (not averaged in).",
       reward_range: [-1, 1],
       default_ref_html: defaultRefHtml,
       write_allowlist: WRITE_ALLOWLIST,
