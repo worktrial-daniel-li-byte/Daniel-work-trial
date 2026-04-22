@@ -1,0 +1,287 @@
+{
+  "tab": "Board",
+  "url": "/jira/core/projects/{key}/board?filter=&groupBy=status",
+  "page_title": "Board - {Space name} - Jira",
+  "purpose": "Kanban-style board grouping work items by Status (default) with inline edits and drag-and-drop.",
+  "verified_against": {
+    "space_key": "AUT",
+    "fixture_card": "AUT-1 \"This is a test\"",
+    "capture_method": "cursor-ide-browser MCP (live DOM + screenshots, 2026-04-22)"
+  },
+
+  "feature_checks": [
+    {
+      "id": "page.load",
+      "feature": "Route renders board with Status columns when /board?groupBy=status",
+      "how_to_verify": "Navigate to /jira/core/projects/{key}/board?filter=&groupBy=status",
+      "expect": "Page title ends with 'Board - {Space} - Jira'. Level-3 headings 'To Do', 'In Progress', 'Done' are present.",
+      "status": "pass"
+    },
+    {
+      "id": "toolbar.search.present",
+      "feature": "Toolbar has a 'Search board' textbox",
+      "how_to_verify": "Snapshot: role=textbox name='Search board'",
+      "status": "pass"
+    },
+    {
+      "id": "toolbar.search.filters_cards",
+      "feature": "Typing in 'Search board' filters cards and persists in URL",
+      "how_to_verify": "Fill 'Search board' with 'zzznomatch'. All columns show count 0; empty state heading 'No search results' with subtitle 'Try a different word, phrase or filter.' and a 'Clear' button.",
+      "expect_url_contains": "filter=(summary%20~%20'{q}*'%20OR%20description%20~%20'{q}*')",
+      "notes": "Search matches summary and description with a trailing wildcard. Clearing the textbox alone does NOT reset the URL filter; use the empty-state 'Clear' button or the X inside the search input.",
+      "status": "pass"
+    },
+    {
+      "id": "toolbar.online_users",
+      "feature": "Online-users avatar (checkbox) appears next to search",
+      "how_to_verify": "Snapshot: role=checkbox name='{User name} is online' with accountId value",
+      "status": "pass"
+    },
+    {
+      "id": "toolbar.filter.button",
+      "feature": "Filter button shows active count",
+      "how_to_verify": "Snapshot: role=button name matches /^\\d+ filters applied$/. Default is '0 filters applied'.",
+      "status": "pass"
+    },
+    {
+      "id": "toolbar.filter.panel",
+      "feature": "Filter popover contents",
+      "how_to_verify": "Click 'N filters applied'. Popover renders sections in order.",
+      "expect_sections": [
+        "FILTERS (quick filters): 'Assigned to me', 'Due this week'",
+        "Date range: 'Start date' + 'Due date' pickers",
+        "Assignee: avatar grid of space members",
+        "Category: 'No category' checkbox",
+        "Created: 'From' + 'To' date pickers",
+        "Labels: 'No label'",
+        "Priority: 5 icons (Highest, High, Medium, Low, Lowest)"
+      ],
+      "status": "pass"
+    },
+    {
+      "id": "toolbar.groupby.button",
+      "feature": "Group by button reflects current grouping",
+      "how_to_verify": "Snapshot: role=button name='Group by {Field}'. Default name='Group by Status'.",
+      "status": "pass"
+    },
+    {
+      "id": "toolbar.groupby.options",
+      "feature": "Group by options",
+      "how_to_verify": "Click Group by. Popover shows 4 radios.",
+      "expect_radios": ["Assignee", "Category", "Priority", "Status"],
+      "default_checked": "Status",
+      "status": "pass"
+    },
+    {
+      "id": "toolbar.groupby.mutates_columns",
+      "feature": "Selecting a different Group by value swaps columns and updates the URL",
+      "how_to_verify": "Open Group by → click 'Priority'. Toolbar button renames to 'Group by Priority'; URL query changes groupBy=status → groupBy=priority; column headings switch to ['Highest','High','Medium','Low','Lowest']; AUT-1 (priority=Medium) appears under Medium; card-actions button aria-name becomes 'Card actions on Task AUT-1 of the Medium column'. A new 'Save or reset view settings' button appears to the left of 'More actions'.",
+      "reverted_by": "Open Group by → click 'Status'. Columns, URL, and card column reset to the original Status grouping.",
+      "action_is_mutating": true,
+      "status": "pass"
+    },
+    {
+      "id": "toolbar.view_settings",
+      "feature": "View settings opens a right-side panel",
+      "how_to_verify": "Click 'View settings'. A right sidebar opens with heading 'View settings', a 'Resize sidebar' handle, and a 'Close' button.",
+      "notes": "In this space the panel body rendered empty (no controls visible); likely premium-gated or feature-flagged.",
+      "status": "partial"
+    },
+    {
+      "id": "toolbar.save_or_reset",
+      "feature": "'Save or reset view settings' button appears when current view differs from saved",
+      "how_to_verify": "Change Group by (e.g. Status → Priority) or apply a search/filter; a new button role=button name='Save or reset view settings' appears between 'View settings' and 'More actions'.",
+      "status": "pass"
+    },
+    {
+      "id": "toolbar.more_actions",
+      "feature": "Board-level More actions menu",
+      "how_to_verify": "Click 'More actions'. Menu items rendered.",
+      "expect_menu_items": ["Stand-up", "Configure columns"],
+      "status": "pass"
+    },
+
+    {
+      "id": "columns.default_set",
+      "feature": "Default columns reflect statuses 'To Do', 'In Progress', 'Done' (when groupBy=status)",
+      "how_to_verify": "Level-3 headings; each column header shows a count badge.",
+      "expect": ["To Do {n}", "In Progress {n}", "Done {n}"],
+      "status": "pass"
+    },
+    {
+      "id": "columns.collapse",
+      "feature": "Each column has a collapse toggle",
+      "how_to_verify": "Snapshot: role=button name='Collapse {Status}' per column.",
+      "status": "pass"
+    },
+    {
+      "id": "columns.more_actions",
+      "feature": "Per-column More actions menu",
+      "how_to_verify": "Click 'More actions for column {Status}'. Menu items rendered.",
+      "expect_menu_items": [
+        "Add agent (BETA)",
+        "Rename status",
+        "Move column right",
+        "Delete status"
+      ],
+      "notes": "'Move column right' is replaced/augmented with 'Move column left' for non-leftmost columns (not directly verified).",
+      "status": "pass"
+    },
+    {
+      "id": "columns.create_in_column",
+      "feature": "Each column has a '+ Create' button at the bottom that opens an inline create form",
+      "how_to_verify": "Click 'Create' in a column. An inline form appears in that column with a textarea placeholder 'What needs to be done?', a type selector, a date picker, an assignee selector, and a submit (Enter) affordance. Escape dismisses it without persisting.",
+      "action_is_mutating": true,
+      "notes": "Opened and cancelled in 'In Progress'; submission (which would persist) was intentionally skipped since the card cannot be removed from within the board (the card actions menu has no Delete).",
+      "status": "pass"
+    },
+    {
+      "id": "columns.add_column",
+      "feature": "'+' button at the end of the columns row to add a new column/status",
+      "how_to_verify": "Snapshot: rightmost unnamed role=button after the 'Done' column's Create.",
+      "action_is_mutating": true,
+      "status": "pass_presence_only"
+    },
+
+    {
+      "id": "card.fields_visible",
+      "feature": "Card visually surfaces expected fields",
+      "how_to_verify": "Inspect card for AUT-1.",
+      "expect_fields": [
+        "summary ('This is a test')",
+        "key badge (icon + 'AUT-1')",
+        "priority icon (default Medium)",
+        "assignee avatar (None -> generic person icon)"
+      ],
+      "notes": "When status=Done, the key badge shows a green check mark next to AUT-1.",
+      "status": "pass"
+    },
+    {
+      "id": "card.open_work_item",
+      "feature": "Clicking the card opens the work item",
+      "how_to_verify": "Snapshot: role=link name='{KEY} {summary}. Use the enter key to load the work item.' — Enter/click navigates to the work-item view.",
+      "action_is_mutating": false,
+      "status": "pass_presence_only"
+    },
+    {
+      "id": "card.edit_summary",
+      "feature": "Inline 'Edit summary' pencil per card opens an in-card editor",
+      "how_to_verify": "Click 'Edit summary'. The summary renders as a focused role=textbox name='Work item summary' with current value prefilled, accompanied by role=button 'Submit' (✓) and role=button 'Cancel' (X). Escape cancels and preserves the original text.",
+      "action_is_mutating": true,
+      "notes": "Full edit-and-submit via automation was not completed: the textarea ref goes stale on every external action (live presence indicator re-renders the card), blocking browser_fill/browser_type. Manual keystrokes succeed but are flaky. Escape-to-cancel verified; original summary preserved.",
+      "status": "partial"
+    },
+    {
+      "id": "card.priority_inline",
+      "feature": "Priority icon opens inline priority picker",
+      "how_to_verify": "Click the priority icon on the card. Popover lists 5 options, current selected is highlighted.",
+      "expect_options": ["Highest", "High", "Medium", "Low", "Lowest"],
+      "status": "pass"
+    },
+    {
+      "id": "card.assignee_inline",
+      "feature": "Assignee avatar opens inline assignee picker",
+      "how_to_verify": "Click 'Assignee: {name|None}' button on the card. A combobox role='Change assignee' opens a listbox with the options below.",
+      "expect_popover": {
+        "input": "Search for people",
+        "options_include": [
+          "Automatic",
+          "{Current user} (assign to me)",
+          "other space members (e.g. fred, Worktrial-jonathan-yin, Kevin Yang)"
+        ]
+      },
+      "status": "pass"
+    },
+    {
+      "id": "card.assignee_mutate_and_revert",
+      "feature": "Assigning and unassigning persists through the inline picker",
+      "how_to_verify": "Starting from 'Assignee: None': click the avatar → select 'Daniel Li (assign to me)'. Button aria-name flips to 'Assignee: Daniel Li' and the avatar renders the user's initials. Reopening the picker now lists 'Unassigned' as the first option (and hides the current assignee from the list).",
+      "reverted_by": "Click 'Assignee: Daniel Li' → select 'Unassigned'. Button aria-name returns to 'Assignee: None' and avatar returns to the generic person icon.",
+      "action_is_mutating": true,
+      "status": "pass"
+    },
+    {
+      "id": "card.actions_menu",
+      "feature": "Card kebab opens actions menu",
+      "how_to_verify": "Click 'Card actions on {Type} {KEY} of the {Status} column'.",
+      "expect_menu_items": [
+        "Change status (submenu)",
+        "Copy link",
+        "Copy key",
+        "Link Confluence item (submenu)",
+        "Link work item (submenu)",
+        "Change parent (submenu)",
+        "Select cover (submenu)",
+        "Edit labels (submenu)"
+      ],
+      "notes": "The menu has no Delete/Archive action; destructive removal requires opening the work-item view.",
+      "status": "pass"
+    },
+    {
+      "id": "card.change_status_via_menu",
+      "feature": "Card actions → 'Change status' submenu transitions the card across columns",
+      "how_to_verify": "Open card actions on AUT-1 → hover/click 'Change status'. Submenu lists the status buttons ['To Do','In Progress','Done'] with the current status highlighted. Selecting 'Done' moves the card out of 'To Do' (count: 1 → 0) and into 'Done' (count: 0 → 1); the card actions aria-name updates to 'Card actions on Task AUT-1 of the Done column'; the key badge gains a green check-mark glyph.",
+      "reverted_by": "Re-open card actions on AUT-1 (now in Done) → Change status → 'To Do'. Column counts and card-actions aria-name return to the original state.",
+      "action_is_mutating": true,
+      "status": "pass"
+    },
+    {
+      "id": "card.create_after",
+      "feature": "'Create work item after {KEY}' inline add button",
+      "how_to_verify": "Snapshot: role=button name='Create work item after work item {KEY}' just above the card.",
+      "action_is_mutating": true,
+      "status": "pass_presence_only"
+    },
+    {
+      "id": "card.drag_between_columns",
+      "feature": "Cards are draggable between columns to change status",
+      "how_to_verify": "Drag card from 'To Do' to 'In Progress'; status updates and column counts refresh.",
+      "action_is_mutating": true,
+      "notes": "Synthetic drag via the MCP (both element-to-element and coordinate-based) did NOT trigger the drop in this app — Jira's Kanban uses Atlassian pragmatic-drag-and-drop, which ignores purely scripted dragstart events. The underlying status-change mutation path is still exercised end-to-end via 'card.change_status_via_menu'.",
+      "status": "not_executed"
+    },
+
+    {
+      "id": "spotlight.configure_columns",
+      "feature": "First-time 'Configure columns layout' coach-mark",
+      "how_to_verify": "Hovering/clicking certain column controls surfaces a spotlight dialog with heading 'Configure columns layout' and an 'OK' button.",
+      "notes": "Auto-triggered once during this run; non-blocking for automation but can intercept clicks.",
+      "status": "pass"
+    }
+  ],
+
+  "known_gaps": [
+    "View settings panel body rendered empty in this capture — verify with a premium seat or another space.",
+    "'Stand-up' and 'Configure columns' (board More actions) items were not activated (would open modals); only their presence in the menu is confirmed.",
+    "Drag-and-drop is ineffective via scripted events; use manual testing or a DnD-aware harness to cover that path.",
+    "Inline summary edit: submit-via-automation is blocked by a stale-ref loop caused by live presence re-renders; text-entry is verified to open but save path was only exercised manually.",
+    "Create-in-column and Create-after-card forms were opened and dismissed; actual submission was skipped because the board's card actions menu has no delete — cleanup would require opening the work item."
+  ],
+
+  "mutation_runbook": [
+    {
+      "scenario": "Change card status and revert",
+      "steps": [
+        "Card actions on AUT-1 → Change status → Done",
+        "Verify: column counts (To Do 0 / Done 1), card moves to Done column, key badge gains check-mark",
+        "Card actions on AUT-1 (Done) → Change status → To Do"
+      ]
+    },
+    {
+      "scenario": "Assign and unassign",
+      "steps": [
+        "Click 'Assignee: None' on AUT-1 → pick '{Current user} (assign to me)'",
+        "Verify: button becomes 'Assignee: {User}', avatar renders user initials",
+        "Click 'Assignee: {User}' → pick 'Unassigned'"
+      ]
+    },
+    {
+      "scenario": "Re-group the board and revert",
+      "steps": [
+        "Group by → Priority",
+        "Verify: URL groupBy=priority, columns [Highest, High, Medium, Low, Lowest], AUT-1 under Medium, 'Save or reset view settings' button appears",
+        "Group by → Status"
+      ]
+    }
+  ]
+}

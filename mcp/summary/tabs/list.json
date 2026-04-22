@@ -1,0 +1,28 @@
+{
+  "tab": "List",
+  "url": "/jira/core/projects/{key}/list",
+  "purpose": "Tabular/spreadsheet view of all work items",
+  "toolbar": [
+    "Ask AI",
+    "Search work",
+    "Assignee filter",
+    "Filter",
+    "Group",
+    "Saved filters",
+    "View toggle (table / split)",
+    "More actions"
+  ],
+  "columns_default": [
+    "Select",
+    "Work (key + summary)",
+    "Assignee",
+    "Reporter",
+    "Priority",
+    "Status",
+    "Resolution",
+    "Created",
+    "Updated"
+  ],
+  "row_actions": ["Open work item", "Inline edit fields", "Bulk-select", "Create new row"],
+  "footer": "{n} of {total}"
+}

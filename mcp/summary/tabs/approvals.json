@@ -1,0 +1,12 @@
+{
+  "tab": "Approvals",
+  "url": "/jira/core/projects/{key}/approvals",
+  "purpose": "Sign-off workflow for work items",
+  "toolbar": ["Search approvals", "Pending your approval", "Requested by you", "All approvals", "Settings"],
+  "columns": ["Work item", "Status", "Assignee", "Approvers", "Action"],
+  "empty_state": {
+    "title": "Need work signed off for your team?",
+    "cta": "Set up approvals",
+    "link": "Learn how to set up approvals"
+  }
+}

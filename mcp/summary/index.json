@@ -1,0 +1,74 @@
+{
+  "source": {
+    "app": "Atlassian Jira (Jira Work Management / Jira Core)",
+    "captured_from": "https://fleet-team-y0ak1u2s.atlassian.net/jira/core/projects/AUT/",
+    "captured_at": "2026-04-22",
+    "space_key": "AUT",
+    "space_name": "Autoloop",
+    "capture_method": "cursor-ide-browser MCP (live DOM snapshots + screenshots)"
+  },
+  "space": {
+    "name": "Autoloop",
+    "key": "AUT",
+    "breadcrumbs": ["Spaces", "Autoloop"],
+    "actions": [
+      "Link contributing teams",
+      "Give feedback",
+      "Enter full screen",
+      "Share",
+      "Automation",
+      "Add app"
+    ],
+    "navigation_tabs": [
+      "Summary",
+      "Board",
+      "List",
+      "Calendar",
+      "Timeline",
+      "Approvals",
+      "Forms",
+      "Docs",
+      "Attachments",
+      "Reports",
+      "Archived work items",
+      "Shortcuts"
+    ]
+  },
+  "files": {
+    "global_chrome": "./global-chrome.json",
+    "create_work_item_dialog": "./create-work-item-dialog.json",
+    "work_item": "./work-item.json",
+    "tabs": {
+      "summary": "./tabs/summary.json",
+      "board": "./tabs/board.json",
+      "list": "./tabs/list.json",
+      "calendar": "./tabs/calendar.json",
+      "timeline": "./tabs/timeline.json",
+      "approvals": "./tabs/approvals.json",
+      "forms": "./tabs/forms.json",
+      "docs": "./tabs/docs.json",
+      "attachments": "./tabs/attachments.json",
+      "reports": "./tabs/reports.json",
+      "archived_work_items": "./tabs/archived-work-items.json",
+      "shortcuts": "./tabs/shortcuts.json"
+    }
+  },
+  "cross_cutting_features": [
+    "Ask Rovo AI (space-level chat + inline /ai in descriptions/comments)",
+    "Share link for any page or work item",
+    "Automation rules per space and per work item",
+    "Notifications center",
+    "Full-screen toggle for space views",
+    "Resizable sidebars (left nav, work item side panel)",
+    "Breadcrumb navigation (Spaces > Space > Key)",
+    "Keyboard shortcuts (e.g. M to comment)",
+    "Premium trial upsell button",
+    "Give feedback button",
+    "Enter full screen",
+    "Watchers (per work item)",
+    "Pinned details fields (per-user)"
+  ],
+  "work_item_types_seen": ["Task", "Workstream", "Sub-task", "Epic"],
+  "statuses_seen": ["To Do", "In Progress", "Done"],
+  "priorities": ["Highest", "High", "Medium", "Low", "Lowest"]
+}

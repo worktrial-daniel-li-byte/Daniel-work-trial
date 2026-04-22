@@ -16,6 +16,11 @@ import { callMcp, scoreApp } from "./mcp-client.mjs";
 import { runWorker } from "./worker.mjs";
 import { buildVerifierSystemPrompt } from "./prompts.mjs";
 
+function truncate(s, n) {
+  if (typeof s !== "string") return "";
+  return s.length > n ? s.slice(0, n) + "…" : s;
+}
+
 // ── Orchestrator-only pseudo-tools the verifier can call ──────────────────
 
 export const dispatchTool = {
@@ -63,12 +68,13 @@ export const declareDoneTool = {
 
 // ── Dispatch handler ──────────────────────────────────────────────────────
 
-function makeHandleDispatch({ anthropic, mcp, workerTools, config, appUrl, state }) {
+function makeHandleDispatch({ anthropic, mcp, workerTools, config, appUrl, state, logger }) {
   return async function handleDispatch({ task, rationale }) {
     const before = state.lastReward;
     state.dispatchesUsed += 1;
     const dispatchNo = state.dispatchesUsed;
     const isResume = state.workerMsgs !== null;
+    const mode = isResume ? "resumed" : "fresh";
 
     console.log(
       `\n  ▶ dispatch #${dispatchNo}  (${isResume ? "RESUME existing worker" : "FRESH worker"})`,
@@ -83,7 +89,15 @@ function makeHandleDispatch({ anthropic, mcp, workerTools, config, appUrl, state
       : `Task from planner:\n\n${task}\n\nRationale (for your context only): ${rationale}\n\nMake the minimal necessary edits, then summarize what you changed.`;
 
     if (!isResume) state.workerMsgs = [];
-    state.workerMsgs.push({ role: "user", content: userTurn });
+    // If the previous run left the tail as a user message (tool_results or a
+    // self-heal), merge the new planner turn into it so we don't send two
+    // consecutive user messages to the API.
+    const tail = state.workerMsgs[state.workerMsgs.length - 1];
+    if (tail?.role === "user" && Array.isArray(tail.content)) {
+      tail.content.push({ type: "text", text: userTurn });
+    } else {
+      state.workerMsgs.push({ role: "user", content: userTurn });
+    }
 
     const workerSummary = await runWorker({
       anthropic,
@@ -110,9 +124,26 @@ function makeHandleDispatch({ anthropic, mcp, workerTools, config, appUrl, state
 
     if (improved) state.workerMsgs = null;
 
+    if (logger) {
+      try {
+        await logger.logDispatch({
+          task,
+          rationale,
+          mode,
+          before,
+          after,
+          improved,
+          workerSummary,
+        });
+        if (scoreRes.structured) await logger.logScore(scoreRes.structured);
+      } catch (err) {
+        console.warn(`    [logger] failed to write: ${err.message}`);
+      }
+    }
+
     const report = {
       dispatch_no: dispatchNo,
-      worker_mode: isResume ? "resumed" : "fresh",
+      worker_mode: mode,
       before_reward: before,
       after_reward: after,
       improved,
@@ -135,7 +166,7 @@ function makeHandleDispatch({ anthropic, mcp, workerTools, config, appUrl, state
 
 // ── Verifier tool handler ─────────────────────────────────────────────────
 
-function makeHandleVerifierTool({ mcp, state, handleDispatch }) {
+function makeHandleVerifierTool({ mcp, state, handleDispatch, logger }) {
   return async function handleVerifierTool(tu) {
     if (tu.name === "dispatch_to_worker") {
       return await handleDispatch(tu.input ?? {});
@@ -160,6 +191,13 @@ function makeHandleVerifierTool({ mcp, state, handleDispatch }) {
       if (res.structured.reward > state.bestReward) {
         state.bestReward = res.structured.reward;
       }
+      if (logger) {
+        try {
+          await logger.logScore(res.structured);
+        } catch (err) {
+          console.warn(`[logger] failed to log score: ${err.message}`);
+        }
+      }
     }
     return { blocks: res.blocks, isError: res.isError };
   };
@@ -178,6 +216,7 @@ function makeHandleVerifierTool({ mcp, state, handleDispatch }) {
  * @param {Array} opts.verifierMcpTools   (score_app, get_reward_config)
  * @param {Array} opts.workerTools        (read_file, write_file, list_dir)
  * @param {object} opts.config            See mcp/loop/config.mjs
+ * @param {import("./logger.mjs").RunLogger|null} [opts.logger] Optional run logger.
  * @returns {Promise<object>}             Summary { stopReason, ... }
  */
 export async function runVerifyLoop({
@@ -188,6 +227,7 @@ export async function runVerifyLoop({
   verifierMcpTools,
   workerTools,
   config,
+  logger = null,
 }) {
   const verifierTools = [...verifierMcpTools, dispatchTool, declareDoneTool];
   const verifierSystemPrompt = buildVerifierSystemPrompt({
@@ -222,11 +262,13 @@ export async function runVerifyLoop({
     config,
     appUrl,
     state,
+    logger,
   });
   const handleVerifierTool = makeHandleVerifierTool({
     mcp,
     state,
     handleDispatch,
+    logger,
   });
 
   let stopReason = "max_dispatches";
@@ -236,13 +278,14 @@ export async function runVerifyLoop({
     state.dispatchesUsed < config.maxDispatches &&
     (state.lastReward === null || state.lastReward < config.targetReward)
   ) {
-    const response = await anthropic.messages.create({
+    const stream = anthropic.messages.stream({
       model: config.model,
       max_tokens: config.maxTokens,
       system: verifierSystemPrompt,
       tools: verifierTools,
       messages: verifierMsgs,
     });
+    const response = await stream.finalMessage();
     verifierMsgs.push({ role: "assistant", content: response.content });
 
     for (const b of response.content) {
@@ -259,12 +302,19 @@ export async function runVerifyLoop({
 
     const toolResults = [];
     for (const tu of toolUses) {
-      if (tu.name !== "dispatch_to_worker" && tu.name !== "declare_done") {
-        console.log(
-          `[verifier →] ${tu.name}(${JSON.stringify(tu.input ?? {})})`,
-        );
-      }
+      const argPreview = truncate(JSON.stringify(tu.input ?? {}), 400);
+      console.log(`[verifier →] ${tu.name}(${argPreview})`);
+
       const { blocks, isError } = await handleVerifierTool(tu);
+
+      const firstText = blocks.find((b) => b.type === "text")?.text ?? "";
+      const imgCount = blocks.filter((b) => b.type === "image").length;
+      const resultPreview = truncate(firstText.replace(/\s+/g, " "), 400);
+      console.log(
+        `[verifier ←] ${tu.name}${isError ? " ERROR" : ""} ${resultPreview}` +
+          (imgCount ? ` [+${imgCount} image${imgCount > 1 ? "s" : ""}]` : ""),
+      );
+
       toolResults.push({
         type: "tool_result",
         tool_use_id: tu.id,

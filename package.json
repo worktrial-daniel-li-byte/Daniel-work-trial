@@ -10,6 +10,8 @@
     "preview": "vite preview",
     "state:load": "node ./scripts/load-initial-state.js",
     "test:qa": "node ./tests/qa-agent.js",
+    "browser-test": "node ./tests/browser-test.js",
+    "browser-login": "node ./tests/browser-login.js",
     "reward": "node ./scripts/reward-check.mjs",
     "check:dom": "node ./scripts/check-dom.mjs",
     "check:behavior": "node ./scripts/behavior-check.mjs",

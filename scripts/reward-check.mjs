@@ -24,6 +24,26 @@ const MEANINGFUL_TAGS = [
   'li','td','th','label','span','textarea','select',
 ]
 
+// pq-gram params (Augsten, Böhlen, Gamper 2005). Tuned for raw DOM wrapper
+// matching — small p/q give denser overlap on a densely-nested tree.
+const PQGRAM_P = 2
+const PQGRAM_Q = 3
+
+// Region anchors are CSS selectors matching a single subtree in both the
+// reference and the candidate. Pulled from scripts/surface-checks/. Missing
+// on gen but present on ref → score 0. Missing on ref → region is skipped.
+const REGIONS = [
+  { id: 'app-shell',       selector: '[data-testid="page-layout.root"]' },
+  { id: 'top-nav',         selector: '[data-testid="page-layout.top-nav"]' },
+  { id: 'left-nav',        selector: '[data-testid="page-layout.sidebar"]' },
+  { id: 'horizontal-nav',  selector: '[data-testid="horizontal-nav.ui.content.horizontal-nav"]' },
+  { id: 'project-header',  selector: '[data-testid="horizontal-nav-header.ui.project-header.header"]' },
+  { id: 'board-toolbar',   selector: '[data-testid="business-filters.ui.filters.assignee-filter"]' },
+  { id: 'board-canvas',    selector: '[data-testid="board.content.board-wrapper"]' },
+  { id: 'modal-portal',    selector: 'body > .atlaskit-portal-container' },
+  { id: 'rovo-fab',        selector: '[data-testid="layout-controller.ui.bottom-right-corner.container.styled-container"]' },
+]
+
 // ── DOM extraction ────────────────────────────────────────────────────────────
 
 function extractDomInPage(tagsList) {
@@ -146,6 +166,89 @@ function colorPaletteSimilarity(refColors, genColors) {
   return total > 0 ? intersection / total : 0
 }
 
+// ── pq-grams (Augsten et al. 2005) ────────────────────────────────────────────
+// Tree similarity via multiset overlap of (p-ancestor, q-sibling) label tuples.
+// Extraction runs in-page so we never ship the DOM across the boundary.
+
+function extractPqGramsInPage({ regions, p, q }) {
+  const EXCLUDE = new Set(['SCRIPT', 'STYLE', 'NOSCRIPT', 'LINK', 'META', 'TEMPLATE'])
+  const SEP = '\x1f'
+  const STAR = '*'
+
+  const labelFor = (el) => {
+    const tag = el.tagName.toLowerCase()
+    const testid = el.getAttribute('data-testid')
+    return testid ? `${tag}#${testid}` : tag
+  }
+
+  const gramsFor = (root) => {
+    if (!root) return null
+    const out = []
+    const visit = (el, stem) => {
+      const lbl = labelFor(el)
+      const newStem = stem.length >= p ? stem.slice(1).concat([lbl]) : stem.concat([lbl])
+      const effStem = newStem.length < p
+        ? new Array(p - newStem.length).fill(STAR).concat(newStem)
+        : newStem
+
+      const kids = []
+      for (const c of el.children) {
+        if (!EXCLUDE.has(c.tagName)) kids.push(c)
+      }
+
+      if (kids.length === 0) {
+        out.push(effStem.concat(new Array(q).fill(STAR)).join(SEP))
+        return
+      }
+
+      const childLabels = kids.map(labelFor)
+      const padded = new Array(q - 1).fill(STAR)
+        .concat(childLabels)
+        .concat(new Array(q - 1).fill(STAR))
+      for (let i = 0; i <= padded.length - q; i++) {
+        out.push(effStem.concat(padded.slice(i, i + q)).join(SEP))
+      }
+      for (const k of kids) visit(k, newStem)
+    }
+    visit(root, [])
+    return out
+  }
+
+  const whole = gramsFor(document.body || document.documentElement)
+  const regionGrams = {}
+  for (const r of regions) {
+    const el = document.querySelector(r.selector)
+    regionGrams[r.id] = el ? gramsFor(el) : null
+  }
+  return { whole, regions: regionGrams }
+}
+
+function pqgramDiceSimilarity(a, b) {
+  if (a == null && b == null) return 1
+  if (a == null || b == null) return 0
+  if (a.length === 0 && b.length === 0) return 1
+  if (a.length === 0 || b.length === 0) return 0
+  const ca = new Map(), cb = new Map()
+  for (const g of a) ca.set(g, (ca.get(g) ?? 0) + 1)
+  for (const g of b) cb.set(g, (cb.get(g) ?? 0) + 1)
+  let inter = 0
+  for (const [g, n] of ca) {
+    const m = cb.get(g)
+    if (m) inter += Math.min(n, m)
+  }
+  return (2 * inter) / (a.length + b.length)
+}
+
+// Combine whole + per-region similarities into a single scalar in [0,1].
+// Weight: 50% whole structure, 50% mean of present regions. If no regions
+// are present on the reference, fall back to the whole score.
+function combinePqGram(whole, regions) {
+  const present = Object.values(regions).filter((v) => typeof v === 'number')
+  if (present.length === 0) return whole
+  const meanRegion = present.reduce((s, v) => s + v, 0) / present.length
+  return 0.5 * whole + 0.5 * meanRegion
+}
+
 // ── Screenshot → 256x256 RGBA pixel buffer ────────────────────────────────────
 
 function decodePNG(buf) {
@@ -185,15 +288,30 @@ function visualSimilarity(refImg, genImg) {
 // ── Reward combination (mirror of compute_reward_from_info) ───────────────────
 
 function computeReward(refInfo, genInfo) {
+  const pqRegions = {}
+  for (const r of REGIONS) {
+    const refG = refInfo.pqgrams.regions[r.id]
+    const genG = genInfo.pqgrams.regions[r.id]
+    if (refG == null) continue
+    pqRegions[r.id] = genG == null ? 0 : pqgramDiceSimilarity(refG, genG)
+  }
+  const pqWhole = pqgramDiceSimilarity(refInfo.pqgrams.whole, genInfo.pqgrams.whole)
+  const pqCombined = combinePqGram(pqWhole, pqRegions)
+
   const details = {
     ssim: visualSimilarity(refInfo.image, genInfo.image),
     text: textSimilarity(refInfo.text, genInfo.text),
     color: colorPaletteSimilarity(refInfo.colors, genInfo.colors),
+    pqgram: { whole: pqWhole, regions: pqRegions, combined: pqCombined },
   }
   const content = Math.max(details.text, details.color)
   const contentGate = 0.2 + 0.8 * content
   const gatedSSIM = details.ssim * contentGate
-  const raw = 0.60 * gatedSSIM + 0.25 * details.text + 0.15 * details.color
+  const raw =
+    0.50 * gatedSSIM +
+    0.20 * details.text +
+    0.10 * details.color +
+    0.20 * pqCombined
   const reward = 2 * raw - 1
   return { reward, details: { ...details, content_gate: contentGate } }
 }
@@ -266,6 +384,11 @@ async function gotoAndSettle(page, target, { settleMs = 500, networkidleMs = 600
 
 async function extractInfoFromPage(page, screenshotPath) {
   const dom = await page.evaluate(extractDomInPage, MEANINGFUL_TAGS)
+  dom.pqgrams = await page.evaluate(extractPqGramsInPage, {
+    regions: REGIONS,
+    p: PQGRAM_P,
+    q: PQGRAM_Q,
+  })
   const screenshot = await page.screenshot({ fullPage: false, type: 'png' })
   if (screenshotPath) {
     await mkdir(path.dirname(screenshotPath), { recursive: true })
@@ -393,6 +516,10 @@ if (import.meta.url === `file://${process.argv[1]}`) {
       console.log(`  ssim        ${fmt(details.ssim)}`)
       console.log(`  text        ${fmt(details.text)}`)
       console.log(`  color       ${fmt(details.color)}`)
+      console.log(`  pqgram      ${fmt(details.pqgram.combined)}  (whole ${fmt(details.pqgram.whole)})`)
+      for (const [id, v] of Object.entries(details.pqgram.regions)) {
+        console.log(`    ${id.padEnd(16)} ${fmt(v)}`)
+      }
       console.log(`  content_gate${fmt(details.content_gate).padStart(13)}`)
       console.log('')
       console.log(`ref screenshot: ${result.ref.screenshot}`)

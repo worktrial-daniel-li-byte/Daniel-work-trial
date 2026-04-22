@@ -4,11 +4,14 @@
  * Env:
  *   ANTHROPIC_API_KEY / ANTH_API_KEY   (required)
  *   CLAUDE_MODEL          default claude-opus-4-7
- *   MAX_DISPATCHES        default 8    total times the verifier calls the worker
- *   MAX_WORKER_TURNS      default 6    tool-use turns per single worker run
- *   TARGET_REWARD         default 0.6  stop once reward >= this
+ *   MAX_DISPATCHES        default 30   total times the verifier calls the worker
+ *   MAX_WORKER_TURNS      default 40   tool-use turns per single worker run
+ *   TARGET_REWARD         default 0.85 stop once reward >= this
  *   IMPROVEMENT_DELTA     default 0.005 reward increase that counts as "got it right"
- *   MAX_TOKENS            default 4096
+ *   MAX_TOKENS            default 32768  — large enough to hold a full-file
+ *                                           rewrite without truncating the
+ *                                           tool_use block (truncation causes
+ *                                           400s / silently-missing fields).
  */
 
 import path from "node:path";
@@ -34,9 +37,9 @@ if (!apiKey) {
 export const config = {
   apiKey,
   model: process.env.CLAUDE_MODEL ?? "claude-opus-4-7",
-  maxDispatches: Number(process.env.MAX_DISPATCHES ?? 8),
-  maxWorkerTurns: Number(process.env.MAX_WORKER_TURNS ?? 6),
-  targetReward: Number(process.env.TARGET_REWARD ?? 0.6),
+  maxDispatches: Number(process.env.MAX_DISPATCHES ?? 30),
+  maxWorkerTurns: Number(process.env.MAX_WORKER_TURNS ?? 40),
+  targetReward: Number(process.env.TARGET_REWARD ?? 0.85),
   improvementDelta: Number(process.env.IMPROVEMENT_DELTA ?? 0.005),
-  maxTokens: Number(process.env.MAX_TOKENS ?? 4096),
+  maxTokens: Number(process.env.MAX_TOKENS ?? 32768),
 };

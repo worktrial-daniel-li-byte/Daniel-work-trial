@@ -20,9 +20,12 @@
  * Env: see ./config.mjs for the full list.
  */
 
+import path from "node:path";
+
 import Anthropic from "@anthropic-ai/sdk";
 
-import { config } from "./config.mjs";
+import { config, mcpDir } from "./config.mjs";
+import { RunLogger } from "./logger.mjs";
 import { connectMcp, partitionTools } from "./mcp-client.mjs";
 import { runVerifyLoop, dispatchTool, declareDoneTool } from "./verifier.mjs";
 
@@ -31,6 +34,10 @@ const appUrl = appUrlArg ?? "http://localhost:5173";
 
 const anthropic = new Anthropic({ apiKey: config.apiKey });
 const mcp = await connectMcp();
+
+const logger = new RunLogger(path.join(mcpDir, "logs"));
+await logger.init({ appUrl, model: config.model, config });
+console.log(`logs: ${logger.runDir}`);
 
 const { tools: mcpTools } = await mcp.listTools();
 const { verifierMcpTools, workerTools } = partitionTools(mcpTools);
@@ -58,6 +65,7 @@ const summary = await runVerifyLoop({
   verifierMcpTools,
   workerTools,
   config,
+  logger,
 });
 
 console.log("\n──── summary ────");
@@ -76,5 +84,8 @@ console.log(
 console.log(
   `best reward: ${Number.isFinite(summary.bestReward) ? summary.bestReward.toFixed(4) : "n/a"}`,
 );
+
+await logger.finalize(summary);
+console.log(`logs written to: ${logger.runDir}`);
 
 await mcp.close();

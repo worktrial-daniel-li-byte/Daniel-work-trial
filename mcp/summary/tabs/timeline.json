@@ -1,0 +1,22 @@
+{
+  "tab": "Timeline",
+  "url": "/jira/core/projects/{key}/timeline",
+  "purpose": "Gantt-style timeline of work items",
+  "toolbar": [
+    "Search timeline",
+    "Avatar/assignee filter",
+    "Filter",
+    "Today",
+    "Scale: Weeks / Months / Quarters",
+    "Legend",
+    "Timeline time period selector",
+    "View settings"
+  ],
+  "columns": ["Work", "Status", "Assignee"],
+  "interactions": [
+    "Drag bars to set start/due dates",
+    "Resize bars to change duration",
+    "Create new item inline",
+    "Horizontal scroll through months"
+  ]
+}

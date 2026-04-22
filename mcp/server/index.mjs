@@ -9,6 +9,7 @@
  *   - get_reward_config    — static metadata (viewport, weights, etc.).
  *   - read_file            — read a file inside the repo.
  *   - write_file           — overwrite a file inside the repo (whitelisted dirs).
+ *   - replace_in_file      — surgical find-and-replace inside a file (whitelisted dirs).
  *   - list_dir             — list a directory inside the repo.
  */
 
@@ -303,6 +304,118 @@ server.registerTool(
       return {
         isError: true,
         content: [{ type: "text", text: `write_file failed: ${err.message}` }],
+      };
+    }
+  },
+);
+
+// ── replace_in_file ─────────────────────────────────────────────────────────
+
+server.registerTool(
+  "replace_in_file",
+  {
+    title: "Surgically edit a file",
+    description:
+      "Replace exactly one occurrence of old_string with new_string in a file. " +
+      "Prefer this over write_file for targeted changes — it is much smaller, so " +
+      "it is far less likely to be truncated by max_tokens limits. " +
+      `Writes restricted to [${WRITE_ALLOWLIST.join(", ")}]. ` +
+      "old_string must appear exactly once in the file (include enough surrounding " +
+      "context to make it unique). Set replace_all=true to replace every occurrence.",
+    inputSchema: {
+      path: z.string().describe("Repo-relative or absolute file path."),
+      old_string: z
+        .string()
+        .describe(
+          "Exact substring to find. Must match EXACTLY including whitespace and indentation.",
+        ),
+      new_string: z.string().describe("String to insert in place of old_string."),
+      replace_all: z
+        .boolean()
+        .optional()
+        .describe("If true, replaces every occurrence instead of requiring uniqueness."),
+    },
+  },
+  async ({ path: p, old_string, new_string, replace_all }) => {
+    try {
+      const { abs, rel } = resolveRepoPath(p);
+      assertWritable(rel);
+      const original = await readFile(abs, "utf8");
+
+      if (old_string === new_string) {
+        return {
+          isError: true,
+          content: [
+            {
+              type: "text",
+              text: "replace_in_file failed: old_string and new_string are identical (no-op).",
+            },
+          ],
+        };
+      }
+
+      let count = 0;
+      let idx = 0;
+      while ((idx = original.indexOf(old_string, idx)) !== -1) {
+        count += 1;
+        idx += old_string.length || 1;
+      }
+
+      if (count === 0) {
+        return {
+          isError: true,
+          content: [
+            {
+              type: "text",
+              text:
+                `replace_in_file failed: old_string not found in ${rel}. ` +
+                "Read the file and copy the exact substring (whitespace matters).",
+            },
+          ],
+        };
+      }
+      if (count > 1 && !replace_all) {
+        return {
+          isError: true,
+          content: [
+            {
+              type: "text",
+              text:
+                `replace_in_file failed: old_string matches ${count} times in ${rel}. ` +
+                "Include more surrounding context to make it unique, or pass replace_all=true.",
+            },
+          ],
+        };
+      }
+
+      const updated = replace_all
+        ? original.split(old_string).join(new_string)
+        : original.replace(old_string, new_string);
+
+      await writeFile(abs, updated, "utf8");
+
+      return {
+        content: [
+          {
+            type: "text",
+            text:
+              `Patched ${rel}: ${count} replacement${count === 1 ? "" : "s"} ` +
+              `(${original.length} → ${updated.length} chars).`,
+          },
+        ],
+        structuredContent: {
+          path: rel,
+          replacements: count,
+          bytes_before: Buffer.byteLength(original),
+          bytes_after: Buffer.byteLength(updated),
+        },
+      };
+    } catch (err) {
+      return {
+        isError: true,
+        content: [
+          { type: "text", text: `replace_in_file failed: ${err.message}` },
+        ],
       };
     }
   },

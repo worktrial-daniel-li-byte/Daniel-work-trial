@@ -36,7 +36,12 @@ export function partitionTools(mcpTools) {
     mcpTools.filter((t) => names.includes(t.name)).map(toAnthropicTool);
   return {
     verifierMcpTools: pick(["score_app", "get_reward_config"]),
-    workerTools: pick(["read_file", "write_file", "list_dir"]),
+    workerTools: pick([
+      "read_file",
+      "write_file",
+      "replace_in_file",
+      "list_dir",
+    ]),
   };
 }
 
