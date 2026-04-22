@@ -1,0 +1,9 @@
+{
+  "mcpServers": {
+    "reward": {
+      "command": "node",
+      "args": ["/Users/fleet/fleet-trial/mcp/reward-mcp-server.mjs"],
+      "env": {}
+    }
+  }
+}

@@ -9,7 +9,13 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "state:load": "node ./scripts/load-initial-state.js",
-    "test:qa": "node ./tests/qa-agent.js"
+    "test:qa": "node ./tests/qa-agent.js",
+    "reward": "node ./scripts/reward-check.mjs",
+    "check:dom": "node ./scripts/check-dom.mjs",
+    "check:behavior": "node ./scripts/behavior-check.mjs",
+    "mcp:setup": "./mcp/setup.sh",
+    "mcp:server": "node ./mcp/reward-mcp-server.mjs",
+    "mcp:agent": "node ./mcp/claude-agent.mjs"
   },
   "dependencies": {
     "react": "^19.2.5",
@@ -29,6 +35,8 @@
     "eslint-plugin-react-hooks": "^7.1.1",
     "eslint-plugin-react-refresh": "^0.5.2",
     "globals": "^17.5.0",
+    "pngjs": "^7.0.0",
+    "ssim.js": "^3.5.0",
     "typescript": "~6.0.2",
     "typescript-eslint": "^8.58.2",
     "vite": "^8.0.9"
