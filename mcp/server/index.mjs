@@ -1,6 +1,8 @@
 #!/usr/bin/env node
 /**
- * MCP stdio server that exposes:
+ * MCP stdio server for the verify→write loop.
+ *
+ * Tools:
  *   - score_app            — runs the JS reward function in scripts/reward-check.mjs
  *                            and returns reward + breakdown + both screenshots as
  *                            inline images (so Claude can see them).
@@ -8,9 +10,6 @@
  *   - read_file            — read a file inside the repo.
  *   - write_file           — overwrite a file inside the repo (whitelisted dirs).
  *   - list_dir             — list a directory inside the repo.
- *
- * These tools together let a Claude-driven verify→write loop inspect the app,
- * see the visual diff, edit source, and re-score.
  */
 
 import { readFile, writeFile, mkdir, readdir, stat } from "node:fs/promises";
@@ -21,11 +20,11 @@ import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
 import { z } from "zod";
 
-import { runReward } from "../scripts/reward-check.mjs";
+import { runReward } from "../../scripts/reward-check.mjs";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-const repoRoot = path.resolve(__dirname, "..");
+const repoRoot = path.resolve(__dirname, "..", "..");
 const defaultRefHtml = path.join(
   repoRoot,
   "reference_app",
@@ -67,7 +66,7 @@ function assertWritable(rel) {
 }
 
 const server = new McpServer(
-  { name: "reward-mcp-server", version: "0.2.0" },
+  { name: "reward-mcp-server", version: "0.3.0" },
   {
     capabilities: { tools: {} },
     instructions:

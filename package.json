@@ -14,8 +14,9 @@
     "check:dom": "node ./scripts/check-dom.mjs",
     "check:behavior": "node ./scripts/behavior-check.mjs",
     "mcp:setup": "./mcp/setup.sh",
-    "mcp:server": "node ./mcp/reward-mcp-server.mjs",
-    "mcp:agent": "node ./mcp/claude-agent.mjs"
+    "mcp:server": "node ./mcp/server/index.mjs",
+    "mcp:agent": "node ./mcp/agent/index.mjs",
+    "mcp:loop": "node ./mcp/loop/index.mjs"
   },
   "dependencies": {
     "react": "^19.2.5",

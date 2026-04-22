@@ -2,7 +2,7 @@
   "mcpServers": {
     "reward": {
       "command": "node",
-      "args": ["/Users/fleet/fleet-trial/mcp/reward-mcp-server.mjs"],
+      "args": ["/Users/fleet/fleet-trial/mcp/server/index.mjs"],
       "env": {}
     }
   }
