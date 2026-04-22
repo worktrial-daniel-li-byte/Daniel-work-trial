@@ -49,10 +49,14 @@ export class RunLogger {
       model,
       config: {
         maxDispatches: config.maxDispatches,
-        maxWorkerTurns: config.maxWorkerTurns,
         targetReward: config.targetReward,
         improvementDelta: config.improvementDelta,
         maxTokens: config.maxTokens,
+        claudeCliPath: config.claudeCliPath,
+        workerModel: config.workerModel,
+        workerAllowedTools: config.workerAllowedTools,
+        workerPermissionMode: config.workerPermissionMode,
+        workerTimeoutMs: config.workerTimeoutMs,
       },
     };
     await writeFile(

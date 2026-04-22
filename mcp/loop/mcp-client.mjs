@@ -30,18 +30,16 @@ export function toAnthropicTool(t) {
   };
 }
 
-/** Split the server's tool list into verifier- and worker-facing subsets. */
+/**
+ * Pick the MCP tools the verifier is allowed to call directly. The worker is
+ * a Claude Code subprocess with its own built-in toolkit (Read, Edit, Grep,
+ * Bash, …) and doesn't use the MCP server.
+ */
 export function partitionTools(mcpTools) {
   const pick = (names) =>
     mcpTools.filter((t) => names.includes(t.name)).map(toAnthropicTool);
   return {
     verifierMcpTools: pick(["score_app", "get_reward_config"]),
-    workerTools: pick([
-      "read_file",
-      "write_file",
-      "replace_in_file",
-      "list_dir",
-    ]),
   };
 }
 

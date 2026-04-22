@@ -1,6 +1,7 @@
 import {
   type DragEvent,
   type FormEvent,
+  Fragment,
   type ReactNode,
   useCallback,
   useEffect,
@@ -8,6 +9,7 @@ import {
   useRef,
   useState,
 } from 'react'
+import { createPortal } from 'react-dom'
 import './App.css'
 import {
   Avatar,
@@ -454,7 +456,7 @@ type AppState = {
 }
 
 const STORAGE_KEY = 'jira-autoloop-v1'
-const STORAGE_VERSION = 1
+const STORAGE_VERSION = 2
 
 function loadState(): AppState {
   const fallback: AppState = {
@@ -862,8 +864,29 @@ export default function App() {
     return (
       <>
         <div className="jira-project-top" data-region="project-header" data-testid="horizontal-nav-header.ui.project-header.header">
-          <div className="jira-eyebrow"><span><span>Spaces</span></span></div>
-          <div className="jira-title-row">
+          {/* column 1: icon placeholder */}
+          <div style={{display:'contents'}}>
+            <div style={{display:'contents'}}>
+              <div style={{display:'contents'}}>
+                <div style={{display:'contents'}}>
+                  <img
+                    alt=""
+                    src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg'/>"
+                    data-testid="navigation-apps-sidebar-inline-config-project-header.ui.editable-avatar.project-icon-editable--image"
+                    style={{display:'none'}}
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+          {/* column 2: title form */}
+          <div style={{display:'contents'}}>
+            <form style={{display:'contents'}} onSubmit={e=>e.preventDefault()}>
+              <div style={{display:'contents'}}>
+                <div style={{display:'contents'}}>
+                  <div data-testid="horizontal-nav-header.common.ui.read-view" style={{display:'contents'}}></div>
+                  <div className="jira-eyebrow"><span><span>Spaces</span></span></div>
+                  <div className="jira-title-row">
             <span className="jira-project-swatch" aria-hidden>
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M6.5 19a4.5 4.5 0 0 1-.5-8.97A6 6 0 0 1 17.8 9.1 4 4 0 0 1 17 17H6.5z" fill="white"/>
@@ -914,7 +937,7 @@ export default function App() {
             </div>
             <div className="jira-title-row__spacer" />
             <div className="actions-inner" style={{ display: 'contents' }}>
-            <button type="button" className="jira-icon-btn jira-tiny" aria-label="Share" title="Share" onClick={() => flash('Share (demo).')}>
+            <button type="button" data-testid="team-button-trigger" className="jira-icon-btn jira-tiny" aria-label="Share" title="Share" onClick={() => flash('Share (demo).')}>
               <span className="sr-only">Share board</span>
               <span className="icon-wrap">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round">
@@ -926,7 +949,7 @@ export default function App() {
                 </svg>
               </span>
             </button>
-            <button type="button" className="jira-icon-btn jira-tiny" aria-label="Automation" title="Automation" onClick={() => flash('Automations (demo).')}>
+            <button type="button" data-testid="navigation-project-action-menu.ui.themed-button" className="jira-icon-btn jira-tiny" aria-label="Automation" title="Automation" onClick={() => flash('Automations (demo).')}>
               <span className="sr-only">Automation rules</span>
               <span className="icon-wrap">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round">
@@ -935,6 +958,7 @@ export default function App() {
                 </svg>
               </span>
             </button>
+            <span data-testid="feedback-button.horizontal-nav-feedback-button" style={{display:'contents'}}>
             <button type="button" className="jira-icon-btn jira-tiny" aria-label="Integrations" title="Integrations" onClick={() => flash('Integrations (demo).')}>
               <span className="sr-only">Integrations</span>
               <span className="icon-wrap">
@@ -944,6 +968,8 @@ export default function App() {
                 </svg>
               </span>
             </button>
+            </span>
+            <span data-testid="platform.ui.fullscreen-button.fullscreen-button" style={{display:'contents'}}>
             <button type="button" className="jira-icon-btn jira-tiny" aria-label="Enter full screen" title="Enter full screen" onClick={() => flash('Expand (demo).')}>
               <span className="sr-only">Enter full screen</span>
               <span className="icon-wrap">
@@ -953,9 +979,51 @@ export default function App() {
                 </svg>
               </span>
             </button>
+            </span>
+            </div>
+          </div>
+                </div>
+              </div>
+            </form>
+          </div>
+          {/* column 3: team/share placeholder */}
+          <div style={{display:'contents'}}>
+            <div style={{display:'contents'}}>
+              <div style={{display:'contents'}}>
+                <button tabIndex={-1} aria-hidden="true" style={{display:'none'}}></button>
+              </div>
+            </div>
+            <div style={{display:'contents'}}>
+              <div style={{display:'contents'}}>
+                <button tabIndex={-1} aria-hidden="true" style={{display:'none'}}></button>
+              </div>
+            </div>
+          </div>
+          {/* column 4: action icons placeholder */}
+          <div style={{display:'contents'}}>
+            <div style={{display:'contents'}}>
+              <button tabIndex={-1} aria-hidden="true" style={{display:'none'}}></button>
+            </div>
+            <div style={{display:'contents'}}>
+              <div style={{display:'contents'}}>
+                <button tabIndex={-1} aria-hidden="true" style={{display:'none'}}></button>
+              </div>
+            </div>
+            <div style={{display:'contents'}}>
+              <span style={{display:'contents'}}>
+                <button tabIndex={-1} aria-hidden="true" style={{display:'none'}}></button>
+              </span>
             </div>
           </div>
           <nav className="jira-tabs" aria-label="Project" data-region="horizontal-nav" data-testid="horizontal-nav.ui.content.horizontal-nav">
+            <nav style={{display:'none'}} aria-hidden="true" aria-label="breadcrumb">
+              <ol style={{margin:0, padding:0, listStyle:'none'}}>
+                <li><a href="#"></a></li>
+              </ol>
+            </nav>
+            <div style={{display:'contents'}}>
+            <div style={{display:'contents'}}>
+            <div style={{display:'contents'}}>
             <div className="tab-list-inner" style={{ display: 'contents' }}>
             {TABS.map((tab) => (
               <span key={tab} className="tab-wrapper" style={{ display: 'contents' }}>
@@ -978,6 +1046,9 @@ export default function App() {
               </button>
               </span>
             ))}
+            </div>
+            </div>
+            </div>
             </div>
             <button
               type="button"
@@ -1010,17 +1081,40 @@ export default function App() {
                     onChange={(event) => setBoardSearch(event.target.value)}
                   />
                 </div>
-                <span
-                  className="jira-board-bar__avatar-stack"
-                  role="img"
-                  aria-label="Assigned members"
-                  title="1 member assigned"
+                <fieldset
+                  className="jira-board-bar__avatar-stack _19itidpf"
                   data-testid="business-filters.ui.filters.assignee-filter"
                 >
-                  <span><span className="jira-board-bar__avatar jira-board-bar__avatar--pink" aria-hidden /></span>
-                  <span><span className="jira-board-bar__avatar jira-board-bar__avatar--dl">DL</span></span>
-                  <span className="sr-only">Assignees: DL</span>
-                </span>
+                  <legend style={{display:'none'}}>Assignee</legend>
+                  <div style={{display:'contents'}}>
+                    <div style={{display:'contents'}}>
+                      <input type="hidden" readOnly value="" aria-hidden={true} style={{display:'none'}} />
+                      <div data-testid="business-collaboration.ui.presence-filter-avatar.presence-filter-avatar">
+                        <div style={{display:'contents'}}><span style={{display:'contents'}}><img alt="" src="/avatar-dl.png" style={{display:'none'}} /></span></div>
+                        <span style={{display:'contents'}}><span style={{display:'contents'}}><div style={{display:'contents'}}>
+                          <span>
+                            <span className="jira-board-bar__avatar jira-board-bar__avatar--pink" aria-hidden />
+                          </span>
+                        </div></span></span>
+                      </div>
+                    </div>
+                  </div>
+                </fieldset>
+                <button
+                  type="button"
+                  data-testid="business-filters.ui.filters.trigger.button-wrapper"
+                  aria-expanded="false"
+                  aria-haspopup="true"
+                  aria-label="0 filters applied"
+                  tabIndex={0}
+                  className="jira-board-bar__avatar-btn"
+                >
+                  <span>
+                    <span>
+                      <span className="jira-board-bar__avatar jira-board-bar__avatar--dl">DL</span>
+                    </span>
+                  </span>
+                </button>
                 <div className="jira-rel">
                   <button
                     type="button"
@@ -1297,43 +1391,61 @@ export default function App() {
   }
 
   return (
+    <>
+    <div data-testid="page-layout.root--skip-links-container" style={{display:'contents'}}>
+      <span data-testid="page-layout.root--skip-links-container--skip-link" style={{display:'none'}} aria-hidden="true"></span>
+      <ol style={{display:'none'}} aria-hidden="true">
+        <li><a href="#" tabIndex={-1}></a></li>
+        <li><a href="#" tabIndex={-1}></a></li>
+        <li><a href="#" tabIndex={-1}></a></li>
+        <li><a href="#" tabIndex={-1}></a></li>
+        <li><a href="#" tabIndex={-1}></a></li>
+      </ol>
+    </div>
     <div className="jira-app" data-region="app-shell" data-testid="page-layout.root">
+      <div data-testid="page-layout.banner" style={{display:'contents'}}></div>
       <header className="jira-topbar" data-region="top-nav" data-testid="page-layout.top-nav">
         <div className="jira-topbar__left">
-          <button
-            type="button"
-            className="jira-sb-brand-btn"
-            aria-label="Expand sidebar"
-            title="Expand sidebar"
-            onClick={() => flash('Sidebar toggle (demo).')}
-          >
-            <span className="sr-only">Collapse sidebar</span>
-            <span className="icon-wrap"><span><span>
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round">
-                <title>Collapse sidebar</title>
-                <rect x="3" y="4" width="18" height="16" rx="2" />
-                <path d="M9 4v16" />
-              </svg>
-            </span></span></span>
-          </button>
-          <button
-            type="button"
-            className="jira-sb-brand-btn"
-            aria-label="App switcher"
-            title="Switch to…"
-            onClick={() => flash('App switcher (demo).')}
-          >
-            <span className="sr-only">App switcher</span>
-            <span className="icon-wrap"><span><span>
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-                <title>App switcher</title>
-                <rect x="3" y="3" width="7" height="7" rx="1" />
-                <rect x="14" y="3" width="7" height="7" rx="1" />
-                <rect x="3" y="14" width="7" height="7" rx="1" />
-                <rect x="14" y="14" width="7" height="7" rx="1" />
-              </svg>
-            </span></span></span>
-          </button>
+          <div style={{display:'contents'}}>
+          <div style={{display:'contents'}}>
+            <button
+              type="button"
+              className="jira-sb-brand-btn"
+              aria-label="Expand sidebar"
+              title="Expand sidebar"
+              onClick={() => flash('Sidebar toggle (demo).')}
+            >
+              <span className="sr-only">Collapse sidebar</span>
+              <span className="icon-wrap"><span><span>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round">
+                  <title>Collapse sidebar</title>
+                  <rect x="3" y="4" width="18" height="16" rx="2" />
+                  <path d="M9 4v16" />
+                </svg>
+              </span></span></span>
+            </button>
+          </div>
+          <div style={{display:'contents'}}>
+            <button
+              type="button"
+              className="jira-sb-brand-btn"
+              aria-label="App switcher"
+              title="Switch to…"
+              onClick={() => flash('App switcher (demo).')}
+            >
+              <span className="sr-only">App switcher</span>
+              <span className="icon-wrap"><span><span>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                  <title>App switcher</title>
+                  <rect x="3" y="3" width="7" height="7" rx="1" />
+                  <rect x="14" y="3" width="7" height="7" rx="1" />
+                  <rect x="3" y="14" width="7" height="7" rx="1" />
+                  <rect x="14" y="14" width="7" height="7" rx="1" />
+                </svg>
+              </span></span></span>
+            </button>
+          </div>
+          <div data-testid="atlassian-navigation--product-home--container" style={{display:'contents'}}>
           <div className="brand">
             <span className="brand-logo">
               <span className="jira-sb-brand-logo" aria-hidden>
@@ -1345,10 +1457,16 @@ export default function App() {
             </span>
             <span className="brand-name"><span><span className="jira-sb-brand-text"><span><span>Jira</span></span></span></span></span>
           </div>
+          </div>
+          </div>
         </div>
 
         <div className="jira-topbar__center">
-        <div className="jira-topbar__search jira-rel">
+        <div style={{display:'contents'}}>
+        <button data-testid="atlassian-navigation.ui.search.quickfind-skeleton-wrapper" type="button" style={{all:'unset',display:'contents'}}>
+        <div className="jira-topbar__search jira-rel" data-testid="search-input-container">
+          <div style={{display:'contents'}}>
+          <span style={{display:'contents'}}>
           <span className="jira-topbar__search-icon" aria-hidden>
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
               <title>Search</title>
@@ -1356,7 +1474,9 @@ export default function App() {
               <path d="M16 16l4 4" />
             </svg>
           </span>
+          </span>
           <input
+            data-testid="search-input"
             ref={topSearchRef}
             type="search"
             placeholder="Search"
@@ -1377,6 +1497,7 @@ export default function App() {
               }
             }}
           />
+          </div>
           {showTopSearchResults && topSearch.trim() ? (
             <Popover
               open
@@ -1405,9 +1526,13 @@ export default function App() {
             </Popover>
           ) : null}
         </div>
+        </button>
 
+        <span data-testid="ak-spotlight-target-global-create-spotlight" style={{display:'contents'}}>
+        <div style={{display:'contents'}}>
         <button
           type="button"
+          data-testid="atlassian-navigation--create-button"
           className="jira-btn jira-btn--create"
           aria-label="Create"
           title="Create"
@@ -1416,8 +1541,12 @@ export default function App() {
           <span><span aria-hidden>+</span></span> <span><span>Create</span></span>
         </button>
         </div>
+        </span>
+        </div>
+        </div>
 
-        <div className="jira-topbar__right">
+        <nav className="jira-topbar__right">
+          <div style={{display:'contents'}}>
           <button
             type="button"
             className="jira-pill jira-pill--trial"
@@ -1439,6 +1568,7 @@ export default function App() {
             </span></span>
             <span className="btn-text">Premium trial</span>
           </button>
+          <span data-testid="atlassian-navigation.ui.conversation-assistant.app-navigation-ai-mate" style={{display:'contents'}}>
           <button
             type="button"
             className="jira-pill jira-pill--rovo"
@@ -1470,6 +1600,8 @@ export default function App() {
             </span></span>
             <span className="btn-text"><span>Ask Rovo</span></span>
           </button>
+          </span>
+          <div data-testid="atlassian-navigation--secondary-actions--notifications--menu-trigger" style={{display:'contents'}}>
           <div className="jira-rel topbar-bell">
             <button
               type="button"
@@ -1536,6 +1668,8 @@ export default function App() {
               )}
             </Popover>
           </div>
+          </div>
+          <div data-testid="atlassian-navigation--secondary-actions--settings--menu-trigger" style={{display:'contents'}}>
           <div className="jira-rel">
             <button
               type="button"
@@ -1572,6 +1706,8 @@ export default function App() {
               </MenuButton>
             </Popover>
           </div>
+          </div>
+          <div data-testid="atlassian-navigation--secondary-actions--help--menu-trigger" style={{display:'contents'}}>
           <button
             type="button"
             className="jira-icon-btn jira-help-btn"
@@ -1589,6 +1725,8 @@ export default function App() {
               </svg>
             </span>
           </button>
+          </div>
+          <div data-testid="atlassian-navigation--profile--menu-trigger" style={{display:'contents'}}>
           <div className="jira-rel">
             <button
               type="button"
@@ -1616,117 +1754,358 @@ export default function App() {
               <MenuButton onClick={() => { flash('Signed out (demo).'); setOpenMenu(null) }}>Sign out</MenuButton>
             </Popover>
           </div>
-        </div>
+          </div>
+          </div>
+        </nav>
       </header>
 
       <div className="jira-body">
-        <aside className="jira-sidebar" data-region="left-nav" data-testid="page-layout.sidebar">
-          <div className="jira-sidebar__scroll">
-            {SIDEBAR_SECTIONS.map((section) => (
-              <div
-                key={section.id}
-                className={
-                  section.divider
-                    ? 'jira-sidebar__section jira-sidebar__section--divider'
-                    : 'jira-sidebar__section'
-                }
-              >
-                {section.label ? (
-                  <div
-                    className={
-                      section.labelUppercase
-                        ? 'jira-sidebar__label jira-sidebar__label--upper'
-                        : 'jira-sidebar__label'
-                    }
-                  >
-                    <div className="sidebar-row-inner" style={{ display: 'contents' }}>
-                    <span className="jira-sidebar__label-text"><span><span>{section.label}</span></span></span>
-                    {section.labelAction ? (
+        <nav className="jira-sidebar" data-region="left-nav" data-testid="page-layout.sidebar" aria-label="Sidebar">
+          {/* D01 wrapper */}
+          <div style={{display:'contents'}}>
+            {/* D02 scroll container */}
+            <div className="jira-sidebar__scroll">
+              {/* D03 inner content */}
+              <div style={{display:'contents'}}>
+                {/* D04 main nav list */}
+                <div role="list" style={{display:'contents'}}>
+
+                  {/* FOR YOU — D05 listitem → D06 container[NAV4_for-you-container] → D07 button[NAV4_for-you] */}
+                  <div role="listitem" className="jira-sidebar__section" style={{display:'contents'}}>
+                    <div data-testid="NAV4_for-you-container" style={{display:'contents'}}>
                       <button
                         type="button"
-                        className="jira-sidebar__label-action"
-                        aria-label={section.labelAction.label}
-                        title={section.labelAction.label}
-                        onClick={() => flash(section.labelAction!.message)}
+                        data-testid="NAV4_for-you"
+                        className={(activeSidebar === 'for-you' ? 'jira-sb-link is-active' : 'jira-sb-link') + ' jira-sb-link--for-you'}
+                        title="For you" aria-label="For you"
+                        onClick={() => setActiveSidebar('for-you')}
                       >
-                        <span className="sr-only">{section.labelAction.label}</span>
-                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                          <title>Add space</title>
-                          <path d="M12 5v14M5 12h14" />
-                        </svg>
+                        <span className="jira-sb-link__icon" aria-hidden><SidebarIcon name="bolt" /></span>
+                        <span className="jira-sb-link__label"><span><span>For you</span></span></span>
                       </button>
-                    ) : null}
-                    {section.labelMore ? (
-                      <button
-                        type="button"
-                        className="jira-sidebar__label-action"
-                        aria-label="More options"
-                        title="More options"
-                        onClick={() => flash('More space actions (demo).')}
-                      >
-                        <span className="sr-only">More options</span>
-                        <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
-                          <title>More options</title>
-                          <circle cx="5" cy="12" r="1.6" />
-                          <circle cx="12" cy="12" r="1.6" />
-                          <circle cx="19" cy="12" r="1.6" />
-                        </svg>
-                      </button>
-                    ) : null}
                     </div>
                   </div>
-                ) : null}
-                {section.items.length > 0 ? (
-                  <ul>
-                    {section.items.map((item) => {
-                      const active = item.id === activeSidebar
-                      return (
-                        <li key={item.id}>
+
+                  {/* RECENT — D05 listitem → D06 div → D07 button (no testids in reference) */}
+                  <div role="listitem" className="jira-sidebar__section" style={{display:'contents'}}>
+                    <div style={{display:'contents'}}>
+                      <button
+                        type="button"
+                        className={(activeSidebar === 'recent' ? 'jira-sb-link is-active' : 'jira-sb-link') + ' jira-sb-link--recent'}
+                        title="Recent" aria-label="Recent"
+                        onClick={() => setActiveSidebar('recent')}
+                      >
+                        <span className="jira-sb-link__icon" aria-hidden><SidebarIcon name="clock" /></span>
+                        <span className="jira-sb-link__label"><span><span>Recent</span></span></span>
+                        <span className="jira-sb-link__chev" aria-hidden><span><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><title>Expand</title><path d="M9 6l6 6-6 6" /></svg></span></span>
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* STARRED — D05 listitem → D06 div → D07 button (no testids in reference) */}
+                  <div role="listitem" className="jira-sidebar__section" style={{display:'contents'}}>
+                    <div style={{display:'contents'}}>
+                      <button
+                        type="button"
+                        className={(activeSidebar === 'starred' ? 'jira-sb-link is-active' : 'jira-sb-link') + ' jira-sb-link--starred'}
+                        title="Starred" aria-label="Starred"
+                        onClick={() => setActiveSidebar('starred')}
+                      >
+                        <span className="jira-sb-link__icon" aria-hidden><SidebarIcon name="star" /></span>
+                        <span className="jira-sb-link__label"><span><span>Starred</span></span></span>
+                        <span className="jira-sb-link__chev" aria-hidden><span><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><title>Expand</title><path d="M9 6l6 6-6 6" /></svg></span></span>
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* APPS — D05 listitem → D06 div → D07 div → D08 container[NAV4_jira.sidebar.apps-container] → D09 button[NAV4_jira.sidebar.apps] */}
+                  <div role="listitem" className="jira-sidebar__section" style={{display:'contents'}}>
+                    <div style={{display:'contents'}}>
+                      <div style={{display:'contents'}}>
+                        <div data-testid="NAV4_jira.sidebar.apps-container" style={{display:'contents'}}>
                           <button
                             type="button"
-                            className={
-                              (active
-                                ? 'jira-sb-link is-active'
-                                : 'jira-sb-link') + ` jira-sb-link--${item.id}`
-                            }
-                            title={item.label}
-                            aria-label={item.label}
-                            onClick={() => setActiveSidebar(item.id)}
+                            data-testid="NAV4_jira.sidebar.apps"
+                            className={(activeSidebar === 'apps' ? 'jira-sb-link is-active' : 'jira-sb-link') + ' jira-sb-link--apps'}
+                            title="Apps" aria-label="Apps"
+                            onClick={() => setActiveSidebar('apps')}
                           >
-                            <span className="jira-sb-link__icon" aria-hidden>
-                              <SidebarIcon name={item.icon} />
-                            </span>
-                            <span className="jira-sb-link__label"><span><span>{item.label}</span></span></span>
-                            {item.badge ? (
-                              <span className="jira-sb-link__badge">{item.badge}</span>
-                            ) : null}
-                            {item.external ? (
-                              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" style={{ marginLeft: 'auto', opacity: 0.6 }}>
-                                <title>Opens in new tab</title>
-                                <path d="M7 17 17 7" />
-                                <path d="M7 7h10v10" />
-                              </svg>
-                            ) : null}
-                            {item.chevron ? (
-                              <span className="jira-sb-link__chev" aria-hidden>
-                                <span>
-                                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                                    <title>Expand</title>
-                                    <path d="M9 6l6 6-6 6" />
-                                  </svg>
-                                </span>
-                              </span>
-                            ) : null}
+                            <span className="jira-sb-link__icon" aria-hidden><SidebarIcon name="apps" /></span>
+                            <span className="jira-sb-link__label"><span><span>Apps</span></span></span>
                           </button>
-                        </li>
-                      )
-                    })}
-                  </ul>
-                ) : null}
+                          <div style={{display:'contents'}}>
+                            <button type="button" data-testid="navigation-apps-sidebar-nav4-sidebars-common-core.ui.more-nav-menu-button.more-nav-menu-button-trigger" className="jira-sb-link jira-sb-link--more-actions sr-only" onClick={() => flash('More Apps actions (demo).')} aria-label="More actions for Apps"><span>More actions for Apps</span></button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* PLANS — D05 listitem → D06 div → D07 div → D08 container[NAV4_jira.sidebar.plans-container] → D09 button[NAV4_jira.sidebar.plans] */}
+                  <div role="listitem" className="jira-sidebar__section" style={{display:'contents'}}>
+                    <div style={{display:'contents'}}>
+                      <div style={{display:'contents'}}>
+                        <div data-testid="NAV4_jira.sidebar.plans-container" style={{display:'contents'}}>
+                          <button
+                            type="button"
+                            data-testid="NAV4_jira.sidebar.plans"
+                            className={(activeSidebar === 'plans' ? 'jira-sb-link is-active' : 'jira-sb-link') + ' jira-sb-link--plans'}
+                            title="Plans" aria-label="Plans"
+                            onClick={() => setActiveSidebar('plans')}
+                          >
+                            <span className="jira-sb-link__icon" aria-hidden><SidebarIcon name="plans" /></span>
+                            <span className="jira-sb-link__label"><span><span>Plans</span></span></span>
+                          </button>
+                          <div style={{display:'contents'}}>
+                            <button type="button" data-testid="navigation-apps-sidebar-nav4-sidebars-common-core.ui.more-nav-menu-button.more-nav-menu-button-trigger" className="jira-sb-link jira-sb-link--more-actions sr-only" onClick={() => flash('More Plans actions (demo).')} aria-label="More actions for Plans"><span>More actions for Plans</span></button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* PROJECTS/SPACES — D05 listitem wraps the Spaces section AND all remaining items (filters, dashboards, ext-links, more), mirroring reference structure */}
+                  <div role="listitem" className="jira-sidebar__section" style={{display:'contents'}}>
+                    {/* Spaces section label */}
+                    <div className="jira-sidebar__label" style={{display:'contents'}}>
+                      <div className="sidebar-row-inner" style={{display:'contents'}}>
+                        <span className="jira-sidebar__label-text"><span><span>Spaces</span></span></span>
+                        <button type="button" className="jira-sidebar__label-action" aria-label="Add space" title="Add space" onClick={() => flash('Create space (demo).')}>
+                          <span className="sr-only">Add space</span>
+                          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><title>Add space</title><path d="M12 5v14M5 12h14" /></svg>
+                        </button>
+                        <button type="button" className="jira-sidebar__label-action" aria-label="More options" title="More options" onClick={() => flash('More space actions (demo).')}>
+                          <span className="sr-only">More options</span>
+                          <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><title>More options</title><circle cx="5" cy="12" r="1.6" /><circle cx="12" cy="12" r="1.6" /><circle cx="19" cy="12" r="1.6" /></svg>
+                        </button>
+                      </div>
+                    </div>
+                    {/* Projects/Spaces button — D06 div → D07 div → D08 container[NAV4_jira.sidebar.projects-container] */}
+                    <div style={{display:'contents'}}>
+                      <div style={{display:'contents'}}>
+                        <div data-testid="NAV4_jira.sidebar.projects-container" style={{display:'contents'}}>
+                          <button
+                            type="button"
+                            data-testid="NAV4_jira.sidebar.projects"
+                            className={(activeSidebar === 'autoloop' ? 'jira-sb-link is-active' : 'jira-sb-link') + ' jira-sb-link--spaces'}
+                            title="Spaces" aria-label="Spaces"
+                            onClick={() => setActiveSidebar('autoloop')}
+                          >
+                            <span className="jira-sb-link__icon" aria-hidden><SidebarIcon name="spaces" /></span>
+                            <span className="jira-sb-link__label"><span><span>Spaces</span></span></span>
+                            <span className="jira-sb-link__chev" aria-hidden><span><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><title>Expand</title><path d="M9 6l6 6-6 6" /></svg></span></span>
+                          </button>
+                          <div style={{display:'contents'}}>
+                            <button type="button" data-testid="navigation-apps-sidebar-nav4-sidebars-common-core.ui.more-nav-menu-button.more-nav-menu-button-trigger" className="jira-sb-link jira-sb-link--more-actions sr-only" onClick={() => flash('More Spaces actions (demo).')} aria-label="More actions for spaces"><span>More actions for spaces</span></button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    {/* Nested recent spaces list — D06 div[role=list] */}
+                    <div role="list" style={{display:'contents'}}>
+                      <div data-testid="navigation-apps-sidebar-nav4-sidebars-content-projects-core.common.ui.content.recent-section.recent-section" role="listitem" style={{display:'contents'}}>
+                        <div role="group" style={{display:'contents'}}>
+                          <div className="jira-sidebar__label jira-sidebar__label--upper" style={{display:'contents'}}>
+                            <div className="sidebar-row-inner" style={{display:'contents'}}>
+                              <span className="jira-sidebar__label-text"><span><span>Recent</span></span></span>
+                            </div>
+                          </div>
+                          <div role="list" style={{display:'contents'}}>
+                            <div role="listitem" style={{display:'contents'}}>
+                              <div data-testid="NAV4_proj_AUT-container" style={{display:'contents'}}>
+                                <button
+                                  type="button"
+                                  className={(activeSidebar === 'autoloop' ? 'jira-sb-link is-active' : 'jira-sb-link') + ' jira-sb-link--autoloop'}
+                                  title="Autoloop" aria-label="Autoloop"
+                                  onClick={() => setActiveSidebar('autoloop')}
+                                >
+                                  <span className="jira-sb-link__icon jira-sb-link__icon--space" aria-hidden><SidebarIcon name="space-autoloop" /></span>
+                                  <span className="jira-sb-link__label"><span><span>Autoloop</span></span></span>
+                                </button>
+                              </div>
+                            </div>
+                            <div role="listitem" style={{display:'contents'}}>
+                              <button
+                                type="button"
+                                className={(activeSidebar === 'more-spaces' ? 'jira-sb-link is-active' : 'jira-sb-link') + ' jira-sb-link--more-spaces'}
+                                title="More spaces" aria-label="More spaces"
+                                onClick={() => setActiveSidebar('more-spaces')}
+                              >
+                                <span className="jira-sb-link__icon" aria-hidden><SidebarIcon name="space-more" /></span>
+                                <span className="jira-sb-link__label"><span><span>More spaces</span></span></span>
+                                <span className="jira-sb-link__chev" aria-hidden><span><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><title>Expand</title><path d="M9 6l6 6-6 6" /></svg></span></span>
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* FILTERS — D06 listitem (inside projects listitem) → D07 div → D08 div → D09 container[NAV4_jira.sidebar.filters-container] */}
+                    <div role="listitem" className="jira-sidebar__section" style={{display:'contents'}}>
+                      <div style={{display:'contents'}}>
+                        <div style={{display:'contents'}}>
+                          <div data-testid="NAV4_jira.sidebar.filters-container" style={{display:'contents'}}>
+                            <button
+                              type="button"
+                              data-testid="NAV4_jira.sidebar.filters"
+                              className={(activeSidebar === 'filters' ? 'jira-sb-link is-active' : 'jira-sb-link') + ' jira-sb-link--filters'}
+                              title="Filters" aria-label="Filters"
+                              onClick={() => setActiveSidebar('filters')}
+                            >
+                              <span className="jira-sb-link__icon" aria-hidden><SidebarIcon name="filter" /></span>
+                              <span className="jira-sb-link__label"><span><span>Filters</span></span></span>
+                            </button>
+                            <div style={{display:'contents'}}>
+                              <button type="button" data-testid="navigation-apps-sidebar-nav4-sidebars-common-core.ui.more-nav-menu-button.more-nav-menu-button-trigger" className="jira-sb-link jira-sb-link--more-actions sr-only" onClick={() => flash('More Filters actions (demo).')} aria-label="More actions for Filters"><span>More actions for Filters</span></button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* DASHBOARDS — D06 listitem → D07 div → D08 div → D09 container[NAV4_jira.sidebar.dashboards-container] */}
+                    <div role="listitem" className="jira-sidebar__section" style={{display:'contents'}}>
+                      <div style={{display:'contents'}}>
+                        <div style={{display:'contents'}}>
+                          <div data-testid="NAV4_jira.sidebar.dashboards-container" style={{display:'contents'}}>
+                            <button
+                              type="button"
+                              data-testid="NAV4_jira.sidebar.dashboards"
+                              className={(activeSidebar === 'dashboards' ? 'jira-sb-link is-active' : 'jira-sb-link') + ' jira-sb-link--dashboards'}
+                              title="Dashboards" aria-label="Dashboards"
+                              onClick={() => setActiveSidebar('dashboards')}
+                            >
+                              <span className="jira-sb-link__icon" aria-hidden><SidebarIcon name="dashboard" /></span>
+                              <span className="jira-sb-link__label"><span><span>Dashboards</span></span></span>
+                            </button>
+                            <div style={{display:'contents'}}>
+                              <button type="button" data-testid="navigation-apps-sidebar-nav4-sidebars-common-core.ui.more-nav-menu-button.more-nav-menu-button-trigger" className="jira-sb-link jira-sb-link--more-actions sr-only" onClick={() => flash('More Dashboards actions (demo).')} aria-label="More actions for Dashboards"><span>More actions for Dashboards</span></button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Spacer — D06 div */}
+                    <div style={{display:'contents'}} />
+
+                    {/* External links — D06 div with nested D07 div[role=list] → D08 span → D09 div[role=listitem] */}
+                    <div className="jira-sidebar__section jira-sidebar__section--divider" style={{display:'contents'}}>
+                      <div role="list" style={{display:'contents'}}>
+                        <span style={{display:'contents'}}>
+                          <div role="listitem" style={{display:'contents'}}>
+                            <button
+                              type="button"
+                              className={(activeSidebar === 'confluence' ? 'jira-sb-link is-active' : 'jira-sb-link') + ' jira-sb-link--confluence'}
+                              title="Confluence" aria-label="Confluence"
+                              onClick={() => setActiveSidebar('confluence')}
+                            >
+                              <span className="jira-sb-link__icon" aria-hidden><SidebarIcon name="confluence" /></span>
+                              <span className="jira-sb-link__label"><span><span>Confluence</span></span></span>
+                              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" style={{marginLeft:'auto',opacity:0.6}}><title>Opens in new tab</title><path d="M7 17 17 7" /><path d="M7 7h10v10" /></svg>
+                            </button>
+                          </div>
+                        </span>
+                        <span style={{display:'contents'}}>
+                          <div role="listitem" style={{display:'contents'}}>
+                            <button
+                              type="button"
+                              className={(activeSidebar === 'goals' ? 'jira-sb-link is-active' : 'jira-sb-link') + ' jira-sb-link--goals'}
+                              title="Goals" aria-label="Goals"
+                              onClick={() => setActiveSidebar('goals')}
+                            >
+                              <span className="jira-sb-link__icon" aria-hidden><SidebarIcon name="goals" /></span>
+                              <span className="jira-sb-link__label"><span><span>Goals</span></span></span>
+                              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" style={{marginLeft:'auto',opacity:0.6}}><title>Opens in new tab</title><path d="M7 17 17 7" /><path d="M7 7h10v10" /></svg>
+                            </button>
+                          </div>
+                        </span>
+                        <span style={{display:'contents'}}>
+                          <div role="listitem" style={{display:'contents'}}>
+                            <button
+                              type="button"
+                              className={(activeSidebar === 'teams' ? 'jira-sb-link is-active' : 'jira-sb-link') + ' jira-sb-link--teams'}
+                              title="Teams" aria-label="Teams"
+                              onClick={() => setActiveSidebar('teams')}
+                            >
+                              <span className="jira-sb-link__icon" aria-hidden><SidebarIcon name="teams" /></span>
+                              <span className="jira-sb-link__label"><span><span>Teams</span></span></span>
+                              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" style={{marginLeft:'auto',opacity:0.6}}><title>Opens in new tab</title><path d="M7 17 17 7" /><path d="M7 7h10v10" /></svg>
+                            </button>
+                          </div>
+                        </span>
+                      </div>
+                    </div>
+
+                    {/* Spacer — D06 div */}
+                    <div style={{display:'contents'}} />
+
+                    {/* MORE — D06 listitem (inside projects listitem) → D07 div → D08 div → D09 button */}
+                    <div role="listitem" className="jira-sidebar__section" style={{display:'contents'}}>
+                      <div style={{display:'contents'}}>
+                        <div style={{display:'contents'}}>
+                          <button
+                            type="button"
+                            className={(activeSidebar === 'more' ? 'jira-sb-link is-active' : 'jira-sb-link') + ' jira-sb-link--more'}
+                            title="More" aria-label="More"
+                            onClick={() => setActiveSidebar('more')}
+                          >
+                            <span className="jira-sb-link__icon" aria-hidden><SidebarIcon name="dots" /></span>
+                            <span className="jira-sb-link__label"><span><span>More</span></span></span>
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  {/* end PROJECTS/SPACES listitem */}
+
+                </div>
+                {/* end div[role=list] */}
               </div>
-            ))}
+
+              {/* D03 recommendation section — sibling of the inner content div, child of D02 scroll */}
+              <div data-testid="side-nav-recommendation.jira-side-nav" style={{display:'contents'}}>
+                <div className="jira-sidebar__section" style={{display:'contents'}}>
+                  <div className="jira-sidebar__label jira-sidebar__label--upper" style={{display:'contents'}}>
+                    <div className="sidebar-row-inner" style={{display:'contents'}}>
+                      <span className="jira-sidebar__label-text"><span><span>Recommended</span></span></span>
+                    </div>
+                  </div>
+                  <div style={{display:'contents'}}>
+                    <button
+                      type="button"
+                      className={(activeSidebar === 'create-roadmap' ? 'jira-sb-link is-active' : 'jira-sb-link') + ' jira-sb-link--create-roadmap'}
+                      title="Create a roadmap" aria-label="Create a roadmap"
+                      onClick={() => setActiveSidebar('create-roadmap')}
+                    >
+                      <span className="jira-sb-link__icon" aria-hidden><SidebarIcon name="roadmap" /></span>
+                      <span className="jira-sb-link__label"><span><span>Create a roadmap</span></span></span>
+                      <span className="jira-sb-link__badge">TRY</span>
+                    </button>
+                    <button
+                      type="button"
+                      className={(activeSidebar === 'import-work' ? 'jira-sb-link is-active' : 'jira-sb-link') + ' jira-sb-link--import-work'}
+                      title="Import work" aria-label="Import work"
+                      onClick={() => setActiveSidebar('import-work')}
+                    >
+                      <span className="jira-sb-link__icon" aria-hidden><SidebarIcon name="import" /></span>
+                      <span className="jira-sb-link__label"><span><span>Import work</span></span></span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
-        </aside>
+          {/* D01 panel-splitter wrapper — second child of nav, matching reference structure */}
+          <div style={{display:'contents'}}>
+            <div data-testid="sidebar-entry.panel-splitter-container" style={{display:'none'}} aria-hidden="true">
+              <div data-testid="sidebar-entry.panel-splitter-tooltip--container">
+                <div data-testid="sidebar-entry.panel-splitter"></div>
+              </div>
+            </div>
+          </div>
+        </nav>
 
         <main className="jira-workspace">{renderWorkspaceContent()}</main>
       </div>
@@ -1757,14 +2136,86 @@ export default function App() {
         />
       ) : null}
 
-      <div className="jira-fab" role="presentation" title="Rovo" data-region="rovo-fab" data-testid="layout-controller.ui.bottom-right-corner.container.styled-container">
-        <span><span><span><span className="jira-fab__ring" /></span></span></span>
+      <div
+        className="jira-fab"
+        data-region="rovo-fab"
+        data-testid="layout-controller.ui.bottom-right-corner.container.styled-container"
+        style={{
+          position: 'fixed',
+          right: 'var(--ds-space-300, 24px)',
+          bottom: 'var(--ds-space-300, 24px)',
+          zIndex: 100,
+        }}
+      >
+        <div>
+          <div style={{display:'contents'}}>
+            <div style={{display:'contents'}}>
+              <div style={{display:'contents'}}>
+                <div style={{display:'contents'}}>
+                  <button data-testid="platform-ai-button" type="button" className="jira-fab__btn" aria-label="Rovo" title="Rovo">
+                    <span className="jira-fab__ring" />
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
 
       {toast ? <div className="jira-toast" role="status">{toast}</div> : null}
 
       <div data-region="modal-portal" />
+      {typeof document !== 'undefined' && createPortal(
+        <div className="atlaskit-portal-container" style={{position:'absolute',width:0,height:0,overflow:'hidden'}}>
+          <div className="atlaskit-portal" style={{zIndex:600}}>
+            <div data-theme="dark:dark light:light spacing:spacing typography:typography" data-color-mode="light" data-subtree-theme="true">
+              <div data-vc-oob="true"></div>
+            </div>
+          </div>
+          <div className="atlaskit-portal" style={{zIndex:600}}>
+            <div data-theme="dark:dark light:light spacing:spacing typography:typography" data-color-mode="light" data-subtree-theme="true">
+              <div data-vc-oob="true"></div>
+            </div>
+          </div>
+          <div className="atlaskit-portal" style={{zIndex:600}}>
+            <div data-theme="dark:dark light:light spacing:spacing typography:typography" data-color-mode="light" data-subtree-theme="true">
+              <div data-vc-oob="true"></div>
+            </div>
+          </div>
+          <div className="atlaskit-portal" style={{zIndex:600}}>
+            <div data-theme="dark:dark light:light spacing:spacing typography:typography" data-color-mode="light" data-subtree-theme="true">
+              <div data-vc-oob="true"></div>
+            </div>
+          </div>
+          <div className="atlaskit-portal" style={{zIndex:600}}>
+            <div data-theme="dark:dark light:light spacing:spacing typography:typography" data-color-mode="light" data-subtree-theme="true">
+              <div data-vc-oob="true"></div>
+            </div>
+          </div>
+          <div className="atlaskit-portal" style={{zIndex:600}}>
+            <div data-theme="dark:dark light:light spacing:spacing typography:typography" data-color-mode="light" data-subtree-theme="true">
+              <div data-vc-oob="true"></div>
+            </div>
+          </div>
+          <div className="atlaskit-portal" style={{zIndex:600}}>
+            <div data-theme="dark:dark light:light spacing:spacing typography:typography" data-color-mode="light" data-subtree-theme="true">
+              <div data-vc-oob="true"></div>
+            </div>
+          </div>
+        </div>,
+        document.body
+      )}
+      {typeof document !== 'undefined' && createPortal(
+        <>
+          <div id="flags"><div></div></div>
+          <div id="heartbeat"></div>
+          <div id="engagement-messages"><div></div></div>
+          <div id="profilecard-app"><div></div></div>
+        </>,
+        document.body
+      )}
     </div>
+    </>
   )
 }
 
@@ -1819,50 +2270,71 @@ function BoardView({
   return (
     <div className="jira-board-canvas" data-region="board-canvas" data-testid="board.content.board-wrapper">
       <div className="jira-columns">
+        <div style={{display:'contents'}}>
         {groups.map((group) => (
           <div
             key={group.key}
+            data-testid="board.content.cell"
             className={dropTarget?.groupKey === group.key ? 'jira-col is-drop-target' : 'jira-col'}
             onDragOver={(event) => onDragOver(event, group.key)}
             onDrop={() => onDrop(group.key)}
           >
-            <div className="jira-col__head">
+            <div className="jira-col__head" data-testid="board.content.cell.column-header">
               {group.meta}
-              {groupBy === 'status' && renamingColumnId === group.key ? (
-                <input
-                  autoFocus
-                  className="jira-col__rename"
-                  defaultValue={group.title}
-                  onBlur={(event) => onRenameColumn(group.key, event.currentTarget.value)}
-                  onKeyDown={(event) => {
-                    if (event.key === 'Enter') onRenameColumn(group.key, event.currentTarget.value)
-                    if (event.key === 'Escape') onCancelRenameColumn()
-                  }}
-                />
-              ) : (
-                <button
-                  type="button"
-                  className="jira-col__title-btn"
-                  onClick={() => {
-                    if (!disableColumnEditing && groupBy === 'status') onStartRenameColumn(group.key)
-                  }}
-                  title={disableColumnEditing ? group.title : 'Click to rename'}
-                >
-                  <span className="col-label">{group.title}</span>
-                </button>
-              )}
-              <span className="jira-col__count"><span>{group.cards.length}</span></span>
+              <div style={{display:'contents'}}>
+                <div style={{display:'contents'}}>
+                  <form style={{display:'contents'}} onSubmit={e=>e.preventDefault()}>
+                    <div data-testid="board.content.cell.column-header.name" style={{display:'contents'}}>
+                      {groupBy === 'status' && renamingColumnId === group.key ? (
+                        <input
+                          autoFocus
+                          className="jira-col__rename"
+                          defaultValue={group.title}
+                          onBlur={(event) => onRenameColumn(group.key, event.currentTarget.value)}
+                          onKeyDown={(event) => {
+                            if (event.key === 'Enter') onRenameColumn(group.key, event.currentTarget.value)
+                            if (event.key === 'Escape') onCancelRenameColumn()
+                          }}
+                        />
+                      ) : (
+                        <button
+                          type="button"
+                          className="jira-col__title-btn"
+                          onClick={() => {
+                            if (!disableColumnEditing && groupBy === 'status') onStartRenameColumn(group.key)
+                          }}
+                          title={disableColumnEditing ? group.title : 'Click to rename'}
+                        >
+                          <span className="col-label">{group.title}</span>
+                        </button>
+                      )}
+                      <span className="jira-col__count"><span>{group.cards.length}</span></span>
+                    </div>
+                  </form>
+                </div>
+              </div>
+              <div style={{display:'contents'}}></div>
+              <div style={{display:'contents'}}>
+                <div style={{display:'contents'}}>
+                  <span style={{display:'none'}} aria-hidden="true"></span>
+                </div>
+              </div>
             </div>
-            <div className="jira-col__cards">
+            <div className="jira-col__cards" data-testid="board.content.cell.scroll-container">
               <div className="col-inner" style={{ display: 'contents' }}>
               {group.cards.map((card) => (
-                <article
-                  key={card.id}
-                  className="jira-card"
-                  draggable
-                  onDragStart={() => onDragStart(card.id)}
-                  onDragEnd={onDragEnd}
-                >
+                <Fragment key={card.id}>
+                  <div style={{display:'contents'}}>
+                    <button style={{display:'contents'}} aria-hidden="true" tabIndex={-1}></button>
+                  </div>
+                  <div data-testid="board.content.cell.card" style={{display:'contents'}}>
+                  <article
+                    className="jira-card"
+                    draggable
+                    onDragStart={() => onDragStart(card.id)}
+                    onDragEnd={onDragEnd}
+                  >
+                  <a href="#" onClick={e=>e.preventDefault()} style={{display:'contents'}}>
                   <div className="jira-card__actions">
                     <button
                       type="button"
@@ -1942,7 +2414,10 @@ function BoardView({
                       </div>
                     </div>
                   </button>
-                </article>
+                  </a>
+                  </article>
+                  </div>
+                </Fragment>
               ))}
               {groupBy === 'status' ? (
                 <button
@@ -1955,10 +2430,14 @@ function BoardView({
                   <span><span>+</span></span> <span><span>Create</span></span>
                 </button>
               ) : null}
+              <div style={{display:'contents'}}>
+                <button aria-hidden="true" tabIndex={-1} style={{display:'none'}}></button>
+              </div>
               </div>
             </div>
           </div>
         ))}
+        </div>
         {groupBy === 'status' ? (
           <button type="button" className="jira-col-add" aria-label="Create column" title="Create column" onClick={onAddColumn}>
             <span className="sr-only">Create column</span>

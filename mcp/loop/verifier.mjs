@@ -14,7 +14,8 @@
 
 import { callMcp, scoreApp } from "./mcp-client.mjs";
 import { runWorker } from "./worker.mjs";
-import { buildVerifierSystemPrompt } from "./prompts.mjs";
+import { buildVerifierSystemPrompt, workerSystemPrompt } from "./prompts.mjs";
+import { repoRoot } from "./config.mjs";
 
 function truncate(s, n) {
   if (typeof s !== "string") return "";
@@ -70,16 +71,16 @@ export const declareDoneTool = {
 
 // ── Dispatch handler ──────────────────────────────────────────────────────
 
-function makeHandleDispatch({ anthropic, mcp, workerTools, config, appUrl, state, logger }) {
+function makeHandleDispatch({ mcp, config, appUrl, state, logger }) {
   return async function handleDispatch({ task, rationale }) {
     const before = state.lastReward;
     state.dispatchesUsed += 1;
     const dispatchNo = state.dispatchesUsed;
-    const isResume = state.workerMsgs !== null;
+    const isResume = state.workerSessionId !== null;
     const mode = isResume ? "resumed" : "fresh";
 
     console.log(
-      `\n  ▶ dispatch #${dispatchNo}  (${isResume ? "RESUME existing worker" : "FRESH worker"})`,
+      `\n  ▶ dispatch #${dispatchNo}  (${isResume ? `RESUME claude session ${state.workerSessionId}` : "FRESH claude worker"})`,
     );
     console.log(`    task: ${task}`);
     console.log(`    rationale: ${rationale}`);
@@ -90,24 +91,39 @@ function makeHandleDispatch({ anthropic, mcp, workerTools, config, appUrl, state
         }).\n\nNew task: ${task}\n\nRationale: ${rationale}\n\nAdjust course and try again.`
       : `Task from planner:\n\n${task}\n\nRationale (for your context only): ${rationale}\n\nMake the minimal necessary edits, then summarize what you changed.`;
 
-    if (!isResume) state.workerMsgs = [];
-    // If the previous run left the tail as a user message (tool_results or a
-    // self-heal), merge the new planner turn into it so we don't send two
-    // consecutive user messages to the API.
-    const tail = state.workerMsgs[state.workerMsgs.length - 1];
-    if (tail?.role === "user" && Array.isArray(tail.content)) {
-      tail.content.push({ type: "text", text: userTurn });
-    } else {
-      state.workerMsgs.push({ role: "user", content: userTurn });
-    }
-
-    const workerSummary = await runWorker({
-      anthropic,
-      mcp,
-      workerTools,
-      workerMsgs: state.workerMsgs,
-      config,
+    const workerResult = await runWorker({
+      prompt: userTurn,
+      sessionId: state.workerSessionId,
+      cwd: repoRoot,
+      appendSystemPrompt: workerSystemPrompt,
+      model: config.workerModel,
+      allowedTools: config.workerAllowedTools,
+      permissionMode: config.workerPermissionMode,
+      cliPath: config.claudeCliPath,
+      timeoutMs: config.workerTimeoutMs,
+      onStderr: (line) => console.log(`    [worker stderr] ${line}`),
     });
+
+    const workerSummary = workerResult.summary;
+    console.log(
+      `    [worker] ${workerSummary}` +
+        (workerResult.numTurns !== null
+          ? `  (${workerResult.numTurns} turns, ${
+              workerResult.durationMs !== null
+                ? (workerResult.durationMs / 1000).toFixed(1) + "s"
+                : "?s"
+            }${
+              workerResult.totalCostUsd !== null
+                ? ", $" + workerResult.totalCostUsd.toFixed(4)
+                : ""
+            })`
+          : ""),
+    );
+    if (workerResult.isError) {
+      console.warn(
+        `    [worker] flagged is_error (exit=${workerResult.exitCode})`,
+      );
+    }
 
     const scoreRes = await scoreApp(mcp, appUrl);
     const after = scoreRes.reward;
@@ -121,10 +137,16 @@ function makeHandleDispatch({ anthropic, mcp, workerTools, config, appUrl, state
 
     console.log(
       `    reward: ${before?.toFixed?.(4) ?? "n/a"} → ${after?.toFixed?.(4) ?? "n/a"}  ` +
-        `(${improved ? "IMPROVED → clearing worker context" : "no improvement → worker context preserved"})`,
+        `(${improved ? "IMPROVED → clearing worker session" : "no improvement → worker session preserved"})`,
     );
 
-    if (improved) state.workerMsgs = null;
+    if (improved) {
+      state.workerSessionId = null;
+    } else if (workerResult.sessionId) {
+      // On non-improvement, continue the same Claude Code session next time so
+      // the worker can course-correct against its own history.
+      state.workerSessionId = workerResult.sessionId;
+    }
 
     if (logger) {
       try {
@@ -151,6 +173,8 @@ function makeHandleDispatch({ anthropic, mcp, workerTools, config, appUrl, state
       improved,
       improvement: after !== null && before !== null ? after - before : null,
       worker_summary: workerSummary,
+      worker_session_id: workerResult.sessionId,
+      worker_turns: workerResult.numTurns,
       target_reward: config.targetReward,
       target_reached: after !== null && after >= config.targetReward,
       worker_context_after: improved ? "cleared" : "preserved",
@@ -216,7 +240,6 @@ function makeHandleVerifierTool({ mcp, state, handleDispatch, logger }) {
  * @param {string} opts.appUrl
  * @param {string|undefined} opts.extraGuidance
  * @param {Array} opts.verifierMcpTools   (score_app, get_reward_config)
- * @param {Array} opts.workerTools        (read_file, write_file, list_dir)
  * @param {object} opts.config            See mcp/loop/config.mjs
  * @param {import("./logger.mjs").RunLogger|null} [opts.logger] Optional run logger.
  * @returns {Promise<object>}             Summary { stopReason, ... }
@@ -228,7 +251,6 @@ export async function runVerifyLoop({
   extraGuidance,
   focusGuidance,
   verifierMcpTools,
-  workerTools,
   config,
   logger = null,
 }) {
@@ -251,7 +273,7 @@ export async function runVerifyLoop({
   ];
 
   const state = {
-    workerMsgs: null, // null => next dispatch starts a fresh worker
+    workerSessionId: null, // null => next dispatch starts a fresh claude -p
     lastReward: null,
     bestReward: -Infinity,
     dispatchesUsed: 0,
@@ -261,9 +283,7 @@ export async function runVerifyLoop({
   };
 
   const handleDispatch = makeHandleDispatch({
-    anthropic,
     mcp,
-    workerTools,
     config,
     appUrl,
     state,

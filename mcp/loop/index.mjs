@@ -83,7 +83,7 @@ await logger.init({ appUrl, model: config.model, config });
 console.log(`logs: ${logger.runDir}`);
 
 const { tools: mcpTools } = await mcp.listTools();
-const { verifierMcpTools, workerTools } = partitionTools(mcpTools);
+const { verifierMcpTools } = partitionTools(mcpTools);
 
 console.log("MCP tools discovered:", mcpTools.map((t) => t.name).join(", "));
 console.log(
@@ -92,10 +92,13 @@ console.log(
     .map((t) => t.name)
     .join(", "),
 );
-console.log("Worker tools:", workerTools.map((t) => t.name).join(", "));
+console.log(
+  `Worker: claude -p (${config.claudeCliPath})  permission_mode=${config.workerPermissionMode}  allowed_tools=${config.workerAllowedTools}` +
+    (config.workerModel ? `  model=${config.workerModel}` : "  model=<claude default>"),
+);
 console.log(
   `\nRunning against ${appUrl}` +
-    `  model=${config.model}  max_dispatches=${config.maxDispatches}` +
+    `  verifier_model=${config.model}  max_dispatches=${config.maxDispatches}` +
     `  target_reward=${config.targetReward}` +
     `  improvement_delta=${config.improvementDelta}` +
     (args.focus ? `  focus=${args.focus}` : "") +
@@ -109,7 +112,6 @@ const summary = await runVerifyLoop({
   extraGuidance,
   focusGuidance,
   verifierMcpTools,
-  workerTools,
   config,
   logger,
 });

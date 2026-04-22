@@ -223,6 +223,109 @@ function extractPqGramsInPage({ regions, p, q }) {
   return { whole, regions: regionGrams }
 }
 
+// ── Accessibility-tree pq-grams ──────────────────────────────────────────────
+// Pulls the Chrome-computed accessibility tree via CDP (Playwright dropped
+// page.accessibility in 1.45+) and runs the same pq-gram Dice metric on
+// (role)/(role#level) labels. Nodes without a semantic role are ignored by
+// the a11y tree, so div-soup in the source DOM contributes zero mass here.
+
+// Turn CDP's flat AXNode list into a nested { role, name, level, children }
+// tree rooted at RootWebArea. Mirrors Playwright's old interestingOnly=true
+// behavior by dropping ignored nodes and lifting their children.
+async function fetchA11yTree(page) {
+  const cdp = await page.context().newCDPSession(page)
+  try {
+    await cdp.send('Accessibility.enable').catch(() => {})
+    const { nodes } = await cdp.send('Accessibility.getFullAXTree')
+    const byId = new Map(nodes.map((n) => [n.nodeId, n]))
+    const convert = (axNode) => {
+      const role = axNode.role?.value
+      const name = axNode.name?.value
+      const levelProp = (axNode.properties || []).find((p) => p.name === 'level')
+      const level = levelProp?.value?.value
+      const rawKids = (axNode.childIds || []).map((id) => byId.get(id)).filter(Boolean)
+      const kids = []
+      for (const k of rawKids) {
+        const converted = convert(k)
+        if (!converted) continue
+        if (k.ignored) kids.push(...(converted.children || []))
+        else kids.push(converted)
+      }
+      return { role, name, level, children: kids }
+    }
+    const root = nodes.find((n) => !n.parentId) || nodes[0]
+    return root ? convert(root) : null
+  } finally {
+    await cdp.detach().catch(() => {})
+  }
+}
+
+function a11yLabel(n) {
+  const role = n.role || 'none'
+  if (role === 'heading' && typeof n.level === 'number') return `heading#${n.level}`
+  return role
+}
+
+// Strip `generic`/`none` residue that leaks through even with
+// interestingOnly=true. Children of dropped nodes are lifted to their
+// grandparent, preserving structural relationships between named nodes.
+function flattenA11yChildren(nodes) {
+  const out = []
+  for (const n of nodes || []) {
+    const kids = flattenA11yChildren(n.children)
+    if (n.role === 'generic' || n.role === 'none') {
+      out.push(...kids)
+    } else {
+      out.push({ ...n, children: kids })
+    }
+  }
+  return out
+}
+
+function pruneA11yTree(root) {
+  if (!root) return null
+  return { ...root, children: flattenA11yChildren(root.children) }
+}
+
+function extractA11yPqGrams(root, p = PQGRAM_P, q = PQGRAM_Q) {
+  const SEP = '\x1f'
+  const STAR = '*'
+  const out = []
+  const pruned = pruneA11yTree(root)
+  if (!pruned) return out
+
+  const visit = (node, stem) => {
+    const lbl = a11yLabel(node)
+    const newStem = stem.length >= p ? stem.slice(1).concat([lbl]) : stem.concat([lbl])
+    const effStem = newStem.length < p
+      ? new Array(p - newStem.length).fill(STAR).concat(newStem)
+      : newStem
+
+    const kids = node.children || []
+    if (kids.length === 0) {
+      out.push(effStem.concat(new Array(q).fill(STAR)).join(SEP))
+      return
+    }
+    const childLabels = kids.map(a11yLabel)
+    const padded = new Array(q - 1).fill(STAR)
+      .concat(childLabels)
+      .concat(new Array(q - 1).fill(STAR))
+    for (let i = 0; i <= padded.length - q; i++) {
+      out.push(effStem.concat(padded.slice(i, i + q)).join(SEP))
+    }
+    for (const k of kids) visit(k, newStem)
+  }
+  visit(pruned, [])
+  return out
+}
+
+function countA11yNodes(root) {
+  if (!root) return 0
+  let n = 1
+  for (const c of root.children || []) n += countA11yNodes(c)
+  return n
+}
+
 function pqgramDiceSimilarity(a, b) {
   if (a == null && b == null) return 1
   if (a == null || b == null) return 0
@@ -297,21 +400,26 @@ function computeReward(refInfo, genInfo) {
   }
   const pqWhole = pqgramDiceSimilarity(refInfo.pqgrams.whole, genInfo.pqgrams.whole)
   const pqCombined = combinePqGram(pqWhole, pqRegions)
+  const a11yPq = pqgramDiceSimilarity(refInfo.a11yPqGrams, genInfo.a11yPqGrams)
 
   const details = {
     ssim: visualSimilarity(refInfo.image, genInfo.image),
     text: textSimilarity(refInfo.text, genInfo.text),
     color: colorPaletteSimilarity(refInfo.colors, genInfo.colors),
     pqgram: { whole: pqWhole, regions: pqRegions, combined: pqCombined },
+    a11y_pqgram: a11yPq,
   }
   const content = Math.max(details.text, details.color)
   const contentGate = 0.2 + 0.8 * content
   const gatedSSIM = details.ssim * contentGate
+  // DOM pq-gram budget (was 0.20) split 50/50 with a11y-tree pq-gram. a11y
+  // tree has no div-soup mass, so matching it requires real semantic tags.
   const raw =
     0.50 * gatedSSIM +
     0.20 * details.text +
     0.10 * details.color +
-    0.20 * pqCombined
+    0.10 * pqCombined +
+    0.10 * a11yPq
   const reward = 2 * raw - 1
   return { reward, details: { ...details, content_gate: contentGate } }
 }
@@ -389,6 +497,9 @@ async function extractInfoFromPage(page, screenshotPath) {
     p: PQGRAM_P,
     q: PQGRAM_Q,
   })
+  dom.a11yTree = await fetchA11yTree(page)
+  dom.a11yPqGrams = extractA11yPqGrams(dom.a11yTree)
+  dom.a11yNodeCount = countA11yNodes(pruneA11yTree(dom.a11yTree))
   const screenshot = await page.screenshot({ fullPage: false, type: 'png' })
   if (screenshotPath) {
     await mkdir(path.dirname(screenshotPath), { recursive: true })
@@ -470,6 +581,8 @@ export async function runReward({
         text_len: refInfo.text.length,
         blocks: refInfo.blocks.length,
         colors: refInfo.colors.length,
+        a11y_nodes: refInfo.a11yNodeCount,
+        a11y_grams: refInfo.a11yPqGrams.length,
         screenshot: refShotPath,
       },
       gen: {
@@ -477,11 +590,15 @@ export async function runReward({
         text_len: genInfo.text.length,
         blocks: genInfo.blocks.length,
         colors: genInfo.colors.length,
+        a11y_nodes: genInfo.a11yNodeCount,
+        a11y_grams: genInfo.a11yPqGrams.length,
         screenshot: genShotPath,
       },
     }
     await mkdir(outDir, { recursive: true })
     await writeFile(path.join(outDir, 'result.json'), JSON.stringify(result, null, 2))
+    await writeFile(path.join(outDir, 'ref.a11y.json'), JSON.stringify(refInfo.a11yTree, null, 2))
+    await writeFile(path.join(outDir, 'gen.a11y.json'), JSON.stringify(genInfo.a11yTree, null, 2))
     return result
   } finally {
     await browser.close().catch(() => {})
@@ -520,6 +637,7 @@ if (import.meta.url === `file://${process.argv[1]}`) {
       for (const [id, v] of Object.entries(details.pqgram.regions)) {
         console.log(`    ${id.padEnd(16)} ${fmt(v)}`)
       }
+      console.log(`  a11y_pqgram ${fmt(details.a11y_pqgram)}  (ref ${result.ref.a11y_nodes} nodes / ${result.ref.a11y_grams} grams, gen ${result.gen.a11y_nodes} / ${result.gen.a11y_grams})`)
       console.log(`  content_gate${fmt(details.content_gate).padStart(13)}`)
       console.log('')
       console.log(`ref screenshot: ${result.ref.screenshot}`)
