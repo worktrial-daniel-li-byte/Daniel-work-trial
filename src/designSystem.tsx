@@ -35,7 +35,7 @@ export type User = {
 }
 
 export const USERS: User[] = [
-  { id: 'fleet', name: 'Fleet', initials: 'F', color: 'linear-gradient(135deg, #8777d9, #6554c0)' },
+  { id: 'fleet', name: 'Fleet', initials: 'DL', color: '#8F7EE7' },
   { id: 'alex', name: 'Alex Kim', initials: 'AK', color: 'linear-gradient(135deg, #57d9a3, #00875a)' },
   { id: 'priya', name: 'Priya Patel', initials: 'PP', color: 'linear-gradient(135deg, #ff7452, #c9372c)' },
   { id: 'jordan', name: 'Jordan Lee', initials: 'JL', color: 'linear-gradient(135deg, #ffc400, #ff8b00)' },

@@ -22,6 +22,57 @@ function truncate(s, n) {
   return s.length > n ? s.slice(0, n) + "…" : s;
 }
 
+const ANTHROPIC_MAX_RETRIES = 8;
+const ANTHROPIC_BASE_DELAY_MS = 5000;
+const ANTHROPIC_MAX_DELAY_MS = 60000;
+
+function isRetryableAnthropicError(err) {
+  if (!err) return false;
+  const type = err.type ?? err.error?.type ?? err.error?.error?.type;
+  if (
+    type === "overloaded_error" ||
+    type === "rate_limit_error" ||
+    type === "api_error"
+  ) {
+    return true;
+  }
+  const status = err.status;
+  if (status === 408 || status === 429 || status === 529 || (typeof status === "number" && status >= 500)) {
+    return true;
+  }
+  const code = err.code ?? err.cause?.code;
+  if (code === "ECONNRESET" || code === "ETIMEDOUT" || code === "ENOTFOUND" || code === "EAI_AGAIN") {
+    return true;
+  }
+  return false;
+}
+
+async function streamVerifierMessageWithRetry(anthropic, params) {
+  let attempt = 0;
+  while (true) {
+    try {
+      const stream = anthropic.messages.stream(params);
+      return await stream.finalMessage();
+    } catch (err) {
+      attempt += 1;
+      if (attempt > ANTHROPIC_MAX_RETRIES || !isRetryableAnthropicError(err)) {
+        throw err;
+      }
+      const backoff = Math.min(
+        ANTHROPIC_MAX_DELAY_MS,
+        ANTHROPIC_BASE_DELAY_MS * 2 ** (attempt - 1),
+      );
+      const jitter = Math.floor(Math.random() * 1000);
+      const waitMs = backoff + jitter;
+      const label = err?.type ?? err?.error?.type ?? err?.code ?? err?.status ?? "unknown";
+      console.warn(
+        `[verifier] anthropic call failed (${label}); retry ${attempt}/${ANTHROPIC_MAX_RETRIES} in ${waitMs}ms`,
+      );
+      await new Promise((r) => setTimeout(r, waitMs));
+    }
+  }
+}
+
 // ── Orchestrator-only pseudo-tools the verifier can call ──────────────────
 
 export const dispatchTool = {
@@ -303,14 +354,13 @@ export async function runVerifyLoop({
     state.dispatchesUsed < config.maxDispatches &&
     (state.lastReward === null || state.lastReward < config.targetReward)
   ) {
-    const stream = anthropic.messages.stream({
+    const response = await streamVerifierMessageWithRetry(anthropic, {
       model: config.model,
       max_tokens: config.maxTokens,
       system: verifierSystemPrompt,
       tools: verifierTools,
       messages: verifierMsgs,
     });
-    const response = await stream.finalMessage();
     verifierMsgs.push({ role: "assistant", content: response.content });
 
     for (const b of response.content) {

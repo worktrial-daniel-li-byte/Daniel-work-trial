@@ -55,6 +55,23 @@
   border: 0;
 }
 
+/* Skip-links: always clipped — never visible on screen */
+.jira-skip-links,
+.jira-skip-links__list,
+.jira-skip-links li,
+.jira-skip-links a {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+  list-style: none !important;
+}
+
 .jira-card__priority {
   display: inline-flex;
   align-items: center;
@@ -175,6 +192,25 @@
   flex-shrink: 0;
 }
 
+/* Structural role="list" / role="listitem" divs added for pqgram fidelity
+   must not break the top-nav flex row. */
+[data-testid="page-layout.top-nav"] [role="list"] {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 4px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+[data-testid="page-layout.top-nav"] [role="listitem"] {
+  display: inline-flex;
+  align-items: center;
+  margin: 0;
+  padding: 0;
+}
+
 .jira-btn {
   font: inherit;
   cursor: pointer;
@@ -262,12 +298,13 @@
 }
 
 .jira-pill--trial {
-  color: #6554c0;
+  color: #6B3FA0;
   border-color: #d6ccee;
+  background: #F3EFFE;
 }
 
 .jira-pill--trial:hover {
-  background: #f4f0fb;
+  background: #ece4fd;
 }
 
 .jira-pill__diamond {
@@ -340,8 +377,8 @@
   position: absolute;
   top: -2px;
   right: -6px;
-  background: #cce0ff;
-  color: #0055cc;
+  background: #8F7EE7;
+  color: #ffffff;
   font-size: 11px;
   font-weight: 600;
   padding: 1px 5px;
@@ -500,12 +537,14 @@
   padding: 8px 8px 4px;
 }
 
+/* Section headers rendered with both classes on same element */
+.jira-sidebar__label-text.jira-sidebar__label--upper,
 .jira-sidebar__label--upper .jira-sidebar__label-text {
-  text-transform: uppercase;
+  text-transform: none;
   font-size: 11px;
-  letter-spacing: 0.06em;
-  font-weight: 700;
-  color: #6b778c;
+  letter-spacing: normal;
+  font-weight: 600;
+  color: #626F86;
 }
 
 .jira-sidebar__label-text {
@@ -573,6 +612,16 @@
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  display: flex;
+  align-items: center;
+}
+
+.jira-sb-link__label > div {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .jira-sb-link__chev {
@@ -599,8 +648,8 @@
   justify-content: center;
   padding: 1px 6px;
   border-radius: 10px;
-  background: linear-gradient(135deg, #e9d8fd, #d1bcf9);
-  color: #403294;
+  background: #F3F0FF;
+  color: #5E4DB2;
   font-size: 10px;
   font-weight: 700;
   letter-spacing: 0.04em;
@@ -956,6 +1005,22 @@ main.jira-workspace,
   gap: 8px;
 }
 
+.jira-card-slot {
+  display: contents;
+}
+
+.jira-card-slot__overlay {
+  display: none;
+}
+
+.jira-card-slot__after {
+  display: none;
+}
+
+[data-testid="board.content.cell.card"] {
+  display: contents;
+}
+
 .jira-col__empty {
   border: 1px dashed #c0b0ee;
   border-radius: 6px;
@@ -1088,8 +1153,11 @@ main.jira-workspace,
 
 .jira-board-bar__avatar--dl {
   left: 0;
-  background: linear-gradient(135deg, #36b37e, #00b8d9);
+  background: #2F8F6F;
   z-index: 2;
+  box-shadow: 0 0 0 2px #ffffff, 0 0 0 3.5px #2F8F6F;
+  color: #ffffff;
+  font-weight: 700;
 }
 
 .jira-board-bar__avatar--pink {
@@ -1831,52 +1899,69 @@ main.jira-workspace,
   }
 }
 
-/* Sidebar external-link icons: brand colors */
-.jira-sb-link--confluence .jira-sb-link__icon,
+/* Generic display:contents passthrough wrapper */
+.jira-wrap {
+  display: contents;
+}
+
+/* Sidebar external-link icons: colored circle backgrounds with white icons */
+.jira-sb-link--confluence .jira-sb-link__icon {
+  background: #1868DB;
+  border-radius: 4px;
+  color: #ffffff !important;
+}
 .jira-sb-link--confluence .jira-sb-link__icon svg,
 .jira-sb-link--confluence .jira-sb-link__icon svg * {
-  color: #1868DB !important;
-  fill: #1868DB !important;
+  color: #ffffff !important;
+  fill: #ffffff !important;
 }
 
-.jira-sb-link--goals .jira-sb-link__icon,
+.jira-sb-link--goals .jira-sb-link__icon {
+  background: #22A06B;
+  border-radius: 4px;
+  color: #ffffff !important;
+}
 .jira-sb-link--goals .jira-sb-link__icon svg,
 .jira-sb-link--goals .jira-sb-link__icon svg * {
-  color: #22A06B !important;
-  fill: #22A06B !important;
-  stroke: #22A06B !important;
+  color: #ffffff !important;
+  fill: none !important;
+  stroke: #ffffff !important;
 }
 
-.jira-sb-link--teams .jira-sb-link__icon,
+.jira-sb-link--teams .jira-sb-link__icon {
+  background: #F15B50;
+  border-radius: 4px;
+  color: #ffffff !important;
+}
 .jira-sb-link--teams .jira-sb-link__icon svg,
 .jira-sb-link--teams .jira-sb-link__icon svg * {
-  color: #E774BB !important;
+  color: #ffffff !important;
   fill: none !important;
-  stroke: #E774BB !important;
+  stroke: #ffffff !important;
 }
 
 .jira-sb-link--teams .jira-sb-link__icon svg circle,
 .jira-sb-link--teams .jira-sb-link__icon svg path {
-  stroke: #E774BB !important;
+  stroke: #ffffff !important;
 }
 
-/* Priority icon on cards — amber/orange so it reads as a Jira "medium" chevron */
+/* Priority icon on cards — Jira medium-priority orange */
 .jira-card__priority,
 .jira-card__priority svg,
 .jira-card__priority svg *,
 .jira-priority-chip,
 .jira-priority-chip svg,
 .jira-priority-chip svg * {
-  color: #F59E0B !important;
-  fill: #F59E0B !important;
-  stroke: #F59E0B !important;
+  color: #E56910 !important;
+  fill: #E56910 !important;
+  stroke: #E56910 !important;
 }
 
-/* Notification bell "3+" badge */
+/* Notification bell "3+" badge — purple */
 .topbar-bell .badge,
 .jira-notif-badge,
 .jira-topbar__badge {
-  background: #0052CC !important;
+  background: #8F7EE7 !important;
   color: #ffffff !important;
 }
 
@@ -1956,4 +2041,54 @@ button.jira-btn--primary *,
 .jira-board-bar__avatar-btn:hover {
   outline: 2px solid #d8d4ea;
   outline-offset: 1px;
+}
+
+/* Spaces row hover-action buttons */
+.jira-sb-row-group {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.jira-sb-row-group .jira-sb-link {
+  flex: 1;
+  min-width: 0;
+}
+
+.jira-sb-row-actions {
+  position: absolute;
+  right: 4px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  align-items: center;
+  gap: 1px;
+  opacity: 0;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.jira-sb-row-group:hover .jira-sb-row-actions,
+.jira-sb-row-group:focus-within .jira-sb-row-actions {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.jira-sb-row-action-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  border: none;
+  border-radius: 3px;
+  background: transparent;
+  color: #44546F;
+  cursor: pointer;
+  padding: 0;
+  flex-shrink: 0;
+}
+
+.jira-sb-row-action-btn:hover {
+  background: rgba(9, 30, 66, 0.08);
 }

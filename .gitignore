@@ -31,3 +31,4 @@ reward-artifacts/
 board.png
 tests/reports/
 tests/.pw-profile-jira/
+test-results/

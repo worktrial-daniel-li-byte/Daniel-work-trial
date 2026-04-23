@@ -1,0 +1,114 @@
+- generic [ref=e2]:
+  - generic:
+    - generic: "Skip to:"
+    - list:
+      - listitem:
+        - link "Top Bar":
+          - /url: "#_Rhp955jal9_"
+      - listitem:
+        - link "Main Content":
+          - /url: "#_R2p955jal9_"
+      - listitem:
+        - link "Sidebar":
+          - /url: "#_R3i9955jal9_"
+      - listitem:
+        - link "Space navigation":
+          - /url: "#_R1lbefap955jal9_"
+  - generic [ref=e3]:
+    - banner [ref=e4]:
+      - generic [ref=e6]:
+        - generic [ref=e7]:
+          - button "Switch sites or apps" [ref=e417] [cursor=pointer]:
+            - generic [ref=e12]: Switch sites or apps
+          - link "Go to your Jira homepage" [ref=e15] [cursor=pointer]:
+            - /url: /jira
+            - generic [ref=e16]
+        - button "Collapse sidebar" [ref=e26] [cursor=pointer]:
+          - generic [ref=e28]: Collapse sidebar
+      - generic [ref=e29]:
+        - button [ref=e30] [cursor=pointer]:
+          - search [ref=e31]:
+            - combobox "Search, press enter to navigate to advanced search with your text query" [ref=e34]
+        - button "Create" [ref=e37] [cursor=pointer]:
+          - generic [ref=e40]: Create
+      - navigation "Actions" [ref=e41]:
+        - list [ref=e42]:
+          - button "Premium trial" [ref=e418] [cursor=pointer]: Premium trial
+          - listitem [ref=e43]:
+            - button "Rovo Ask Rovo" [ref=e45] [cursor=pointer]
+          - listitem [ref=e54]:
+            - button "Notifications" [ref=e57] [cursor=pointer]
+          - listitem [ref=e63]:
+            - button "Help" [ref=e64] [cursor=pointer]
+            - generic
+          - listitem [ref=e69]:
+            - button "Settings" [ref=e70] [cursor=pointer]
+          - listitem [ref=e74]:
+            - button "worktrial-daniel-li@fleet.so" [ref=e75] [cursor=pointer]
+    - navigation "Sidebar" [ref=e81]:
+      - list [ref=e85]:
+        - listitem [ref=e86]:
+          - link "For you" [ref=e88] [cursor=pointer]:
+            - /url: /jira/for-you
+            - generic [ref=e93]: For you
+        - listitem [ref=e94]:
+          - button "Recent" [ref=e96] [cursor=pointer]:
+            - generic [ref=e100]: Recent
+        - listitem [ref=e101]:
+          - button "Starred" [ref=e103] [cursor=pointer]:
+            - generic [ref=e107]: Starred
+        - listitem [ref=e108]:
+          - generic [ref=e111]:
+            - button "Apps" [ref=e112] [cursor=pointer]
+            - generic
+        - listitem [ref=e120]:
+          - generic [ref=e123]:
+            - button "Plans" [ref=e124] [cursor=pointer]
+            - generic
+        - listitem [ref=e136]:
+          - generic [ref=e137]:
+            - generic [ref=e139]
+            - list [ref=e154]
+        - listitem [ref=e180]:
+          - generic [ref=e183]:
+            - button "Filters" [ref=e184] [cursor=pointer]
+            - generic
+        - listitem [ref=e192]:
+          - generic [ref=e195]:
+            - button "Dashboards" [ref=e196] [cursor=pointer]
+            - generic
+        - list [ref=e210]:
+          - listitem [ref=e433]:
+            - generic [ref=e434]
+          - listitem [ref=e443]:
+            - generic [ref=e444]
+          - listitem [ref=e212]:
+            - generic [ref=e213]
+        - listitem [ref=e225]:
+          - button "More" [ref=e229] [cursor=pointer]:
+            - generic [ref=e233]: More
+    - generic [ref=e461]:
+      - slider "Resize side navigation panel" [ref=e462]: "300"
+      - text: Resize side navigation panel
+    - main [ref=e234]:
+      - generic [ref=e235]:
+        - generic [ref=e237]:
+          - generic [ref=e238]:
+            - navigation "Breadcrumbs" [ref=e241]
+            - generic [ref=e246]
+          - navigation "Space navigation" [ref=e282]:
+            - list [ref=e283]
+            - button "4 more tabs" [ref=e469] [cursor=pointer]
+            - button "Add to navigation" [ref=e396] [cursor=pointer]
+        - generic [ref=e479]:
+          - generic [ref=e480]:
+            - generic [ref=e483]
+            - grid [ref=e540]
+          - complementary "Unscheduled work" [ref=e1498]:
+            - generic [ref=e1499]
+            - text: Drag each work item onto the calendar to set a due date for the work.
+            - generic [ref=e1506]
+            - generic [ref=e1509]
+  - button "Open Rovo Chat" [ref=e409] [cursor=pointer]:
+    - generic [ref=e410]: Open Rovo Chat
+    - img [ref=e412]

@@ -16,21 +16,27 @@
     "seed-jira": "node ./scripts/seed-jira/index.mjs",
     "reward": "node ./scripts/reward-check.mjs",
     "noise": "node ./scripts/noise-check.mjs",
+    "test:local": "node ./scripts/test-check.mjs",
     "check:behavior": "node ./scripts/behavior-check.mjs",
     "mcp:setup": "./mcp/setup.sh",
     "mcp:server": "node ./mcp/server/index.mjs",
     "mcp:agent": "node ./mcp/agent/index.mjs",
-    "mcp:loop": "node ./mcp/loop/index.mjs"
+    "mcp:loop": "node ./mcp/loop/index.mjs",
+    "unit-test-writer": "node ./mcp/test-loop/index.mjs",
+    "inventory-tab": "node ./scripts/inventory-tab.mjs",
+    "pw:test": "playwright test"
   },
   "dependencies": {
     "react": "^19.2.5",
     "react-dom": "^19.2.5"
   },
   "devDependencies": {
+    "@anthropic-ai/claude-agent-sdk": "^0.2.118",
     "@anthropic-ai/sdk": "^0.90.0",
     "@eslint/js": "^9.39.4",
     "@modelcontextprotocol/sdk": "^1.29.0",
     "@playwright/mcp": "^0.0.70",
+    "@playwright/test": "^1.59.1",
     "@types/node": "^24.12.2",
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",

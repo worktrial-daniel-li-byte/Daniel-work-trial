@@ -1,0 +1,311 @@
+{
+  "tab": "Calendar",
+  "url": "/jira/core/projects/AUT/calendar",
+  "page_title": "Calendar - Jira",
+  "purpose": "Displays Jira work items on a monthly/weekly calendar grid by due date, lets users schedule/reschedule work via drag-and-drop from an Unscheduled panel, and create new items directly on a date.",
+  "verified_against": {
+    "space_key": "AUT",
+    "fixture_card": "AUT-1 'Design autonomous replanning loop' (unscheduled, Task, To Do, High priority)",
+    "capture_method": "scripts/inventory-tab.mjs (Playwright MCP, live Jira)"
+  },
+  "feature_checks": [
+    {
+      "id": "page.load",
+      "feature": "Calendar tab loads under AUT project with Calendar tab marked active",
+      "how_to_verify": "Navigate to /jira/core/projects/AUT/calendar and assert the Space navigation has a heading level=2 named 'Calendar' (active tab) and siblings link to Summary, Board, List, Timeline, Approvals, Forms, Docs.",
+      "expect_url_contains": "/jira/core/projects/AUT/calendar",
+      "expect_sections": [
+        "Summary",
+        "Board",
+        "List",
+        "Calendar",
+        "Timeline",
+        "Approvals",
+        "Forms",
+        "Docs"
+      ],
+      "action_is_mutating": false,
+      "status": "pass"
+    },
+    {
+      "id": "header.space_title",
+      "feature": "Space header shows 'Autoloop' H1 with Share, Automation, Give feedback, Enter full screen controls",
+      "how_to_verify": "Assert heading level=1 with name 'Autoloop' is visible, and buttons named 'Share', 'Automation', 'Give feedback', 'Enter full screen' are present in the page header.",
+      "expect_fields": [
+        "Autoloop",
+        "Share",
+        "Automation",
+        "Give feedback",
+        "Enter full screen"
+      ],
+      "action_is_mutating": false,
+      "status": "pass"
+    },
+    {
+      "id": "toolbar.search",
+      "feature": "Calendar search textbox filters work items on the calendar",
+      "how_to_verify": "Assert a textbox with accessible name 'Search calendar' is present in the toolbar.",
+      "expect": "Search calendar",
+      "action_is_mutating": false,
+      "status": "pass"
+    },
+    {
+      "id": "toolbar.filter_by_assignee",
+      "feature": "Assignee quick-filter avatar row with a checkbox per assignee",
+      "how_to_verify": "Assert a group labelled 'Filter by assignee' is present and contains at least one checkbox whose name ends with 'is online' or 'is offline' (e.g. 'Daniel Li is online').",
+      "expect": "Filter by assignee",
+      "action_is_mutating": false,
+      "status": "pass"
+    },
+    {
+      "id": "toolbar.filter_panel",
+      "feature": "'0 filters applied' button opens a filter popup with full section list",
+      "how_to_verify": "Click the button with accessible name '0 filters applied' and assert the popup contains these section headings/fields.",
+      "expect_sections": [
+        "FILTERS",
+        "Assigned to me",
+        "Due this week",
+        "Done work items",
+        "Date range",
+        "Assignee",
+        "Category",
+        "Created",
+        "Labels",
+        "Priority",
+        "Reporter",
+        "Status",
+        "Team",
+        "Updated"
+      ],
+      "expect_fields": [
+        "Start date",
+        "Due date",
+        "From",
+        "To"
+      ],
+      "expect_options": [
+        "DONE",
+        "IN PROGRESS",
+        "TO DO"
+      ],
+      "action_is_mutating": false,
+      "status": "pass"
+    },
+    {
+      "id": "toolbar.today",
+      "feature": "'Today' button resets the calendar view to the current month",
+      "how_to_verify": "Assert a button with accessible name 'Today' is present in the date-controls region.",
+      "expect": "Today",
+      "action_is_mutating": false,
+      "status": "pass"
+    },
+    {
+      "id": "toolbar.month_navigation",
+      "feature": "Previous/Next month buttons flanking a heading that shows the current month (e.g. 'Apr 2026')",
+      "how_to_verify": "Assert buttons named 'Previous month' and 'Next month' exist and a level-3 heading shows a 'MMM YYYY' label (e.g. 'Apr 2026'). Clicking 'Next month' updates the URL to include '?date=YYYY-MM-01' and updates the heading to the next month.",
+      "expect_url_contains": "date=",
+      "action_is_mutating": false,
+      "notes": "Interaction is URL-level and reversible by clicking Today or the opposite arrow.",
+      "status": "pass"
+    },
+    {
+      "id": "toolbar.view_range",
+      "feature": "'Month options' dropdown switches between Month and Week views",
+      "how_to_verify": "Click the button labelled 'Month options' (or the responsive 'Month' trigger) and assert the opened menu contains menuitems 'Month' and 'Week'.",
+      "expect_menu_items": [
+        "Month",
+        "Week"
+      ],
+      "default_checked": "Month",
+      "action_is_mutating": false,
+      "status": "pass"
+    },
+    {
+      "id": "toolbar.unscheduled_toggle",
+      "feature": "'Unscheduled work' toggle opens/closes the Unscheduled side panel",
+      "how_to_verify": "Assert a button named 'Unscheduled work' is present in the toolbar. Click it and assert a complementary region named 'Unscheduled work' appears; click again to close.",
+      "expect": "Unscheduled work",
+      "action_is_mutating": false,
+      "status": "pass"
+    },
+    {
+      "id": "toolbar.view_settings",
+      "feature": "'View settings' popover exposes display preferences",
+      "how_to_verify": "Click the 'View settings' button and assert the popover contains the labels below.",
+      "expect_sections": [
+        "Settings",
+        "View options",
+        "Week settings",
+        "Software release dates"
+      ],
+      "expect_fields": [
+        "Open work items in sidebar",
+        "Hide done work items",
+        "Work item key",
+        "Color by",
+        "Show weekends",
+        "Week starts on"
+      ],
+      "expect_options": [
+        "Status"
+      ],
+      "default_checked": "Color by = Status; Week starts on = Sunday",
+      "action_is_mutating": false,
+      "status": "pass"
+    },
+    {
+      "id": "grid.weekday_headers",
+      "feature": "Calendar grid columnheaders for weekdays",
+      "how_to_verify": "Assert a grid exists and its column headers include 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday' (weekend columns may be hidden by the 'Show weekends' default).",
+      "expect_fields": [
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday"
+      ],
+      "action_is_mutating": false,
+      "notes": "Saturday/Sunday are hidden by default because 'Show weekends' is off.",
+      "status": "pass"
+    },
+    {
+      "id": "grid.day_cells",
+      "feature": "Each visible weekday of the current month renders a day gridcell with a numeric label",
+      "how_to_verify": "Assert the grid has rowgroups with rows of gridcells whose accessible names match full dates (e.g. 'April 1, 2026'), and each cell shows a day number (e.g. '1', '15', or 'Apr 1' / 'May 1' on month boundaries).",
+      "action_is_mutating": false,
+      "status": "pass"
+    },
+    {
+      "id": "grid.create_work_item_on_day",
+      "feature": "Hovering/focusing a day cell reveals a 'Create work item' button to add an item on that date",
+      "how_to_verify": "Assert every visible day gridcell contains a button named 'Create work item'. (Do not submit the inline form — presence only.)",
+      "expect": "Create work item",
+      "action_is_mutating": true,
+      "reverted_by": "Do not submit; press Escape to dismiss the inline creator if it opens.",
+      "status": "pass_presence_only"
+    },
+    {
+      "id": "unscheduled.panel",
+      "feature": "Unscheduled work side panel lists items lacking a due date and supports drag-to-schedule",
+      "how_to_verify": "With the panel open, assert a complementary region named 'Unscheduled work' with a heading level=2 'Unscheduled work', the helper text 'Drag each work item onto the calendar to set a due date for the work.', and a 'Close panel' button.",
+      "expect_sections": [
+        "Unscheduled work"
+      ],
+      "expect_fields": [
+        "Close panel"
+      ],
+      "action_is_mutating": false,
+      "status": "pass"
+    },
+    {
+      "id": "unscheduled.search",
+      "feature": "Unscheduled panel has its own search textbox",
+      "how_to_verify": "Assert a textbox with placeholder 'Search unscheduled items' (aria-label mentions 'Search field for unscheduled items') is present inside the Unscheduled complementary region.",
+      "expect": "Search unscheduled items",
+      "action_is_mutating": false,
+      "status": "pass"
+    },
+    {
+      "id": "unscheduled.sort",
+      "feature": "Unscheduled panel sort trigger (default 'Most recent, Descending')",
+      "how_to_verify": "Assert a button inside the Unscheduled panel whose accessible name starts with 'Most recent' and contains a 'Descending' icon.",
+      "default_checked": "Most recent, Descending",
+      "action_is_mutating": false,
+      "status": "pass_presence_only",
+      "notes": "Menu contents were not enumerable via this agent's click path."
+    },
+    {
+      "id": "unscheduled.filters",
+      "feature": "Unscheduled panel has a Filters popup (Assignee, Priority, Status)",
+      "how_to_verify": "Click the 'Filters' button inside the Unscheduled panel and assert the opened popup contains the section headings ASSIGNEE, PRIORITY, STATUS and the status options DONE, IN PROGRESS, TO DO.",
+      "expect_sections": [
+        "ASSIGNEE",
+        "PRIORITY",
+        "STATUS"
+      ],
+      "expect_options": [
+        "DONE",
+        "IN PROGRESS",
+        "TO DO"
+      ],
+      "action_is_mutating": false,
+      "status": "pass"
+    },
+    {
+      "id": "unscheduled.item_card",
+      "feature": "Unscheduled list renders work-item cards with key, summary, status, and priority",
+      "how_to_verify": "Assert the Unscheduled list contains at least one link whose accessible name matches the fixture key (e.g. 'AUT-1'), and within that link the summary 'Design autonomous replanning loop', a 'Task' icon, the status 'To Do', and a priority icon (e.g. 'High priority').",
+      "expect": "AUT-1",
+      "expect_fields": [
+        "Design autonomous replanning loop",
+        "Task",
+        "To Do",
+        "High priority"
+      ],
+      "action_is_mutating": false,
+      "status": "pass"
+    },
+    {
+      "id": "unscheduled.drag_to_schedule",
+      "feature": "Dragging an unscheduled card onto a day cell sets that date as due date",
+      "how_to_verify": "Presence-only: unscheduled list items have draggable affordances; the helper copy 'Drag each work item onto the calendar to set a due date for the work.' is visible. A full drag would mutate the item.",
+      "action_is_mutating": true,
+      "reverted_by": "Open the item and clear the due date or drag back to Unscheduled panel.",
+      "status": "not_executed"
+    },
+    {
+      "id": "header.fullscreen",
+      "feature": "'Enter full screen' button expands the calendar surface",
+      "how_to_verify": "Assert a button named 'Enter full screen' exists in the space header.",
+      "action_is_mutating": false,
+      "status": "pass_presence_only"
+    },
+    {
+      "id": "header.automation",
+      "feature": "Automation entry point from space header",
+      "how_to_verify": "Assert a button named 'Automation' exists in the space header.",
+      "action_is_mutating": false,
+      "status": "pass_presence_only"
+    },
+    {
+      "id": "global.create",
+      "feature": "Global 'Create' button in the top banner for creating new work items",
+      "how_to_verify": "Assert a button named 'Create' exists in the page banner.",
+      "action_is_mutating": false,
+      "status": "pass_presence_only"
+    }
+  ],
+  "known_gaps": [
+    "Saturday/Sunday columns hidden by default ('Show weekends' off); assertions assume default settings.",
+    "The sort menu inside the Unscheduled panel did not expose menu contents via the automated click path — only the trigger button is asserted.",
+    "Drag-and-drop scheduling from Unscheduled to a calendar day is not executed (mutating).",
+    "Week view contents were not enumerated; only the toggle menu items Month/Week are captured.",
+    "No scheduled work items exist in the fixture period, so on-calendar event card layout is not asserted."
+  ],
+  "mutation_runbook": [
+    {
+      "scenario": "Create a work item on a specific day",
+      "steps": [
+        "Hover a day gridcell (e.g. 'April 15, 2026') and click its 'Create work item' button.",
+        "Fill the inline summary and submit to create the work item with that due date.",
+        "Cleanup: open the created item and delete it (More actions → Delete) to restore the calendar."
+      ]
+    },
+    {
+      "scenario": "Schedule an unscheduled item via drag-and-drop",
+      "steps": [
+        "Open the 'Unscheduled work' panel.",
+        "Drag the AUT-1 card onto a target day gridcell (e.g. 'April 23, 2026').",
+        "Cleanup: open the item's detail view and clear the Due date field (or drag it back to the Unscheduled panel)."
+      ]
+    },
+    {
+      "scenario": "Toggle Month ↔ Week view",
+      "steps": [
+        "Click 'Month options' and choose 'Week'.",
+        "Verify grid switches to a week layout.",
+        "Cleanup: click 'Month options' → 'Month' to restore default."
+      ]
+    }
+  ]
+}
