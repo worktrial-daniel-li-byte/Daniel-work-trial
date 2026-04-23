@@ -1,0 +1,14 @@
+{
+  "id": "approvals",
+  "title": "Approvals",
+  "requested_url": "https://fleet-team-y0ak1u2s.atlassian.net/jira/core/projects/AUT/approvals",
+  "final_url": "https://fleet-team-y0ak1u2s.atlassian.net/jira/core/projects/AUT/approvals",
+  "http_status": 200,
+  "doc_title": "Approvals - Autoloop - Jira",
+  "viewport": {
+    "width": 1920,
+    "height": 1080
+  },
+  "captured_at": "2026-04-23T00:29:38.171Z",
+  "duration_ms": 32246
+}

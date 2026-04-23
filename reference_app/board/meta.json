@@ -1,0 +1,14 @@
+{
+  "id": "board",
+  "title": "Board",
+  "requested_url": "https://fleet-team-y0ak1u2s.atlassian.net/jira/core/projects/AUT/board?filter=&groupBy=status",
+  "final_url": "https://fleet-team-y0ak1u2s.atlassian.net/jira/core/projects/AUT/board?filter=&groupBy=status",
+  "http_status": 200,
+  "doc_title": "Board - Autoloop - Jira",
+  "viewport": {
+    "width": 1920,
+    "height": 1080
+  },
+  "captured_at": "2026-04-23T00:27:28.702Z",
+  "duration_ms": 32513
+}

@@ -193,20 +193,23 @@ reward the loop is trying to maximize.
   If nothing is listening there, the harness runs `npm run state:load`
   followed by `npm run dev` for you.
 2. Both pages render at **1920×1080**. The harness takes a screenshot, walks
-  the DOM, and collects three things from each page: visible text, visible
-   colors, and the DOM tree structure.
-3. Four similarity scores are computed, each in `[0, 1]` (1 = identical).
-4. Those four are mixed into one number in `[-1, 1]`. Higher is better.
+  the DOM, pulls the Chrome accessibility tree via CDP, and collects: visible
+   text, visible colors, the DOM tree structure, the a11y role tree, and a
+   histogram of class-tokens-per-element.
+3. Six similarity scores are computed, each in `[0, 1]` (1 = identical).
+4. Those six are mixed into one number in `[-1, 1]`. Higher is better.
 
-### The four sub-scores
+### The six sub-scores
 
 
-| Sub-score | Range | What it measures                                                                                                                                                                                                                                                    | How to move it                                                                                                                                       |
-| --------- | ----- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `ssim`    | 0–1   | **Visual similarity** of the two screenshots, downsized to 256×256. Rewards things being in the right place at roughly the right size and color.                                                                                                                    | Fix layout, sizing, and dominant colors. Fine typography and borders barely move it.                                                                 |
-| `text`    | 0–1   | **Text similarity.** A difflib-style sequence match over the visible text of each page (case-insensitive).                                                                                                                                                          | Make sure the same labels, headers, issue titles, menu items, etc. actually render.                                                                  |
-| `color`   | 0–1   | **Color palette overlap.** Quantizes every visible background/foreground color into 32-step RGB buckets and measures histogram intersection.                                                                                                                        | Get the brand colors, backgrounds, and accents into the DOM. Exact shades don't have to match — they just have to land in the same bucket.           |
-| `pqgram`  | 0–1   | **DOM tree similarity** using pq-grams (p=2, q=3). Compares small (ancestor, sibling) label tuples where each label is `tag` or `tag#data-testid`. Computed both whole-page and inside ~9 named regions (`app-shell`, `top-nav`, `left-nav`, `board-canvas`, etc.). | Emit the same `data-testid` anchors the reference uses, inside the same kind of tag, nested at roughly the same depth. Class names do **not** count. |
+| Sub-score       | Range | What it measures                                                                                                                                                                                                                                                    | How to move it                                                                                                                                       |
+| --------------- | ----- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `ssim`          | 0–1   | **Visual similarity** of the two screenshots, downsized to 256×256. Rewards things being in the right place at roughly the right size and color.                                                                                                                    | Fix layout, sizing, and dominant colors. Fine typography and borders barely move it.                                                                 |
+| `text`          | 0–1   | **Text similarity.** A difflib-style sequence match over the visible text of each page (case-insensitive).                                                                                                                                                          | Make sure the same labels, headers, issue titles, menu items, etc. actually render.                                                                  |
+| `color`         | 0–1   | **Color palette overlap.** Quantizes every visible background/foreground color into 32-step RGB buckets and measures histogram intersection.                                                                                                                        | Get the brand colors, backgrounds, and accents into the DOM. Exact shades don't have to match — they just have to land in the same bucket.           |
+| `pqgram`        | 0–1   | **DOM tree similarity** using pq-grams (p=2, q=3). Compares small (ancestor, sibling) label tuples where each label is `tag` or `tag#data-testid`. Computed both whole-page and inside ~9 named regions (`app-shell`, `top-nav`, `left-nav`, `board-canvas`, etc.). | Emit the same `data-testid` anchors the reference uses, inside the same kind of tag, nested at roughly the same depth. Class names do **not** count. |
+| `a11y_pqgram`   | 0–1   | **Accessibility-tree similarity** using the same pq-gram Dice metric on role labels (`role` / `heading#level`). Pulled from Chrome's computed a11y tree; `generic`/`none` nodes are pruned so div-soup contributes zero mass.                                       | Use semantic tags (`<nav>`, `<main>`, `<button>`, `<fieldset>`, `<h1..h6>`) and proper `role="…"` values. Wrapper `<div>`s don't help.               |
+| `class_density` | 0–1   | **Class-token density.** Counts class tokens per classed element and compares `p90` to the reference. Atlaskit's Compiled CSS emits ~30–50 atomic classes per button/input; hand-written BEM sits at 2–3. Shape of the tokens (hashed vs. readable) is ignored.     | Adopt an atomic / utility CSS system (Compiled, Tailwind, Vanilla Extract atomic). More utility classes per element → higher score.                  |
 
 
 ### How they combine
@@ -219,7 +222,9 @@ gatedSSIM   = ssim * contentGate
 raw    = 0.50 * gatedSSIM
        + 0.20 * text
        + 0.10 * color
-       + 0.20 * pqgram.combined       # 0.5*whole + 0.5*mean(present regions)
+       + 0.05 * pqgram.combined       # 0.5*whole + 0.5*mean(present regions)
+       + 0.10 * a11y_pqgram
+       + 0.05 * class_density
 
 reward = 2 * raw - 1                  # rescale [0,1] → [-1, 1]
 ```
@@ -244,11 +249,21 @@ Each run of `score_app` / `npm run reward` writes everything to
 
 - `board.png` — screenshot of the reference page.
 - `app.png` — screenshot of your app.
-- `result.json` — the reward, every sub-score, and per-region pq-gram values.
+- `result.json` — the reward, every sub-score, per-region pq-gram values,
+and the `class_density` p90 / median for both sides.
+- `ref.a11y.json` / `gen.a11y.json` — the pruned accessibility trees fed
+into `a11y_pqgram`. Useful for spotting whole missing landmarks
+(`main`, `navigation`, `search`, etc.) on the candidate side.
 
 A region that shows `0.0000` under `details.pqgram.regions` means the
 reference has a `data-testid` anchor your DOM is missing entirely — fix
 those first, they're the biggest wins.
+
+`class_density.score` near zero while `pqgram` is healthy means the DOM
+structure is right but the app is still styled with hand-written CSS —
+it can only go up by adopting an atomic/utility CSS pipeline. Conversely,
+a high `class_density` with a low `pqgram` means lots of utility classes
+on the wrong shape of tree.
 
 ### Running it by hand
 
@@ -258,4 +273,3 @@ npm run reward -- --app-url http://localhost:4173
 npm run reward -- --no-autostart            # expect dev server already up
 npm run reward -- --no-load-state           # skip npm run state:load
 ```
-

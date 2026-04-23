@@ -1,0 +1,14 @@
+{
+  "id": "attachments",
+  "title": "Attachments",
+  "requested_url": "https://fleet-team-y0ak1u2s.atlassian.net/jira/core/projects/AUT/attachments",
+  "final_url": "https://fleet-team-y0ak1u2s.atlassian.net/jira/core/projects/AUT/attachments",
+  "http_status": 200,
+  "doc_title": "Attachments - Autoloop - Jira",
+  "viewport": {
+    "width": 1920,
+    "height": 1080
+  },
+  "captured_at": "2026-04-23T00:31:14.499Z",
+  "duration_ms": 32180
+}

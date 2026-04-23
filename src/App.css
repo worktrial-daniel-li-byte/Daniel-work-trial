@@ -6,9 +6,9 @@
   --jira-text-muted: #6b6e76;
   --jira-border: rgba(11, 18, 14, 0.14);
   --jira-surface: #ffffff;
-  --jira-board-bg: #f3eefc;
-  --jira-col-bg: #ede4f8;
-  --jira-col-header-bg: #e9d8fd;
+  --jira-board-bg: #F8EEFE;
+  --jira-col-bg: #EED7FC;
+  --jira-col-header-bg: #EED7FC;
   --jira-active-tab: #803fa5;
   --jira-sidebar-active: #e9f2fe;
   --jira-sidebar-active-text: #1868db;
@@ -788,32 +788,32 @@ h2.jira-tab {
 /* Force lavender background on the main workspace and board canvas so they
    match the reference palette. These are large visible regions. */
 .jira-workspace {
-  background-color: #f3eefc !important;
+  background-color: #F8EEFE !important;
 }
 
 .jira-project-top {
-  background-color: #f3eefc !important;
+  background-color: #F8EEFE !important;
 }
 
 .jira-board-canvas {
-  background-color: #f3eefc !important;
+  background-color: #F8EEFE !important;
 }
 
 .jira-body {
-  background-color: #f3eefc;
+  background-color: #F8EEFE;
 }
 
 main.jira-workspace,
 [data-region="board-canvas"],
 [data-testid="board.content.board-wrapper"] {
-  background-color: #f3eefc !important;
+  background-color: #F8EEFE !important;
 }
 
 .jira-field {
   display: flex;
   align-items: center;
   gap: 6px;
-  background: #ebe4f7;
+  background: #F0E6FD;
   border: 1px solid #dcd3ef;
   border-radius: 4px;
   padding: 5px 10px;
@@ -877,7 +877,7 @@ main.jira-workspace,
 .jira-col {
   width: 272px;
   flex-shrink: 0;
-  background-color: #ede4f8;
+  background-color: #EED7FC;
   border-radius: 6px;
   padding: 8px;
   display: flex;
@@ -901,7 +901,7 @@ main.jira-workspace,
   gap: 8px;
   padding: 8px 10px;
   margin: -8px -8px 8px;
-  background: #ede4f8;
+  background: #EED7FC;
   border-radius: 6px 6px 0 0;
   font-weight: 500;
   font-size: 14px;
@@ -937,7 +937,7 @@ main.jira-workspace,
   align-items: center;
   justify-content: center;
   min-width: 22px;
-  background: rgba(9, 30, 66, 0.08);
+  background: #DFD8EF;
   color: #44546F;
   padding: 2px 6px;
   border-radius: 3px;
@@ -1156,7 +1156,7 @@ main.jira-workspace,
   padding: 0 10px;
   border: none;
   background: transparent;
-  color: #6b778c;
+  color: #44546F;
   font: inherit;
   font-size: 13px;
   text-align: left;
@@ -1178,9 +1178,9 @@ main.jira-workspace,
   height: 44px;
   flex-shrink: 0;
   align-self: flex-start;
-  border: 1px dashed #b8a8d9;
+  border: 1px dashed #C9BFE3;
   border-radius: 6px;
-  background: rgba(255, 255, 255, 0.5);
+  background: #F1ECFA;
   color: var(--jira-active-tab);
   font-size: 22px;
   line-height: 1;
@@ -1832,6 +1832,13 @@ main.jira-workspace,
 }
 
 /* Sidebar external-link icons: brand colors */
+.jira-sb-link--confluence .jira-sb-link__icon,
+.jira-sb-link--confluence .jira-sb-link__icon svg,
+.jira-sb-link--confluence .jira-sb-link__icon svg * {
+  color: #1868DB !important;
+  fill: #1868DB !important;
+}
+
 .jira-sb-link--goals .jira-sb-link__icon,
 .jira-sb-link--goals .jira-sb-link__icon svg,
 .jira-sb-link--goals .jira-sb-link__icon svg * {

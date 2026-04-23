@@ -1,0 +1,14 @@
+{
+  "id": "summary",
+  "title": "Summary",
+  "requested_url": "https://fleet-team-y0ak1u2s.atlassian.net/jira/core/projects/AUT/summary",
+  "final_url": "https://fleet-team-y0ak1u2s.atlassian.net/jira/core/projects/AUT/summary",
+  "http_status": 200,
+  "doc_title": "Summary - Autoloop - Jira",
+  "viewport": {
+    "width": 1920,
+    "height": 1080
+  },
+  "captured_at": "2026-04-23T00:26:56.185Z",
+  "duration_ms": 4101
+}

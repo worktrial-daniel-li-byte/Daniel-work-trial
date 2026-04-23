@@ -1,0 +1,14 @@
+{
+  "id": "calendar",
+  "title": "Calendar",
+  "requested_url": "https://fleet-team-y0ak1u2s.atlassian.net/jira/core/projects/AUT/calendar",
+  "final_url": "https://fleet-team-y0ak1u2s.atlassian.net/jira/core/projects/AUT/calendar",
+  "http_status": 200,
+  "doc_title": "Calendar - Jira",
+  "viewport": {
+    "width": 1920,
+    "height": 1080
+  },
+  "captured_at": "2026-04-23T00:28:33.426Z",
+  "duration_ms": 32325
+}

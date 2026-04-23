@@ -1,0 +1,14 @@
+{
+  "id": "pages",
+  "title": "Pages",
+  "requested_url": "https://fleet-team-y0ak1u2s.atlassian.net/jira/core/projects/AUT/pages",
+  "final_url": "https://fleet-team-y0ak1u2s.atlassian.net/jira/core/projects/AUT/pages",
+  "http_status": 200,
+  "doc_title": "Pages - Autoloop - Jira",
+  "viewport": {
+    "width": 1920,
+    "height": 1080
+  },
+  "captured_at": "2026-04-23T00:30:42.318Z",
+  "duration_ms": 32189
+}

@@ -1,0 +1,14 @@
+{
+  "id": "timeline",
+  "title": "Timeline",
+  "requested_url": "https://fleet-team-y0ak1u2s.atlassian.net/jira/core/projects/AUT/timeline",
+  "final_url": "https://fleet-team-y0ak1u2s.atlassian.net/jira/core/projects/AUT/timeline",
+  "http_status": 200,
+  "doc_title": "Timeline - Autoloop - Jira",
+  "viewport": {
+    "width": 1920,
+    "height": 1080
+  },
+  "captured_at": "2026-04-23T00:29:05.924Z",
+  "duration_ms": 32497
+}

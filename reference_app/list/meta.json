@@ -1,0 +1,14 @@
+{
+  "id": "list",
+  "title": "List",
+  "requested_url": "https://fleet-team-y0ak1u2s.atlassian.net/jira/core/projects/AUT/list",
+  "final_url": "https://fleet-team-y0ak1u2s.atlassian.net/jira/core/projects/AUT/list?jql=project%20%3D%20AUT%20ORDER%20BY%20cf%5B10019%5D%20ASC",
+  "http_status": 200,
+  "doc_title": "Autoloop - List - Jira",
+  "viewport": {
+    "width": 1920,
+    "height": 1080
+  },
+  "captured_at": "2026-04-23T00:28:01.097Z",
+  "duration_ms": 32393
+}

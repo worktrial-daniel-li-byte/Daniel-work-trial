@@ -1,0 +1,14 @@
+{
+  "id": "archived-work-items",
+  "title": "Archived work items",
+  "requested_url": "https://fleet-team-y0ak1u2s.atlassian.net/jira/core/projects/AUT/archived-work-items",
+  "final_url": "https://fleet-team-y0ak1u2s.atlassian.net/jira/core/projects/AUT/archived-work-items",
+  "http_status": 200,
+  "doc_title": "Jira",
+  "viewport": {
+    "width": 1920,
+    "height": 1080
+  },
+  "captured_at": "2026-04-23T00:31:51.009Z",
+  "duration_ms": 32310
+}

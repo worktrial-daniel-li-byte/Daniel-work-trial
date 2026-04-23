@@ -1,43 +1,66 @@
 {
+  "version": 3,
+  "project": {
+    "key": "AUT",
+    "name": "Autoloop",
+    "lead": "fleet"
+  },
   "columns": [
     {
       "id": "todo",
       "title": "To Do",
       "cards": [
         {
-          "id": "card-fit-11",
-          "title": "Integrate barcode scanner for packaged foods",
-          "key": "FIT-11",
-          "priority": "=",
-          "assignee": "P"
+          "id": "card-aut-1",
+          "key": "AUT-1",
+          "title": "Design autonomous replanning loop",
+          "description": "Define the state machine for the replanner: observe → plan → act → verify. Include cancellation semantics and timeouts.",
+          "priority": "high",
+          "assigneeId": "fleet",
+          "createdAt": 1713801600000,
+          "startDate": "2026-04-20",
+          "dueDate": "2026-04-28",
+          "storyPoints": 5,
+          "labels": ["architecture", "loop"]
         },
         {
-          "id": "card-fit-12",
-          "title": "Add GLP-1 user cohort to analytics events",
-          "key": "FIT-12",
-          "priority": "↓",
-          "assignee": "D"
+          "id": "card-aut-2",
+          "key": "AUT-2",
+          "title": "Wire reward harness into CI",
+          "description": "Run npm run reward on every PR and post the sub-scores as a comment. Fail CI when total drops more than 0.03 below main.",
+          "priority": "medium",
+          "assigneeId": "alex",
+          "createdAt": 1713888000000,
+          "startDate": "2026-04-21",
+          "dueDate": "2026-04-25",
+          "storyPoints": 3,
+          "labels": ["ci", "tooling"]
         },
         {
-          "id": "card-fit-13",
-          "title": "Design weekly nutrition recap email",
-          "key": "FIT-13",
-          "priority": "=",
-          "assignee": "M"
+          "id": "card-aut-3",
+          "key": "AUT-3",
+          "title": "Capture Spaces tabs into reference_app/",
+          "description": "Use the capture harness to scrape Summary / Board / List / Calendar / Timeline / Approvals / Pages and commit reference.html + reference.png per tab.",
+          "priority": "medium",
+          "assigneeId": "priya",
+          "createdAt": 1713974400000,
+          "startDate": "2026-04-22",
+          "dueDate": "2026-04-24",
+          "storyPoints": 2,
+          "labels": ["harness", "reference"]
         },
         {
-          "id": "card-fit-14",
-          "title": "Ship Apple Health two-way sync",
-          "key": "FIT-14",
-          "priority": "↑",
-          "assignee": "J"
-        },
-        {
-          "id": "card-fit-15",
-          "title": "Add restaurant menu lookup via Places API",
-          "key": "FIT-15",
-          "priority": "=",
-          "assignee": "S"
+          "id": "card-aut-4",
+          "key": "AUT-4",
+          "title": "Add URL routing for each tab",
+          "description": "Map /board /summary /list /calendar /timeline to their views. Update reward-check to pick reference_app/<tab>/reference.html based on the URL path.",
+          "priority": "high",
+          "assigneeId": "jordan",
+          "createdAt": 1714060800000,
+          "startDate": "2026-04-23",
+          "dueDate": "2026-04-30",
+          "storyPoints": 5,
+          "labels": ["routing", "frontend"]
         }
       ]
     },
@@ -46,32 +69,43 @@
       "title": "In Progress",
       "cards": [
         {
-          "id": "card-fit-7",
-          "title": "Fine-tune meal recognition model on v2 dataset",
-          "key": "FIT-7",
-          "priority": "↑",
-          "assignee": "A"
+          "id": "card-aut-5",
+          "key": "AUT-5",
+          "title": "Ship drag-and-drop between columns",
+          "description": "Native HTML drag events with a drop-target highlight. Persist column moves to localStorage.",
+          "priority": "high",
+          "assigneeId": "fleet",
+          "createdAt": 1713542400000,
+          "startDate": "2026-04-18",
+          "dueDate": "2026-04-23",
+          "storyPoints": 3,
+          "labels": ["board", "dnd"]
         },
         {
-          "id": "card-fit-8",
-          "title": "Build streak and achievements system",
-          "key": "FIT-8",
-          "priority": "=",
-          "assignee": "M"
+          "id": "card-aut-6",
+          "key": "AUT-6",
+          "title": "Build card detail modal",
+          "description": "Full-screen modal with priority, assignee, description, labels, due date. Escape key closes it.",
+          "priority": "medium",
+          "assigneeId": "taylor",
+          "createdAt": 1713456000000,
+          "startDate": "2026-04-17",
+          "dueDate": "2026-04-22",
+          "storyPoints": 3,
+          "labels": ["card", "modal"]
         },
         {
-          "id": "card-fit-9",
-          "title": "Improve portion-size estimation from photos",
-          "key": "FIT-9",
-          "priority": "↑",
-          "assignee": "A"
-        },
-        {
-          "id": "card-fit-10",
-          "title": "Migrate auth to Clerk and backfill users",
-          "key": "FIT-10",
-          "priority": "=",
-          "assignee": "J"
+          "id": "card-aut-7",
+          "key": "AUT-7",
+          "title": "Group by Status / Priority / Assignee",
+          "description": "Board toolbar dropdown that reshapes columns by the selected grouping dimension.",
+          "priority": "medium",
+          "assigneeId": "alex",
+          "createdAt": 1713369600000,
+          "startDate": "2026-04-16",
+          "dueDate": "2026-04-26",
+          "storyPoints": 2,
+          "labels": ["board", "filtering"]
         }
       ]
     },
@@ -80,48 +114,169 @@
       "title": "Done",
       "cards": [
         {
-          "id": "card-fit-1",
-          "title": "Ship MVP photo-to-calorie logging flow",
-          "key": "FIT-1",
-          "priority": "↑",
-          "assignee": "D"
+          "id": "card-aut-8",
+          "key": "AUT-8",
+          "title": "Recreate Jira chrome from screenshot",
+          "description": "Top bar, sidebar, tabs, project header. Match pixel-perfect against reference.png.",
+          "priority": "high",
+          "assigneeId": "fleet",
+          "createdAt": 1713110400000,
+          "startDate": "2026-04-13",
+          "dueDate": "2026-04-15",
+          "storyPoints": 5,
+          "labels": ["ui", "chrome"]
         },
         {
-          "id": "card-fit-2",
-          "title": "Ingest USDA FoodData Central into nutrition DB",
-          "key": "FIT-2",
-          "priority": "=",
-          "assignee": "P"
+          "id": "card-aut-9",
+          "key": "AUT-9",
+          "title": "Persist board + preferences to localStorage",
+          "description": "Version-tagged state so upgrades can wipe old shapes cleanly.",
+          "priority": "low",
+          "assigneeId": "priya",
+          "createdAt": 1713196800000,
+          "startDate": "2026-04-14",
+          "dueDate": "2026-04-16",
+          "storyPoints": 1,
+          "labels": ["state"]
         },
         {
-          "id": "card-fit-3",
-          "title": "Launch onboarding with macro goal setup",
-          "key": "FIT-3",
-          "priority": "=",
-          "assignee": "M"
+          "id": "card-aut-10",
+          "key": "AUT-10",
+          "title": "Top-bar and board search",
+          "description": "Filters cards by title + key. Highlights matches in the top-bar quick results.",
+          "priority": "medium",
+          "assigneeId": "jordan",
+          "createdAt": 1713283200000,
+          "startDate": "2026-04-15",
+          "dueDate": "2026-04-17",
+          "storyPoints": 2,
+          "labels": ["search"]
         },
         {
-          "id": "card-fit-4",
-          "title": "Deploy v1 calorie estimation model to prod",
-          "key": "FIT-4",
-          "priority": "↑",
-          "assignee": "A"
-        },
-        {
-          "id": "card-fit-5",
-          "title": "Add water intake tracker widget",
-          "key": "FIT-5",
-          "priority": "↓",
-          "assignee": "S"
-        },
-        {
-          "id": "card-fit-6",
-          "title": "Set up CI/CD on Vercel with preview envs",
-          "key": "FIT-6",
-          "priority": "=",
-          "assignee": "J"
+          "id": "card-aut-11",
+          "key": "AUT-11",
+          "title": "Composer for Create / Edit issue",
+          "description": "One dialog, two modes, tab autocompletes next issue key.",
+          "priority": "medium",
+          "assigneeId": "taylor",
+          "createdAt": 1713024000000,
+          "storyPoints": 3,
+          "labels": ["composer"]
         }
       ]
     }
-  ]
+  ],
+  "notifications": [
+    { "id": "n1", "who": "Alex Kim", "action": "mentioned you on", "target": "AUT-1", "time": "12m", "read": false },
+    { "id": "n2", "who": "Priya Patel", "action": "assigned", "target": "AUT-3", "time": "1h", "read": false },
+    { "id": "n3", "who": "Jordan Lee", "action": "commented on", "target": "AUT-4", "time": "3h", "read": false },
+    { "id": "n4", "who": "Taylor Nguyen", "action": "moved", "target": "AUT-6", "time": "Yesterday", "read": true },
+    { "id": "n5", "who": "Fleet", "action": "approved", "target": "AUT-9", "time": "2d", "read": true }
+  ],
+  "approvals": [
+    {
+      "id": "ap-1",
+      "cardKey": "AUT-4",
+      "title": "Routing RFC — path-based tabs",
+      "requestedBy": "jordan",
+      "approvers": ["fleet", "alex"],
+      "status": "pending",
+      "raisedAt": "2026-04-22"
+    },
+    {
+      "id": "ap-2",
+      "cardKey": "AUT-1",
+      "title": "State machine for replanner",
+      "requestedBy": "fleet",
+      "approvers": ["priya", "taylor"],
+      "status": "pending",
+      "raisedAt": "2026-04-21"
+    },
+    {
+      "id": "ap-3",
+      "cardKey": "AUT-9",
+      "title": "localStorage schema v3",
+      "requestedBy": "priya",
+      "approvers": ["fleet"],
+      "status": "approved",
+      "raisedAt": "2026-04-16",
+      "decidedAt": "2026-04-17"
+    }
+  ],
+  "forms": [
+    {
+      "id": "form-bug",
+      "name": "Report a bug",
+      "description": "Capture reproducible bug reports with env + screenshots.",
+      "fields": ["Summary", "Steps to reproduce", "Expected", "Actual", "Severity", "Screenshot"],
+      "submissions": 14,
+      "updatedAt": "2026-04-20"
+    },
+    {
+      "id": "form-feature",
+      "name": "Feature request",
+      "description": "Lightweight intake for product ideas.",
+      "fields": ["Title", "Problem", "Who this helps", "Nice to have?"],
+      "submissions": 6,
+      "updatedAt": "2026-04-18"
+    },
+    {
+      "id": "form-onboarding",
+      "name": "New teammate onboarding",
+      "description": "Track access + intro tasks for new Autoloop hires.",
+      "fields": ["Name", "Start date", "Team", "Hardware", "Buddy"],
+      "submissions": 2,
+      "updatedAt": "2026-04-10"
+    }
+  ],
+  "pages": [
+    {
+      "id": "page-overview",
+      "title": "Autoloop overview",
+      "emoji": "🗺",
+      "updatedAt": "2026-04-21",
+      "updatedBy": "fleet",
+      "snippet": "Autoloop is the closed-loop agent that plans, acts, verifies, and replans until the reward stabilises."
+    },
+    {
+      "id": "page-reward",
+      "title": "Reward signal cheat sheet",
+      "emoji": "🎯",
+      "updatedAt": "2026-04-20",
+      "updatedBy": "alex",
+      "snippet": "SSIM, text, palette, pq-gram — how each sub-score is weighted and what moves them the most."
+    },
+    {
+      "id": "page-oncall",
+      "title": "Agent on-call runbook",
+      "emoji": "🚨",
+      "updatedAt": "2026-04-17",
+      "updatedBy": "jordan",
+      "snippet": "What to check when the loop stalls, diverges, or burns through its dispatch budget."
+    },
+    {
+      "id": "page-capture",
+      "title": "Capture harness usage",
+      "emoji": "📸",
+      "updatedAt": "2026-04-22",
+      "updatedBy": "priya",
+      "snippet": "npm run capture — plan + spawn sub-browser agents to dump each Jira tab to reference_app/."
+    }
+  ],
+  "attachments": [
+    { "id": "att-1", "filename": "replanner-statechart.png", "mime": "image/png", "sizeKb": 184, "uploadedAt": "2026-04-21", "uploadedBy": "fleet", "cardKey": "AUT-1" },
+    { "id": "att-2", "filename": "reward-breakdown.csv", "mime": "text/csv", "sizeKb": 12, "uploadedAt": "2026-04-20", "uploadedBy": "alex", "cardKey": "AUT-2" },
+    { "id": "att-3", "filename": "capture-harness.mov", "mime": "video/quicktime", "sizeKb": 9412, "uploadedAt": "2026-04-22", "uploadedBy": "priya", "cardKey": "AUT-3" },
+    { "id": "att-4", "filename": "routing-rfc.md", "mime": "text/markdown", "sizeKb": 7, "uploadedAt": "2026-04-22", "uploadedBy": "jordan", "cardKey": "AUT-4" }
+  ],
+  "reports": [
+    { "id": "rep-velocity", "title": "Velocity this sprint", "description": "Story points completed vs committed.", "metric": "11 / 18 sp", "trend": "up" },
+    { "id": "rep-burndown", "title": "Burndown", "description": "Remaining work across the sprint.", "metric": "7 sp remaining", "trend": "flat" },
+    { "id": "rep-cycle", "title": "Cycle time", "description": "Median In-Progress → Done for the last 4 weeks.", "metric": "3.2 days", "trend": "down" }
+  ],
+  "preferences": {
+    "groupBy": "status",
+    "activeSidebar": "autoloop",
+    "activeTab": "Board"
+  }
 }

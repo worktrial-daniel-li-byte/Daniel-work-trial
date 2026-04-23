@@ -1,0 +1,14 @@
+{
+  "id": "reports",
+  "title": "Reports",
+  "requested_url": "https://fleet-team-y0ak1u2s.atlassian.net/jira/core/projects/AUT/reports",
+  "final_url": "https://fleet-team-y0ak1u2s.atlassian.net/jira/core/projects/AUT/reports",
+  "http_status": 200,
+  "doc_title": "Reports - Jira",
+  "viewport": {
+    "width": 1920,
+    "height": 1080
+  },
+  "captured_at": "2026-04-23T00:31:18.696Z",
+  "duration_ms": 4195
+}
