@@ -15,7 +15,6 @@ export default defineConfig({
     '**/.pw-profile-jira/**',
     'tests/browser-login.js',
     'tests/browser-test.js',
-    'tests/qa-agent.js',
   ],
   fullyParallel: false,
   workers: 1,

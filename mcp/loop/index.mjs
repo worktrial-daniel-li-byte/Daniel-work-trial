@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * Two-agent verify→write loop entrypoint.
+ * Two-agent verify→write loop entrypoint (visual reward only).
  *
  *   Verifier  (vision + planning; tools: score_app, get_reward_config,
  *              dispatch_to_worker, declare_done) — looks at reference vs app
@@ -22,17 +22,8 @@
  *       raising that one sub-score this run. Stacks on top of any positional
  *       extraGuidance.
  *
- *   --tests[=<dir>]
- *       Also run the Playwright specs under <dir> (default "tests") after
- *       every worker dispatch, and blend their pass-rate into the reward
- *       the verifier sees. The list of failing specs (file + title + first
- *       error line) is fed back to the verifier so it can dispatch
- *       test-fixing tasks to the worker.
- *
- *   --tests-weight=<0..1>
- *       Share of the combined reward that comes from test pass-rate.
- *       Default 0.5. 1.0 = tests-only reward; 0.0 = visual-only (same as
- *       omitting --tests).
+ * To drive a Playwright test suite to green instead of (or in addition to)
+ * the visual reward, use `npm run test-harness` — it owns its own loop.
  *
  * Env: see ./config.mjs for the full list.
  */
@@ -41,6 +32,7 @@ import path from "node:path";
 
 import Anthropic from "@anthropic-ai/sdk";
 
+import { ensureDevServer } from "../../scripts/reward-check.mjs";
 import { config, mcpDir } from "./config.mjs";
 import { RunLogger } from "./logger.mjs";
 import { connectMcp, partitionTools } from "./mcp-client.mjs";
@@ -55,9 +47,6 @@ function parseArgs(argv) {
     appUrl: null,
     extraGuidance: null,
     focus: null,
-    tests: false,
-    testsDir: null,
-    testsWeight: null,
     help: false,
   };
   const positional = [];
@@ -66,16 +55,7 @@ function parseArgs(argv) {
     if (a === "--help" || a === "-h") out.help = true;
     else if (a === "--focus") out.focus = argv[++i];
     else if (a.startsWith("--focus=")) out.focus = a.slice("--focus=".length);
-    else if (a === "--tests") {
-      out.tests = true;
-    } else if (a.startsWith("--tests=")) {
-      out.tests = true;
-      out.testsDir = a.slice("--tests=".length);
-    } else if (a === "--tests-weight") {
-      out.testsWeight = Number(argv[++i]);
-    } else if (a.startsWith("--tests-weight=")) {
-      out.testsWeight = Number(a.slice("--tests-weight=".length));
-    } else if (a.startsWith("--")) {
+    else if (a.startsWith("--")) {
       console.error(`unknown flag: ${a}`);
       process.exit(2);
     } else positional.push(a);
@@ -104,16 +84,6 @@ const appUrl = args.appUrl ?? "http://localhost:5173";
 const extraGuidance = args.extraGuidance;
 const focusGuidance = args.focus ? buildFocusGuidance(args.focus) : null;
 
-// Wire tests-as-reward flags into the shared config object so the verifier
-// picks them up automatically.
-if (args.tests) {
-  config.testsEnabled = true;
-  if (args.testsDir) config.testsDir = args.testsDir;
-}
-if (args.testsWeight !== null && !Number.isNaN(args.testsWeight)) {
-  config.testsRewardWeight = Math.max(0, Math.min(1, args.testsWeight));
-}
-
 const anthropic = new Anthropic({ apiKey: config.apiKey });
 const mcp = await connectMcp();
 
@@ -141,22 +111,56 @@ console.log(
     `  target_reward=${config.targetReward}` +
     `  improvement_delta=${config.improvementDelta}` +
     (args.focus ? `  focus=${args.focus}` : "") +
-    (config.testsEnabled
-      ? `  tests=${config.testsDir}  tests_weight=${config.testsRewardWeight}`
-      : "") +
     `\n`,
 );
 
-const summary = await runVerifyLoop({
-  anthropic,
-  mcp,
-  appUrl,
-  extraGuidance,
-  focusGuidance,
-  verifierMcpTools,
-  config,
-  logger,
-});
+// Own the Vite dev server for the whole loop. score_app (via
+// scripts/reward-check.mjs) calls ensureDevServer() with autoStart=true by
+// default, and KILLS the server in its finally block. Starting it here once
+// makes every downstream ensureDevServer() find the port already open →
+// { started:false, stop: noop }.
+let devServer = { started: false, stop: async () => {} };
+try {
+  devServer = await ensureDevServer({ appUrl, autoStart: true });
+  if (devServer.started) {
+    console.log(`[dev] started Vite for ${appUrl} (loop-owned)`);
+  } else {
+    console.log(`[dev] reusing existing server at ${appUrl}`);
+  }
+} catch (err) {
+  console.error(`[dev] failed to start dev server: ${err.message}`);
+  process.exit(1);
+}
+
+let devStopped = false;
+async function stopDev() {
+  if (devStopped) return;
+  devStopped = true;
+  try {
+    await devServer.stop();
+  } catch {}
+}
+for (const sig of ["SIGINT", "SIGTERM"]) {
+  process.on(sig, () => {
+    stopDev().finally(() => process.exit(130));
+  });
+}
+
+let summary;
+try {
+  summary = await runVerifyLoop({
+    anthropic,
+    mcp,
+    appUrl,
+    extraGuidance,
+    focusGuidance,
+    verifierMcpTools,
+    config,
+    logger,
+  });
+} finally {
+  await stopDev();
+}
 
 console.log("\n──── summary ────");
 console.log(`stopped: ${summary.stopReason}`);

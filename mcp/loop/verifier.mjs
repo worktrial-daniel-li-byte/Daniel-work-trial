@@ -16,7 +16,6 @@ import { callMcp, scoreApp } from "./mcp-client.mjs";
 import { runWorker } from "./worker.mjs";
 import { buildVerifierSystemPrompt, workerSystemPrompt } from "./prompts.mjs";
 import { repoRoot } from "./config.mjs";
-import { runTestsForLoop, blendReward } from "./test-runner.mjs";
 
 function truncate(s, n) {
   if (typeof s !== "string") return "";
@@ -178,41 +177,7 @@ function makeHandleDispatch({ mcp, config, appUrl, state, logger }) {
     }
 
     const scoreRes = await scoreApp(mcp, appUrl);
-    const visualReward = scoreRes.reward;
-
-    // Optional: run Playwright specs and blend pass-rate into the reward.
-    // When --tests is enabled the loop treats the combined reward as the
-    // canonical signal for improvement/target-reached checks, and surfaces
-    // the list of failing specs to the verifier as part of the dispatch
-    // report so it can write targeted follow-up tasks.
-    let testsReport = null;
-    if (config.testsEnabled) {
-      try {
-        testsReport = await runTestsForLoop({
-          appUrl,
-          testDir: config.testsDir,
-          artifactDir: undefined, // uses test-artifacts/<ts>/ default
-        });
-        console.log(
-          `    tests: ${testsReport.passed}/${testsReport.total} passed` +
-            (testsReport.failed
-              ? ` (${testsReport.failed} failed)`
-              : "") +
-            `  pass_rate=${testsReport.pass_rate.toFixed(3)}`,
-        );
-      } catch (err) {
-        console.warn(`    [tests] runner failed: ${err.message}`);
-        testsReport = { error: err.message };
-      }
-    }
-
-    const passRateSigned =
-      testsReport && typeof testsReport.pass_rate_signed === "number"
-        ? testsReport.pass_rate_signed
-        : null;
-    const after = config.testsEnabled
-      ? blendReward(visualReward, passRateSigned, config.testsRewardWeight)
-      : visualReward;
+    const after = scoreRes.reward;
 
     const improved =
       before === null
@@ -224,9 +189,6 @@ function makeHandleDispatch({ mcp, config, appUrl, state, logger }) {
 
     console.log(
       `    reward: ${before?.toFixed?.(4) ?? "n/a"} → ${after?.toFixed?.(4) ?? "n/a"}` +
-        (config.testsEnabled
-          ? `  (visual=${visualReward?.toFixed?.(4) ?? "n/a"} blend=${config.testsRewardWeight})`
-          : "") +
         `  (${improved ? "IMPROVED → clearing worker session" : "no improvement → worker session preserved"})`,
     );
 
@@ -248,8 +210,6 @@ function makeHandleDispatch({ mcp, config, appUrl, state, logger }) {
           after,
           improved,
           workerSummary,
-          visualReward,
-          tests: testsReport,
         });
         if (scoreRes.structured) await logger.logScore(scoreRes.structured);
       } catch (err) {
@@ -262,7 +222,6 @@ function makeHandleDispatch({ mcp, config, appUrl, state, logger }) {
       worker_mode: mode,
       before_reward: before,
       after_reward: after,
-      visual_reward: visualReward,
       improved,
       improvement: after !== null && before !== null ? after - before : null,
       worker_summary: workerSummary,
@@ -271,18 +230,6 @@ function makeHandleDispatch({ mcp, config, appUrl, state, logger }) {
       target_reward: config.targetReward,
       target_reached: after !== null && after >= config.targetReward,
       worker_context_after: improved ? "cleared" : "preserved",
-      tests: testsReport
-        ? {
-            passed: testsReport.passed,
-            failed: testsReport.failed,
-            total: testsReport.total,
-            skipped: testsReport.skipped,
-            pass_rate: testsReport.pass_rate,
-            reward_weight: config.testsRewardWeight,
-            failures: (testsReport.failures ?? []).slice(0, 20),
-            artifact_dir: testsReport.artifact_dir,
-          }
-        : null,
     };
 
     return {
@@ -297,7 +244,14 @@ function makeHandleDispatch({ mcp, config, appUrl, state, logger }) {
 
 // ── Verifier tool handler ─────────────────────────────────────────────────
 
-function makeHandleVerifierTool({ mcp, state, handleDispatch, logger }) {
+function makeHandleVerifierTool({
+  mcp,
+  config,
+  appUrl,
+  state,
+  handleDispatch,
+  logger,
+}) {
   return async function handleVerifierTool(tu) {
     if (tu.name === "dispatch_to_worker") {
       return await handleDispatch(tu.input ?? {});
@@ -312,16 +266,16 @@ function makeHandleVerifierTool({ mcp, state, handleDispatch, logger }) {
       };
     }
     const res = await callMcp(mcp, tu.name, tu.input ?? {});
+
     if (
       tu.name === "score_app" &&
       !res.isError &&
       res.structured &&
       typeof res.structured.reward === "number"
     ) {
-      state.lastReward = res.structured.reward;
-      if (res.structured.reward > state.bestReward) {
-        state.bestReward = res.structured.reward;
-      }
+      const reward = res.structured.reward;
+      state.lastReward = reward;
+      if (reward > state.bestReward) state.bestReward = reward;
       if (logger) {
         try {
           await logger.logScore(res.structured);
@@ -363,9 +317,6 @@ export async function runVerifyLoop({
   const verifierSystemPrompt = buildVerifierSystemPrompt({
     appUrl,
     targetReward: config.targetReward,
-    testsEnabled: config.testsEnabled,
-    testsDir: config.testsDir,
-    testsRewardWeight: config.testsRewardWeight,
   });
 
   const kickoff =
@@ -399,6 +350,8 @@ export async function runVerifyLoop({
   });
   const handleVerifierTool = makeHandleVerifierTool({
     mcp,
+    config,
+    appUrl,
     state,
     handleDispatch,
     logger,

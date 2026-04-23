@@ -1,5 +1,5 @@
 /**
- * Env + path resolution for the verify→write loop.
+ * Env + path resolution for the visual verify→write loop.
  *
  * Env:
  *   ANTHROPIC_API_KEY / ANTH_API_KEY   (required — mirrored into the worker's env)
@@ -15,11 +15,7 @@
  *   WORKER_PERMISSION_MODE   default "acceptEdits"
  *   WORKER_TIMEOUT_MS        default 0 (no timeout) — kill the subprocess after N ms
  *
- *   TESTS_DIR                default "tests"  path under repo root; enables
- *                            tests as a reward signal when --tests is passed.
- *   TESTS_REWARD_WEIGHT      default 0.5      share of the combined reward that
- *                            comes from Playwright pass-rate; the rest comes
- *                            from the visual reward. 1.0 = tests-only.
+ * For the Playwright-driven loop, see mcp/test-harness/.
  */
 
 import path from "node:path";
@@ -56,9 +52,4 @@ export const config = {
     "Read,Edit,Write,MultiEdit,Bash,Grep,Glob",
   workerPermissionMode: process.env.WORKER_PERMISSION_MODE ?? "acceptEdits",
   workerTimeoutMs: Number(process.env.WORKER_TIMEOUT_MS ?? 0) || null,
-  // Set by index.mjs from CLI flags (--tests / --tests-weight). Env vars
-  // provide the defaults so they can be baked into .env for CI.
-  testsEnabled: false,
-  testsDir: process.env.TESTS_DIR ?? "tests",
-  testsRewardWeight: Number(process.env.TESTS_REWARD_WEIGHT ?? 0.5),
 };

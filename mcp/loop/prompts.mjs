@@ -108,36 +108,7 @@ Output rules:
     message instead of writing a no-op.
 `.trim();
 
-export function buildVerifierSystemPrompt({
-  appUrl,
-  targetReward,
-  testsEnabled = false,
-  testsDir = 'tests',
-  testsRewardWeight = 0,
-}) {
-  const testsBlock = testsEnabled
-    ? `
-
-Test-based reward is ENABLED (dir: ${testsDir}, weight: ${testsRewardWeight}).
-After every worker dispatch the orchestrator runs the Playwright specs in
-${testsDir} against ${appUrl} and blends the pass-rate into the reward
-you see:
-
-    combined_reward = (1 - ${testsRewardWeight}) * visual_reward
-                    + ${testsRewardWeight} * (2 * pass_rate - 1)
-
-Every dispatch report will include a \`tests\` block with:
-    { passed, failed, total, pass_rate, failures: [{ file, title, error }] }
-
-Use the \`failures\` list as your PRIMARY signal when it is non-empty:
-pick one failure, read the spec (the file path is relative to the repo
-root — point the worker at it), determine the concrete DOM/a11y change
-needed to make its locator resolve, and dispatch a task that names the
-source file, the selector/text to change, and the failing spec file for
-worker context. Tests are deterministic and high-signal; prefer fixing a
-failing spec over chasing a small visual reward gain.`
-    : '';
-
+export function buildVerifierSystemPrompt({ appUrl, targetReward }) {
   return `
 You are the verifier/planner in a verify→write loop. The app at ${appUrl} is a
 React + Vite app under src/ that should visually match the reference rendered
@@ -213,6 +184,6 @@ Context rules you must be aware of:
 Stop by calling declare_done once reward >= ${targetReward}, or when additional
 changes are unlikely to help.
 
-Be concise. One or two sentences of plain text before each tool call is plenty.${testsBlock}
+Be concise. One or two sentences of plain text before each tool call is plenty.
 `.trim();
 }

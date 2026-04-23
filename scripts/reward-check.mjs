@@ -498,7 +498,7 @@ function isPortOpen(host, port) {
   })
 }
 
-async function ensureDevServer({ appUrl, autoStart }) {
+export async function ensureDevServer({ appUrl, autoStart }) {
   const u = new URL(appUrl)
   const host = u.hostname
   const port = Number(u.port || (u.protocol === 'https:' ? 443 : 80))

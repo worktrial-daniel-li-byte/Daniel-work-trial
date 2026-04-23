@@ -156,6 +156,84 @@ export class RunLogger {
     return dir;
   }
 
+  // ── Test-harness events (tests-only loop) ──────────────────────────────
+
+  async logListFailures(report) {
+    this.timeline.push({
+      at: new Date().toISOString(),
+      type: "list_failures",
+      passed: report.passed,
+      failed: report.failed,
+      total: report.total,
+      skipped: report.skipped,
+      pass_rate: report.pass_rate,
+      failures: (report.failures ?? []).slice(0, 50),
+      artifact_dir: report.artifact_dir,
+    });
+  }
+
+  async logHarnessDispatch({
+    dispatchNo,
+    mode,
+    task,
+    rationale,
+    targetSpec,
+    targetGrep,
+    workerSummary,
+    focusedReport,
+    improved,
+  }) {
+    const dir = path.join(this.runDir, `dispatch-${pad(dispatchNo)}`);
+    await mkdir(dir, { recursive: true });
+
+    const md = [
+      `# Dispatch ${pad(dispatchNo)} — ${mode} worker`,
+      "",
+      `- **Target spec:**  \`${targetSpec}\``,
+      targetGrep ? `- **Target grep:**  \`${targetGrep}\`` : null,
+      `- **Focused rerun:** ${
+        focusedReport?.error
+          ? `ERROR — ${focusedReport.error}`
+          : `${focusedReport.passed}/${focusedReport.total} passed` +
+            (focusedReport.failed ? ` (${focusedReport.failed} failed)` : "")
+      }`,
+      `- **Improved:** ${improved}`,
+      `- **Worker context next dispatch:** ${improved ? "cleared" : "preserved"}`,
+      "",
+      "## Task",
+      "",
+      task ?? "(none)",
+      "",
+      "## Rationale",
+      "",
+      rationale ?? "(none)",
+      "",
+      "## Worker summary",
+      "",
+      workerSummary || "(no summary)",
+      "",
+    ]
+      .filter(Boolean)
+      .join("\n");
+    await writeFile(path.join(dir, "task.md"), md);
+
+    this.timeline.push({
+      at: new Date().toISOString(),
+      type: "dispatch",
+      n: dispatchNo,
+      mode,
+      target_spec: targetSpec,
+      target_grep: targetGrep ?? null,
+      focused_passed: focusedReport?.passed ?? null,
+      focused_failed: focusedReport?.failed ?? null,
+      focused_total: focusedReport?.total ?? null,
+      focused_error: focusedReport?.error ?? null,
+      improved,
+      dir: path.basename(dir),
+    });
+    return dir;
+  }
+
   async finalize(summary) {
     this.timeline.push({
       at: new Date().toISOString(),

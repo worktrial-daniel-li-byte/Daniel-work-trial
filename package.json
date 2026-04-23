@@ -9,7 +9,6 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "state:load": "node ./scripts/load-initial-state.js",
-    "test:qa": "node ./tests/qa-agent.js",
     "browser-test": "node ./tests/browser-test.js",
     "browser-login": "node ./tests/browser-login.js",
     "capture": "node ./scripts/capture/index.mjs",
@@ -22,8 +21,8 @@
     "mcp:server": "node ./mcp/server/index.mjs",
     "mcp:agent": "node ./mcp/agent/index.mjs",
     "mcp:loop": "node ./mcp/loop/index.mjs",
+    "test-harness": "node ./mcp/test-harness/index.mjs",
     "unit-test-writer": "node ./mcp/test-loop/index.mjs",
-    "inventory-tab": "node ./scripts/inventory-tab.mjs",
     "pw:test": "playwright test"
   },
   "dependencies": {

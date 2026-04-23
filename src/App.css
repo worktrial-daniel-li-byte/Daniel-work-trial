@@ -6,9 +6,9 @@
   --jira-text-muted: #6b6e76;
   --jira-border: rgba(11, 18, 14, 0.14);
   --jira-surface: #ffffff;
-  --jira-board-bg: #F8EEFE;
-  --jira-col-bg: #EED7FC;
-  --jira-col-header-bg: #EED7FC;
+  --jira-board-bg: #FFFFFF;
+  --jira-col-bg: #E9E4F7;
+  --jira-col-header-bg: #E9E4F7;
   --jira-active-tab: #803fa5;
   --jira-sidebar-active: #e9f2fe;
   --jira-sidebar-active-text: #1868db;
@@ -43,7 +43,8 @@
   box-sizing: border-box;
 }
 
-.sr-only {
+.sr-only,
+.vh-sr {
   position: absolute;
   width: 1px;
   height: 1px;
@@ -298,13 +299,13 @@
 }
 
 .jira-pill--trial {
-  color: #6B3FA0;
-  border-color: #d6ccee;
-  background: #F3EFFE;
+  color: #AE4787;
+  border-color: #FFCCE8;
+  background: #FFECF4;
 }
 
 .jira-pill--trial:hover {
-  background: #ece4fd;
+  background: #FFD6ED;
 }
 
 .jira-pill__diamond {
@@ -376,12 +377,12 @@
 .topbar-bell .badge {
   position: absolute;
   top: -2px;
-  right: -6px;
-  background: #8F7EE7;
+  right: -2px;
+  background: #1868DB;
   color: #ffffff;
-  font-size: 11px;
+  font-size: 10px;
   font-weight: 600;
-  padding: 1px 5px;
+  padding: 1px 4px;
   border-radius: 8px;
   line-height: 1.3;
   letter-spacing: 0.02em;
@@ -685,14 +686,14 @@
 
 /* Autoloop row: purple/lavender highlight overrides the default blue */
 .jira-sb-link--autoloop.is-active {
-  background: #E9D5FF;
-  color: #6B46C1;
-  border-left-color: #6B46C1;
+  background: #F3F0FF;
+  color: #5E4DB2;
+  border-left-color: #5E4DB2;
 }
 
 .jira-sb-link--autoloop.is-active .jira-sb-link__label,
 .jira-sb-link--autoloop.is-active .jira-sb-link__icon {
-  color: #6B46C1;
+  color: #5E4DB2;
 }
 
 .jira-workspace {
@@ -733,7 +734,7 @@
   width: 24px;
   height: 24px;
   border-radius: 6px;
-  background: #2684FF;
+  background: #1868DB;
   flex-shrink: 0;
   display: inline-flex;
   align-items: center;
@@ -849,25 +850,25 @@ h2.jira-tab {
 /* Force lavender background on the main workspace and board canvas so they
    match the reference palette. These are large visible regions. */
 .jira-workspace {
-  background-color: #F8EEFE !important;
+  background-color: #FFFFFF !important;
 }
 
 .jira-project-top {
-  background-color: #F8EEFE !important;
+  background-color: #FFFFFF !important;
 }
 
 .jira-board-canvas {
-  background-color: #F8EEFE !important;
+  background-color: #FFFFFF !important;
 }
 
 .jira-body {
-  background-color: #F8EEFE;
+  background-color: #FFFFFF;
 }
 
 main.jira-workspace,
 [data-region="board-canvas"],
 [data-testid="board.content.board-wrapper"] {
-  background-color: #F8EEFE !important;
+  background-color: #FFFFFF !important;
 }
 
 .jira-field {
@@ -938,7 +939,7 @@ main.jira-workspace,
 .jira-col {
   width: 272px;
   flex-shrink: 0;
-  background-color: #EED7FC;
+  background-color: #E9E4F7;
   border-radius: 6px;
   padding: 8px;
   display: flex;
@@ -962,7 +963,7 @@ main.jira-workspace,
   gap: 8px;
   padding: 8px 10px;
   margin: -8px -8px 8px;
-  background: #EED7FC;
+  background: #E9E4F7;
   border-radius: 6px 6px 0 0;
   font-weight: 500;
   font-size: 14px;
@@ -1011,6 +1012,45 @@ main.jira-workspace,
   margin-left: auto;
 }
 
+.jira-col__more-actions-btn {
+  opacity: 0;
+  transition: opacity 0.1s;
+}
+
+.jira-col__head:hover .jira-col__more-actions-btn,
+.jira-col__more-actions-btn[aria-expanded="true"] {
+  opacity: 1;
+}
+
+.jira-col__collapse-btn {
+  opacity: 0;
+  transition: opacity 0.1s;
+  margin-left: auto;
+}
+
+.jira-col__head:hover .jira-col__collapse-btn {
+  opacity: 1;
+}
+
+.jira-col--collapsed .jira-col__collapse-btn {
+  opacity: 1;
+}
+
+.jira-col__menu {
+  position: absolute;
+  top: calc(100% + 4px);
+  right: 0;
+  z-index: 200;
+  min-width: 180px;
+  background: #fff;
+  border: 1px solid var(--jira-border);
+  border-radius: 6px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  padding: 4px;
+  list-style: none;
+  margin: 0;
+}
+
 .jira-col__cards {
   display: flex;
   flex-direction: column;
@@ -1053,6 +1093,7 @@ main.jira-workspace,
   display: flex;
   flex-direction: column;
   gap: 6px;
+  position: relative;
 }
 
 .jira-card:active {
@@ -1061,6 +1102,19 @@ main.jira-workspace,
 
 .jira-card__actions {
   display: none;
+}
+
+.jira-card__more-btn {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  border: none;
+  background: transparent;
+  color: var(--jira-text-sub);
+  cursor: pointer;
+  border-radius: 3px;
+  padding: 2px 4px;
+  line-height: 1;
 }
 
 .jira-card__action {
@@ -1165,9 +1219,9 @@ main.jira-workspace,
 
 .jira-board-bar__avatar--dl {
   left: 0;
-  background: #2F8F6F;
+  background: #1F845A;
   z-index: 2;
-  box-shadow: 0 0 0 2px #ffffff, 0 0 0 3.5px #2F8F6F;
+  box-shadow: 0 0 0 2px #ffffff, 0 0 0 3.5px #1F845A;
   color: #ffffff;
   font-weight: 700;
 }
@@ -1189,18 +1243,18 @@ main.jira-workspace,
   height: 28px;
   flex-shrink: 0;
   margin-left: 2px;
-  background-color: #1868DB;
+  background-color: transparent;
   border-radius: 6px;
-  color: #ffffff;
+  color: #1868DB;
 }
 
 .jira-sb-brand-logo svg {
-  width: 18px;
-  height: 18px;
+  width: 22px;
+  height: 22px;
 }
 
 .jira-sb-brand-logo svg path {
-  fill: #ffffff !important;
+  fill: #1868DB !important;
   fill-opacity: 1 !important;
 }
 
@@ -1246,6 +1300,10 @@ main.jira-workspace,
   align-items: center;
   gap: 8px;
   width: 100%;
+}
+
+.jira-col__create-icon::before {
+  content: '+';
 }
 
 .jira-col__create:hover {
@@ -1929,7 +1987,7 @@ main.jira-workspace,
 }
 
 .jira-sb-link--goals .jira-sb-link__icon {
-  background: #22A06B;
+  background: #1F845A;
   border-radius: 4px;
   color: #ffffff !important;
 }
@@ -1969,11 +2027,11 @@ main.jira-workspace,
   stroke: #E56910 !important;
 }
 
-/* Notification bell "3+" badge — purple */
+/* Notification bell "3+" badge — Atlassian blue */
 .topbar-bell .badge,
 .jira-notif-badge,
 .jira-topbar__badge {
-  background: #8F7EE7 !important;
+  background: #1868DB !important;
   color: #ffffff !important;
 }
 
@@ -2048,6 +2106,10 @@ button.jira-btn--primary *,
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  position: relative;
+  width: 28px;
+  height: 28px;
+  flex-shrink: 0;
 }
 
 .jira-board-bar__avatar-btn:hover {

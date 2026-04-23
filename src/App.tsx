@@ -391,7 +391,7 @@ type Card = {
   title: string
   description: string
   priority: PriorityId
-  assigneeId: string
+  assigneeId: string | null
   createdAt: number
 }
 
@@ -416,10 +416,10 @@ const INITIAL_COLUMNS: Column[] = [
       {
         id: 'card-aut-1',
         key: 'AUT-1',
-        title: 'This is a test',
-        description: '',
+        title: 'Design autonomous replanning loop',
+        description: 'Define the state machine for the replanner',
         priority: 'medium',
-        assigneeId: 'fleet',
+        assigneeId: null,
         createdAt: Date.now(),
       },
     ],
@@ -456,7 +456,7 @@ type AppState = {
 }
 
 const STORAGE_KEY = 'jira-autoloop-v1'
-const STORAGE_VERSION = 2
+const STORAGE_VERSION = 4
 
 function loadState(): AppState {
   const fallback: AppState = {
@@ -562,6 +562,7 @@ export default function App() {
   const [dropTarget, setDropTarget] = useState<{ groupKey: string } | null>(null)
   const [showTopSearchResults, setShowTopSearchResults] = useState(false)
   const [toast, setToast] = useState<string | null>(null)
+  const [showCreateStatusModal, setShowCreateStatusModal] = useState(false)
 
   const topSearchRef = useRef<HTMLInputElement | null>(null)
   const boardSearchRef = useRef<HTMLInputElement | null>(null)
@@ -583,6 +584,17 @@ export default function App() {
       window.history.replaceState({}, '', url.toString())
     }
   }, [groupBy])
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return
+    const url = new URL(window.location.href)
+    const groupByVal = url.searchParams.get('groupBy') ?? groupBy
+    const term = boardSearch.trim()
+    const filterParam = term
+      ? `(summary%20~%20%27${encodeURIComponent(term)}*%27%20OR%20description%20~%20%27${encodeURIComponent(term)}*%27)`
+      : ''
+    window.history.replaceState({}, '', `${url.pathname}?filter=${filterParam}&groupBy=${groupByVal}`)
+  }, [boardSearch, groupBy])
 
   useEffect(() => {
     if (!toast) return
@@ -635,7 +647,7 @@ export default function App() {
   const filteredCards = useMemo(() => {
     const q = boardSearch.trim().toLowerCase()
     return allCards.filter((card) => {
-      if (filters.assignees.length && !filters.assignees.includes(card.assigneeId)) return false
+      if (filters.assignees.length && !filters.assignees.includes(card.assigneeId ?? '')) return false
       if (filters.priorities.length && !filters.priorities.includes(card.priority)) return false
       if (q) {
         const haystack = `${card.title} ${card.key}`.toLowerCase()
@@ -707,6 +719,12 @@ export default function App() {
 
   function openCardDetail(cardId: string) {
     setCardDetailId(cardId)
+    const card = columns.flatMap((c) => c.cards).find((c) => c.id === cardId)
+    if (card && typeof window !== 'undefined') {
+      const url = new URL(window.location.href)
+      url.searchParams.set('selectedIssue', card.key)
+      window.history.pushState({}, '', url.toString())
+    }
   }
 
   function closeComposer() {
@@ -797,9 +815,14 @@ export default function App() {
   }
 
   function addColumn() {
-    const title = window.prompt('New column name')?.trim()
-    if (!title) return
-    setColumns((cols) => [...cols, { id: newId('col'), title, cards: [] }])
+    setShowCreateStatusModal(true)
+  }
+
+  function submitCreateStatus(title: string) {
+    const trimmed = title.trim()
+    if (!trimmed) return
+    setColumns((cols) => [...cols, { id: newId('col'), title: trimmed, cards: [] }])
+    setShowCreateStatusModal(false)
   }
 
   function renameColumn(columnId: string, title: string) {
@@ -908,123 +931,104 @@ export default function App() {
               */}
               <div data-region="project-header" data-testid="horizontal-nav-header.ui.project-header.header" style={{display:'flex', alignItems:'center', gap:'8px', marginBottom:'8px'}}>
 
-                {/* col1 — icon (D01>D02>D03>D04>D05) */}
-                <div style={{display:'contents'}}>
-                  <div style={{display:'contents'}}>
-                    <div style={{display:'contents'}}>
-                      <div style={{display:'contents'}}>
-                        <div style={{display:'contents'}}>
-                          <img
-                            alt=""
-                            src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg'/>"
-                            data-testid="navigation-apps-sidebar-inline-config-project-header.ui.editable-avatar.project-icon-editable--image"
-                            style={{display:'none'}}
-                          />
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+                {/* Child 1: project avatar — div×4 > img */}
+                <div><div><div><div>
+                  <img
+                    alt=""
+                    src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg'/>"
+                    data-testid="navigation-apps-sidebar-inline-config-project-header.ui.editable-avatar.project-icon-editable--image"
+                    style={{display:'none'}}
+                  />
+                </div></div></div></div>
 
-                {/* col2 — form/title (D01>D02 form>…>D09 read-view then visible content) */}
-                <div style={{minWidth:0, flex:'0 1 auto'}}>
-                  <form role="presentation" style={{display:'contents'}} onSubmit={e=>e.preventDefault()}>
-                    <div style={{display:'contents'}}>
-                      <div style={{display:'contents'}}>
-                        <div style={{display:'contents'}}>
-                          <div style={{display:'contents'}}>
-                            <div style={{display:'contents'}}>
-                              <div style={{display:'contents'}}>
-                                <div style={{display:'contents'}}>
-                                  <div data-testid="horizontal-nav-header.common.ui.read-view" style={{display:'contents'}}></div>
-                                  <div className="jira-eyebrow"><span><span>Spaces</span></span></div>
-                                  <div className="jira-title-row">
-                                    <span className="jira-project-swatch" aria-hidden>
-                                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M6.5 19a4.5 4.5 0 0 1-.5-8.97A6 6 0 0 1 17.8 9.1 4 4 0 0 1 17 17H6.5z" fill="white"/>
-                                      </svg>
-                                    </span>
-                                    <h1 className="jira-project-name">Autoloop</h1>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
+                {/* Child 2: project name — div > form > div > div > [button(overlay) + div[role=presentation] > div > h1 > div[read-view]] */}
+                <div>
+                  <form role="presentation" onSubmit={e=>e.preventDefault()}>
+                    <div><div>
+                      <button
+                        aria-label="Edit, Space name"
+                        type="button"
+                        style={{position:'absolute',inset:0,opacity:0,pointerEvents:'auto',border:0,background:'transparent'}}
+                        onClick={() => flash('Rename project (demo).')}
+                      />
+                      <div role="presentation">
+                        <div>
+                          <h1 aria-expanded="false" aria-haspopup="true" className="jira-project-name">
+                            <div data-testid="horizontal-nav-header.common.ui.read-view">Autoloop</div>
+                          </h1>
                         </div>
                       </div>
-                    </div>
+                    </div></div>
                   </form>
                 </div>
 
-                {/* col3 — teams + action-menu (D01>D02>D03[team-button-trigger]>D03>D05[action-menu]) */}
-                <div style={{display:'contents'}}>
-                  <div style={{display:'contents'}}>
-                    <div style={{display:'contents'}}>
+                {/* Child 3: team + action-menu — div > [div>button[team] + div>div[role=pres]>button[action-menu]] */}
+                <div>
+                  <div>
+                    <button
+                      type="button"
+                      data-testid="team-button-trigger"
+                      className="jira-icon-btn jira-tiny"
+                      aria-haspopup="dialog"
+                      aria-label="Link contributing teams"
+                      title="Link contributing teams"
+                      onClick={() => flash('Teams (demo).')}
+                    >
+                      <span aria-hidden="true">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round">
+                          <title>Link contributing teams</title>
+                          <circle cx="9" cy="9" r="3" />
+                          <circle cx="17" cy="10" r="2.5" />
+                          <path d="M3 19c0-3 3-5 6-5s6 2 6 5" />
+                          <path d="M15 19c0-2 2-3.5 4-3.5s2 .5 2 2" />
+                        </svg>
+                      </span>
+                    </button>
+                  </div>
+                  <div>
+                    <div role="presentation">
                       <button
                         type="button"
-                        data-testid="team-button-trigger"
+                        data-testid="navigation-project-action-menu.ui.themed-button"
                         className="jira-icon-btn jira-tiny"
-                        aria-label="Link contributing teams"
-                        title="Link contributing teams"
-                        onClick={() => flash('Teams (demo).')}
+                        aria-label="More actions"
+                        aria-expanded="false"
+                        aria-haspopup="true"
+                        title="More actions"
+                        onClick={() => toggleMenu('project-actions')}
                       >
-                        <span className="icon-wrap">
-                          <span className="sr-only">Team</span>
-                          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round">
-                            <title>Link contributing teams</title>
-                            <circle cx="9" cy="9" r="3" />
-                            <circle cx="17" cy="10" r="2.5" />
-                            <path d="M3 19c0-3 3-5 6-5s6 2 6 5" />
-                            <path d="M15 19c0-2 2-3.5 4-3.5s2 .5 2 2" />
+                        <span><span role="img" aria-label="More actions">
+                          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                            <title>More actions</title>
+                            <circle cx="5" cy="12" r="2" />
+                            <circle cx="12" cy="12" r="2" />
+                            <circle cx="19" cy="12" r="2" />
                           </svg>
-                        </span>
+                        </span></span>
                       </button>
-                    </div>
-                    <div style={{display:'contents'}}>
-                      <div style={{display:'contents'}}>
-                        <div style={{display:'contents'}}>
-                          <div className="jira-rel">
-                            <button
-                              type="button"
-                              data-testid="navigation-project-action-menu.ui.themed-button"
-                              className="jira-icon-btn jira-tiny"
-                              aria-label="More actions"
-                              title="More actions"
-                              onClick={() => toggleMenu('project-actions')}
-                            >
-                              <span role="img" aria-label="More actions">
-                                <span className="sr-only">More actions</span>
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-                                  <title>More actions</title>
-                                  <circle cx="5" cy="12" r="2" />
-                                  <circle cx="12" cy="12" r="2" />
-                                  <circle cx="19" cy="12" r="2" />
-                                </svg>
-                              </span>
-                            </button>
-                            <Popover open={openMenu === 'project-actions'} onClose={() => setOpenMenu(null)} align="left">
-                              <MenuButton onClick={() => { flash('Project settings are not implemented in this demo.'); setOpenMenu(null) }}>Project settings</MenuButton>
-                              <MenuButton onClick={() => { flash('Starred Autoloop.'); setOpenMenu(null) }}>Star project</MenuButton>
-                              <MenuButton onClick={() => { copyBoardLink(); setOpenMenu(null) }}>Copy board link</MenuButton>
-                            </Popover>
-                          </div>
-                        </div>
-                      </div>
+                      <Popover open={openMenu === 'project-actions'} onClose={() => setOpenMenu(null)} align="left">
+                        <MenuButton onClick={() => { flash('Project settings are not implemented in this demo.'); setOpenMenu(null) }}>Project settings</MenuButton>
+                        <MenuButton onClick={() => { flash('Starred Autoloop.'); setOpenMenu(null) }}>Star project</MenuButton>
+                        <MenuButton onClick={() => { copyBoardLink(); setOpenMenu(null) }}>Copy board link</MenuButton>
+                      </Popover>
                     </div>
                   </div>
                 </div>
 
-                {/* col4 — right buttons: D01>D02[button, div[pres], div[pres]>span>btn[feedback], span>btn[fullscreen]] */}
-                <div className="actions-inner" style={{display:'flex', alignItems:'center', gap:'4px', marginLeft:'auto', flexShrink:0}}>
+                {/* Child 4: share + automation — div > [button[share] + div[role=pres]>button[automation] + ...] */}
+                <div className="actions-inner" style={{marginLeft:'auto', display:'flex', alignItems:'center', gap:'4px', flexShrink:0}}>
                   <button
                     type="button"
+                    id="po-spotlight-share-button"
+                    data-vc="share-button"
                     className="jira-icon-btn jira-tiny"
                     aria-label="Share"
+                    aria-expanded="false"
+                    aria-haspopup="true"
                     title="Share"
                     onClick={() => flash('Share (demo).')}
                   >
-                    <span role="img" aria-label="Share">
-                      <span className="sr-only">Share</span>
+                    <span><span role="img" aria-label="Share">
                       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round">
                         <title>Share</title>
                         <circle cx="6" cy="12" r="2.5" />
@@ -1032,21 +1036,29 @@ export default function App() {
                         <circle cx="18" cy="18" r="2.5" />
                         <path d="M8 11l8-4M8 13l8 4" />
                       </svg>
-                    </span>
+                    </span></span>
                   </button>
-                  <div role="presentation" style={{display:'contents'}}>
-                    <button type="button" className="jira-icon-btn jira-tiny" aria-label="Automation" title="Automation" onClick={() => flash('Automation (demo).')}>
-                      <span role="img" aria-label="Automation">
-                        <span className="sr-only">Automation</span>
+                  <div role="presentation">
+                    <button
+                      type="button"
+                      data-vc="automation-menu-button"
+                      className="jira-icon-btn jira-tiny"
+                      aria-label="Automation"
+                      aria-expanded="false"
+                      aria-haspopup="true"
+                      title="Automation"
+                      onClick={() => flash('Automation (demo).')}
+                    >
+                      <span><span role="img" aria-label="Automation">
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round">
                           <title>Automation</title>
                           <path d="M13 3L4 14h7l-1 7 9-11h-7l1-7z" />
                         </svg>
-                      </span>
+                      </span></span>
                     </button>
                   </div>
-                  <div role="presentation" style={{display:'contents'}}>
-                    <span style={{display:'contents'}}>
+                  <div role="presentation">
+                    <span>
                       <button
                         type="button"
                         data-testid="feedback-button.horizontal-nav-feedback-button"
@@ -1065,7 +1077,7 @@ export default function App() {
                       </button>
                     </span>
                   </div>
-                  <span style={{display:'contents'}}>
+                  <span>
                     <button
                       type="button"
                       data-testid="platform.ui.fullscreen-button.fullscreen-button"
@@ -1106,9 +1118,8 @@ export default function App() {
                                   title={tab}
                                   aria-label={tab}
                                 >
-                                  <span className="jira-tab__icon tab-icon" aria-hidden><span className="icon-wrap"><TabIcon tab={tab} /></span></span>
-                                  <span className="tab-text"><span>{tab}</span></span>
-                                  <span style={{display:'contents'}}><button type="button" className="sr-only" aria-label={`${tab} tab options`} onClick={() => {}}><span className="sr-only">Tab options</span></button></span>
+                                  <div style={{display:'flex'}}><span aria-hidden><TabIcon tab={tab} /></span></div>
+                                  <span>{tab}</span>
                                 </h2>
                               ) : (
                                 <a
@@ -1120,11 +1131,11 @@ export default function App() {
                                   aria-label={tab}
                                   onClick={(e) => { e.preventDefault(); setActiveTab(tab) }}
                                 >
-                                  <span className="jira-tab__icon tab-icon" aria-hidden><span className="icon-wrap"><TabIcon tab={tab} /></span></span>
-                                  <span className="tab-text"><span>{tab}</span></span>
-                                  <span style={{display:'contents'}}><button type="button" className="sr-only" aria-label={`${tab} tab options`} onClick={() => {}}><span className="sr-only">Tab options</span></button></span>
+                                  <div style={{display:'flex'}}><span aria-hidden><TabIcon tab={tab} /></span></div>
+                                  <span>{tab}</span>
                                 </a>
                               )}
+                              <div><span><button type="button" className="sr-only" aria-label={`${tab} tab options`}><span><span></span><span></span></span></button></span></div>
                             </div>
                           </div>
                         </div>
@@ -1138,18 +1149,31 @@ export default function App() {
                         <div style={{display:'contents'}}>
                           <div style={{display:'contents'}}>
                             <div style={{display:'contents'}}>
-                              <a
-                                data-testid="navigation-kit-ui-tab.ui.link-tab"
-                                role="link"
-                                href="#"
-                                className={activeTab === 'Pages' ? 'jira-tab is-active' : 'jira-tab'}
-                                title="Pages"
-                                aria-label="Pages"
-                                onClick={(e) => { e.preventDefault(); setActiveTab('Pages') }}
-                              >
-                                <span className="tab-text"><span>Pages</span></span>
-                                <span style={{display:'contents'}}><button type="button" className="sr-only" aria-label="Pages tab options" onClick={() => {}}><span className="sr-only">Tab options</span></button></span>
-                              </a>
+                              {activeTab === 'Pages' ? (
+                                <h2
+                                  data-testid="navigation-kit-ui-tab.ui.link-tab.non-interactive-tab"
+                                  className="jira-tab is-active"
+                                  title="Pages"
+                                  aria-label="Pages"
+                                >
+                                  <div style={{display:'flex'}}><span aria-hidden><TabIcon tab="Pages" /></span></div>
+                                  <span>Pages</span>
+                                </h2>
+                              ) : (
+                                <a
+                                  data-testid="navigation-kit-ui-tab.ui.link-tab"
+                                  role="link"
+                                  href="#"
+                                  className="jira-tab"
+                                  title="Pages"
+                                  aria-label="Pages"
+                                  onClick={(e) => { e.preventDefault(); setActiveTab('Pages') }}
+                                >
+                                  <div style={{display:'flex'}}><span aria-hidden><TabIcon tab="Pages" /></span></div>
+                                  <span>Pages</span>
+                                </a>
+                              )}
+                              <div><span><button type="button" className="sr-only" aria-label="Pages tab options"><span><span></span><span></span></span></button></span></div>
                             </div>
                           </div>
                         </div>
@@ -1157,21 +1181,22 @@ export default function App() {
                     </li>
                   </div>
                 </ul>
-                {/* More dropdown — div>div>div>div[dropdown-trigger-tab]>button[more-trigger] */}
+                {/* More dropdown — div>div>div>div>div[dropdown-trigger-tab]>button[more-trigger] */}
                 <div style={{display:'contents'}}>
                   <div style={{display:'contents'}}>
                     <div style={{display:'contents'}}>
-                      <div data-testid="navigation-kit-ui-tab.ui.dropdown-trigger-tab.tab-button" style={{display:'contents'}}>
-                        <button
-                          type="button"
-                          data-testid="navigation-kit-ui-tab-list.ui.more-trigger.more-tab"
-                          aria-label="4 more tabs"
-                          className={activeTab === 'More' ? 'jira-tab is-active' : 'jira-tab'}
-                          onClick={() => setActiveTab('More')}
-                        >
-                          <span className="tab-text"><span>More</span></span>
-                          <span className="jira-tab__pill"><span><span>4</span></span></span>
-                        </button>
+                      <div style={{display:'contents'}}>
+                        <div data-testid="navigation-kit-ui-tab.ui.dropdown-trigger-tab.tab-button" style={{display:'contents'}}>
+                          <button
+                            type="button"
+                            data-testid="navigation-kit-ui-tab-list.ui.more-trigger.more-tab"
+                            aria-label="4 more tabs"
+                            className={activeTab === 'More' ? 'jira-tab is-active' : 'jira-tab'}
+                            onClick={() => setActiveTab('More')}
+                          >
+                            <div><div><span><span><span></span></span></span></div></div>
+                          </button>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -1188,7 +1213,7 @@ export default function App() {
                         title="Add view"
                         onClick={() => flash('Tab customization is not implemented in this demo.')}
                       >
-                        +
+                        <span><span role="img"></span></span>
                       </button>
                     </div>
                   </div>
@@ -1198,7 +1223,7 @@ export default function App() {
           </div>{/* end D01 */}
           {activeTab === 'Board' || activeTab === 'List' ? (
             <div className="jira-board-bar" data-region="board-toolbar">
-              <span className="sr-only">Showing all work items</span>
+              <span role="status" className="sr-only">{boardSearch.trim() ? 'Showing filtered work items' : 'Showing all work items'}</span>
               <span className="sr-only">Filter by assignee</span>
               <div className="jira-board-bar__left">
                 <div className="jira-field jira-field--search">
@@ -1211,10 +1236,10 @@ export default function App() {
                   </span>
                   <input
                     ref={boardSearchRef}
-                    type="search"
+                    type="text"
                     placeholder="Search board"
-                    aria-label="Search this board"
-                    title="Search this board"
+                    aria-label="Search board"
+                    title="Search board"
                     value={boardSearch}
                     onChange={(event) => setBoardSearch(event.target.value)}
                   />
@@ -1223,100 +1248,125 @@ export default function App() {
                   className="jira-board-bar__avatar-stack _19itidpf"
                   data-testid="business-filters.ui.filters.assignee-filter"
                 >
-                  <legend style={{display:'none'}}>Assignee</legend>
+                  <legend className="sr-only">Filter by assignee</legend>
                   <div style={{display:'contents'}}>
                     <div style={{display:'contents'}}>
-                      <input type="hidden" readOnly value="" aria-hidden={true} style={{display:'none'}} />
+                      <input
+                        type="checkbox"
+                        aria-label="Daniel Li is online"
+                        value="712020:628f86ff-8aef-4c36-85d6-223e8e929463"
+                        style={{position:'absolute',width:'16px',height:'16px',opacity:0.01,margin:0,cursor:'pointer'}}
+                      />
                       <div data-testid="business-collaboration.ui.presence-filter-avatar.presence-filter-avatar">
-                        <div style={{display:'contents'}}><span style={{display:'contents'}}><img alt="" src="/avatar-dl.png" style={{display:'none'}} /></span></div>
-                        <span style={{display:'contents'}}><span style={{display:'contents'}}><div style={{display:'contents'}}>
+                        <div>
+                          <span><img alt="" src="/avatar-dl.png" style={{display:'none'}} /></span>
                           <span>
-                            <span className="jira-board-bar__avatar jira-board-bar__avatar--dl" aria-hidden>DL</span>
+                            <span role="presentation">
+                              <div aria-hidden className="jira-board-bar__avatar jira-board-bar__avatar--dl">DL</div>
+                            </span>
                           </span>
-                        </div></span></span>
+                        </div>
                       </div>
                     </div>
                   </div>
                 </fieldset>
                 <button
                   type="button"
+                  className={
+                    activeFilterCount
+                      ? 'jira-btn jira-btn--ghost jira-btn--sm is-active'
+                      : 'jira-btn jira-btn--ghost jira-btn--sm'
+                  }
                   data-testid="business-filters.ui.filters.trigger.button-wrapper"
-                  aria-expanded="false"
+                  aria-label={`${activeFilterCount} filters applied`}
                   aria-haspopup="true"
-                  aria-label="0 filters applied"
-                  tabIndex={0}
-                  className="jira-board-bar__avatar-btn"
+                  aria-expanded={openMenu === 'filter' ? 'true' : 'false'}
+                  title="Filter"
+                  onClick={() => toggleMenu('filter')}
                 >
                   <span>
-                    <span>
-                      <span className="jira-board-bar__avatar jira-board-bar__avatar--dl" aria-hidden>DL</span>
-                    </span>
+                    <div>
+                      <div>
+                        <span>Filter</span>
+                      </div>
+                    </div>
+                  </span>
+                  <span>
+                    <span></span>
                   </span>
                 </button>
-                <div className="jira-rel">
-                  <button
-                    type="button"
-                    className={
-                      activeFilterCount
-                        ? 'jira-btn jira-btn--ghost jira-btn--sm is-active'
-                        : 'jira-btn jira-btn--ghost jira-btn--sm'
-                    }
-                    aria-label="Filter"
-                    title="Filter"
-                    onClick={() => toggleMenu('filter')}
-                  >
-                    <span className="filter-icon" aria-hidden />
-                    <span>Filter</span>
-                    {activeFilterCount ? (
-                      <span className="jira-count-badge">{activeFilterCount}</span>
-                    ) : null}
-                    <span>
-                      <svg className="jira-chevron" width="10" height="10" viewBox="0 0 24 24" fill="currentColor">
-                        <title>Filter</title>
-                        <path d="M7 10l5 5 5-5H7z" />
-                      </svg>
-                    </span>
-                  </button>
+                <div className="jira-rel" style={{display:'contents'}}>
                   <Popover open={openMenu === 'filter'} onClose={() => setOpenMenu(null)} align="left" className="jira-popover--wide">
-                    <div className="jira-popover__section">
-                      <div className="jira-popover__title">Assignee</div>
-                      {USERS.map((user) => {
-                        const active = filters.assignees.includes(user.id)
-                        return (
-                          <label key={user.id} className="jira-popover__option">
-                            <input
-                              type="checkbox"
-                              checked={active}
-                              onChange={() =>
-                                setFilters((f) => ({ ...f, assignees: toggleFilter(f.assignees, user.id) }))
-                              }
-                            />
-                            <Avatar user={user} size="sm" />
-                            <span>{user.name}</span>
-                          </label>
-                        )
-                      })}
+                    <div style={{padding:'16px 16px 8px'}}>
+                      <h2 style={{margin:'0 0 4px',fontSize:'16px',fontWeight:600}}>Filters</h2>
+                      <p style={{margin:'0 0 12px',fontSize:'12px',color:'#6b778c'}}>Clicking on the items below will filter and update your view</p>
+                      <div style={{display:'flex',gap:'8px',marginBottom:'16px'}}>
+                        <button type="button" className="jira-btn jira-btn--ghost jira-btn--sm" onClick={() => setFilters((f) => ({ ...f, assignees: ['fleet'] }))}>Assigned to me</button>
+                        <button type="button" className="jira-btn jira-btn--ghost jira-btn--sm" onClick={() => flash('Due this week filter applied.')}>Due this week</button>
+                      </div>
                     </div>
                     <div className="jira-popover__section">
-                      <div className="jira-popover__title">Priority</div>
-                      {PRIORITIES.map((priority) => {
-                        const active = filters.priorities.includes(priority.id)
-                        return (
-                          <label key={priority.id} className="jira-popover__option">
-                            <input
-                              type="checkbox"
-                              checked={active}
-                              onChange={() =>
-                                setFilters((f) => ({
-                                  ...f,
-                                  priorities: toggleFilter(f.priorities, priority.id),
-                                }))
-                              }
-                            />
-                            <PriorityIcon id={priority.id} withLabel />
-                          </label>
-                        )
-                      })}
+                      <h3 style={{margin:'0 0 8px',fontSize:'13px',fontWeight:600}}>Date range</h3>
+                      <div style={{display:'flex',gap:'8px',marginBottom:'8px'}}>
+                        <button type="button" className="jira-btn jira-btn--ghost jira-btn--sm" aria-label="Start date, Open calendar" onClick={() => flash('Start date picker.')}>Start date</button>
+                        <button type="button" className="jira-btn jira-btn--ghost jira-btn--sm" aria-label="Due date, Open calendar" onClick={() => flash('Due date picker.')}>Due date</button>
+                      </div>
+                    </div>
+                    <div className="jira-popover__section">
+                      <h3 style={{margin:'0 0 8px',fontSize:'13px',fontWeight:600}}>Assignee</h3>
+                      <div style={{display:'flex',flexWrap:'wrap',gap:'6px',marginBottom:'4px'}}>
+                        {USERS.map((user) => {
+                          const active = filters.assignees.includes(user.id)
+                          return (
+                            <button
+                              key={user.id}
+                              type="button"
+                              className={active ? 'jira-board-bar__avatar-btn is-active' : 'jira-board-bar__avatar-btn'}
+                              aria-pressed={active ? 'true' : 'false'}
+                              onClick={() => setFilters((f) => ({ ...f, assignees: toggleFilter(f.assignees, user.id) }))}
+                            >
+                              <Avatar user={user} size="sm" />
+                              <span className="sr-only">{user.name}</span>
+                            </button>
+                          )
+                        })}
+                        <button type="button" className="jira-btn jira-btn--ghost jira-btn--sm" aria-label="More options for assignee" onClick={() => flash('More assignee options.')}>+</button>
+                      </div>
+                    </div>
+                    <div className="jira-popover__section">
+                      <h3 style={{margin:'0 0 8px',fontSize:'13px',fontWeight:600}}>Category</h3>
+                      <button type="button" className="jira-btn jira-btn--ghost jira-btn--sm" onClick={() => flash('No category filter.')}>No category</button>
+                    </div>
+                    <div className="jira-popover__section">
+                      <h3 style={{margin:'0 0 8px',fontSize:'13px',fontWeight:600}}>Created</h3>
+                      <div style={{display:'flex',gap:'8px',marginBottom:'8px'}}>
+                        <button type="button" className="jira-btn jira-btn--ghost jira-btn--sm" aria-label="From, Open calendar" onClick={() => flash('Created from date picker.')}>From</button>
+                        <button type="button" className="jira-btn jira-btn--ghost jira-btn--sm" aria-label="To, Open calendar" onClick={() => flash('Created to date picker.')}>To</button>
+                      </div>
+                    </div>
+                    <div className="jira-popover__section">
+                      <h3 style={{margin:'0 0 8px',fontSize:'13px',fontWeight:600}}>Labels</h3>
+                      <button type="button" className="jira-btn jira-btn--ghost jira-btn--sm" onClick={() => flash('No label filter.')}>No label</button>
+                    </div>
+                    <div className="jira-popover__section">
+                      <h3 style={{margin:'0 0 8px',fontSize:'13px',fontWeight:600}}>Priority</h3>
+                      <div style={{display:'flex',flexWrap:'wrap',gap:'6px',marginBottom:'4px'}}>
+                        {PRIORITIES.map((priority) => {
+                          const active = filters.priorities.includes(priority.id)
+                          return (
+                            <button
+                              key={priority.id}
+                              type="button"
+                              className={active ? 'jira-btn jira-btn--ghost jira-btn--sm is-active' : 'jira-btn jira-btn--ghost jira-btn--sm'}
+                              aria-pressed={active ? 'true' : 'false'}
+                              onClick={() => setFilters((f) => ({ ...f, priorities: toggleFilter(f.priorities, priority.id) }))}
+                            >
+                              <PriorityIcon id={priority.id} />
+                              <span>{priority.label}</span>
+                            </button>
+                          )
+                        })}
+                      </div>
                     </div>
                     <div className="jira-popover__footer">
                       <button
@@ -1375,37 +1425,56 @@ export default function App() {
                   <button
                     type="button"
                     className="jira-icon-btn"
-                    aria-label="Board settings"
-                    title="Board settings"
+                    aria-label="View settings"
+                    title="View settings"
+                    aria-pressed={openMenu === 'view-options' ? 'true' : 'false'}
                     onClick={() => toggleMenu('view-options')}
                   >
-                    <span className="sr-only">View settings</span>
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" opacity="0.7">
                       <title>View settings</title>
                       <path d="M4 4h4v4H4V4zm6 0h4v4h-4V4zm6 0h4v4h-4V4zM4 10h4v4H4v-4zm6 0h4v4h-4v-4zm6 0h4v4h-4v-4zM4 16h4v4H4v-4zm6 0h4v4h-4v-4zm6 0h4v4h-4v-4z" />
                     </svg>
+                    <span className="vh-sr">View settings</span>
                   </button>
-                  <Popover open={openMenu === 'view-options'} onClose={() => setOpenMenu(null)}>
-                    <MenuButton
-                      selected={activeTab === 'Board'}
-                      onClick={() => {
-                        setActiveTab('Board')
-                        setOpenMenu(null)
-                      }}
-                    >
-                      Board
-                    </MenuButton>
-                    <MenuButton
-                      selected={activeTab === 'List'}
-                      onClick={() => {
-                        setActiveTab('List')
-                        setOpenMenu(null)
-                      }}
-                    >
-                      List
-                    </MenuButton>
-                  </Popover>
                 </div>
+                {openMenu === 'view-options' ? (
+                  <aside
+                    role="complementary"
+                    aria-label="Sidebar"
+                    style={{position:'fixed',top:0,right:0,bottom:0,width:'280px',background:'#fff',boxShadow:'-2px 0 8px rgba(0,0,0,0.15)',zIndex:200,display:'flex',flexDirection:'column',overflow:'auto'}}
+                  >
+                    <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',padding:'16px',borderBottom:'1px solid #dfe1e6'}}>
+                      <h2 style={{margin:0,fontSize:'16px',fontWeight:600}}>View settings</h2>
+                      <div style={{display:'flex',gap:'4px'}}>
+                        <button type="button" aria-label="Resize sidebar" style={{background:'none',border:'none',cursor:'pointer',padding:'4px',fontSize:'14px'}} onClick={() => flash('Resize sidebar.')}>⟺</button>
+                        <button type="button" aria-label="Close" style={{background:'none',border:'none',cursor:'pointer',padding:'4px',fontSize:'14px'}} onClick={() => setOpenMenu(null)}>✕</button>
+                      </div>
+                    </div>
+                    <div style={{padding:'16px'}}>
+                      <fieldset style={{border:'none',padding:0,margin:0}}>
+                        <legend style={{fontSize:'13px',fontWeight:600,marginBottom:'8px'}}>Show fields</legend>
+                        <label style={{display:'flex',alignItems:'center',gap:'8px',marginBottom:'6px',cursor:'not-allowed'}}>
+                          <input type="checkbox" aria-label="Summary" checked readOnly disabled style={{cursor:'not-allowed'}} />
+                          <span>Summary</span>
+                        </label>
+                        <label style={{display:'flex',alignItems:'center',gap:'8px',marginBottom:'6px',cursor:'pointer'}}>
+                          <input type="checkbox" aria-label="Assignee" defaultChecked />
+                          <span>Assignee</span>
+                        </label>
+                        <label style={{display:'flex',alignItems:'center',gap:'8px',marginBottom:'6px',cursor:'pointer'}}>
+                          <input type="checkbox" aria-label="Priority" defaultChecked />
+                          <span>Priority</span>
+                        </label>
+                      </fieldset>
+                      <div style={{marginTop:'16px'}}>
+                        <span style={{fontSize:'13px',fontWeight:500}}>Hide done work items after:</span>
+                        <div style={{marginTop:'6px',padding:'6px 10px',border:'1px solid #dfe1e6',borderRadius:'4px',fontSize:'13px',cursor:'pointer'}} onClick={() => flash('Hide done items setting.')}>
+                          <span>Never</span>
+                        </div>
+                      </div>
+                    </div>
+                  </aside>
+                ) : null}
                 {groupBy !== 'status' ? (
                   <button
                     type="button"
@@ -1427,32 +1496,22 @@ export default function App() {
                   <button
                     type="button"
                     className="jira-icon-btn"
-                    aria-label="More board actions"
-                    title="More board actions"
+                    aria-label="More actions"
+                    title="More actions"
+                    aria-haspopup="true"
+                    aria-expanded={openMenu === 'board-more' ? 'true' : 'false'}
                     onClick={() => toggleMenu('board-more')}
                   >
-                    <span className="sr-only">More actions</span>
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" opacity="0.7">
-                      <title>More board actions</title>
+                      <title>More actions</title>
                       <circle cx="5" cy="12" r="1.6" />
                       <circle cx="12" cy="12" r="1.6" />
                       <circle cx="19" cy="12" r="1.6" />
                     </svg>
                   </button>
-                  <Popover open={openMenu === 'board-more'} onClose={() => setOpenMenu(null)}>
-                    <MenuButton onClick={() => { resetBoard(); setOpenMenu(null) }}>Reset sample data</MenuButton>
-                    <MenuButton onClick={() => { exportBoard(); setOpenMenu(null) }}>Export as JSON</MenuButton>
-                    <MenuButton
-                      onClick={() => {
-                        setFilters({ assignees: [], priorities: [] })
-                        setBoardSearch('')
-                        setGroupBy('status')
-                        setOpenMenu(null)
-                        flash('View reset')
-                      }}
-                    >
-                      Reset view
-                    </MenuButton>
+                  <Popover open={openMenu === 'board-more'} onClose={() => setOpenMenu(null)} ariaLabel="More actions on board view">
+                    <MenuButton onClick={() => { flash('Stand-up view opened.'); setOpenMenu(null) }}>Stand-up</MenuButton>
+                    <MenuButton onClick={() => { flash('Configure columns opened.'); setOpenMenu(null) }}>Configure columns</MenuButton>
                   </Popover>
                 </div>
               </div>
@@ -1495,11 +1554,14 @@ export default function App() {
                 },
               })
             }}
+            onUpdateCard={updateCard}
             dropTarget={dropTarget}
             onDragStart={handleDragStart}
             onDragOver={handleDragOver}
             onDragEnd={handleDragEnd}
             onDrop={handleDrop}
+            searchTerm={boardSearch}
+            onClearSearch={() => setBoardSearch('')}
           />
         ) : null}
 
@@ -1624,7 +1686,7 @@ export default function App() {
                 onClick={() => flash('App switcher (demo).')}
               >
                 <span className="icon-wrap"><span>
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="#1868DB">
                     <title>App switcher</title>
                     <rect x="3" y="3" width="7" height="7" rx="1" />
                     <rect x="14" y="3" width="7" height="7" rx="1" />
@@ -1639,9 +1701,9 @@ export default function App() {
                 <div className="brand">
                   <div style={{display:'contents'}}>
                     <span className="jira-sb-brand-logo" aria-hidden data-testid="atlassian-navigation--product-home--icon--wrapper">
-                      <svg width="18" height="18" viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg">
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="#1868DB" xmlns="http://www.w3.org/2000/svg">
                         <title>Jira</title>
-                        <path d="M11.53 2 2 11.53a.67.67 0 0 0 0 .94l5.77 5.77a.67.67 0 0 0 .94 0L12 15l3.29 3.29a.67.67 0 0 0 .94 0L22 12.47a.67.67 0 0 0 0-.94L12.47 2a.67.67 0 0 0-.94 0Z"/>
+                        <path d="M11.53 2 2 11.53a.67.67 0 0 0 0 .94l5.77 5.77a.67.67 0 0 0 .94 0L12 15l3.29 3.29a.67.67 0 0 0 .94 0L22 12.47a.67.67 0 0 0 0-.94L12.47 2a.67.67 0 0 0-.94 0Z" fill="#1868DB"/>
                       </svg>
                     </span>
                   </div>
@@ -1743,15 +1805,14 @@ export default function App() {
             onClick={() => flash('Premium trial: thanks for the interest!')}
           >
             <span className="btn-icon"><span className="jira-pill__diamond" aria-hidden>
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
+              <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
                 <defs>
                   <linearGradient id="premGrad" x1="0" y1="0" x2="1" y2="1">
-                    <stop offset="0%" stopColor="#8B46FF" />
-                    <stop offset="50%" stopColor="#A259FF" />
-                    <stop offset="100%" stopColor="#C084FC" />
+                    <stop offset="0%" stopColor="#8B5CF6" />
+                    <stop offset="100%" stopColor="#EC4899" />
                   </linearGradient>
                 </defs>
-                <path d="M12 2 L22 12 L12 22 L2 12 Z" fill="url(#premGrad)" />
+                <path d="M8 0 L16 6 L8 16 L0 6 Z" fill="url(#premGrad)" />
               </svg>
             </span></span>
             <span className="btn-text">Premium trial</span>
@@ -1766,25 +1827,10 @@ export default function App() {
                 onClick={() => flash('Rovo says: ship it.')}
               >
                 <span><span role="img" className="jira-rovo-cube" aria-hidden>
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
-                    <defs>
-                      <linearGradient id="rovoA" x1="0" y1="0" x2="1" y2="1">
-                        <stop offset="0%" stopColor="#ff5630" />
-                        <stop offset="50%" stopColor="#ffab00" />
-                        <stop offset="100%" stopColor="#ff7452" />
-                      </linearGradient>
-                      <linearGradient id="rovoB" x1="0" y1="1" x2="1" y2="0">
-                        <stop offset="0%" stopColor="#0065ff" />
-                        <stop offset="100%" stopColor="#4c9aff" />
-                      </linearGradient>
-                      <linearGradient id="rovoC" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="0%" stopColor="#36b37e" />
-                        <stop offset="100%" stopColor="#00b8d9" />
-                      </linearGradient>
-                    </defs>
-                    <path d="M12 2 L22 7 L12 12 L2 7 Z" fill="url(#rovoA)" />
-                    <path d="M12 12 L22 7 L22 17 L12 22 Z" fill="url(#rovoB)" />
-                    <path d="M12 12 L2 7 L2 17 L12 22 Z" fill="url(#rovoC)" />
+                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                    <polygon points="8,1 15,5 8,9 1,5" fill="#6366F1"/>
+                    <polygon points="1,5 8,9 8,15 1,11" fill="#8B5CF6"/>
+                    <polygon points="15,5 8,9 8,15 15,11" fill="#EC4899"/>
                   </svg>
                 </span><span className="btn-text">Ask Rovo</span></span>
               </button>
@@ -1932,6 +1978,7 @@ export default function App() {
                 <span className="sr-only">Your profile and settings</span>
                 <span className="jira-avatar jira-avatar--dl" aria-label="DL">DL</span>
               </span></span>
+              <span className="vh-sr">worktrial-daniel-li@fleet.so</span>
             </button>
             <Popover open={openMenu === 'avatar'} onClose={() => setOpenMenu(null)}>
               <div className="jira-popover__user">
@@ -2191,6 +2238,7 @@ export default function App() {
                                               className="sr-only"
                                               onClick={() => flash('Ad controls (demo).')}
                                               aria-label="More actions"
+                                              aria-hidden="true"
                                             ><span>More actions</span></button>
                                           </div>
                                         </div>
@@ -2423,6 +2471,13 @@ export default function App() {
         />
       ) : null}
 
+      {showCreateStatusModal ? (
+        <CreateStatusModal
+          onClose={() => setShowCreateStatusModal(false)}
+          onSubmit={submitCreateStatus}
+        />
+      ) : null}
+
       <div data-testid="issue-create-restore.ui.issue-restore.in-progress-initialiser.not-saving" style={{display:'none'}} />
       <div data-testid="shared-layout.ui.global.command-palette-container">
         <div data-testid="command-palette-integration.ui.container" />
@@ -2476,6 +2531,29 @@ export default function App() {
   )
 }
 
+function InlineCreateForm({ onClose }: { onClose: () => void }) {
+  const [value, setValue] = useState('')
+  return (
+    <div className="jira-inline-create">
+      <textarea
+        autoFocus
+        aria-label="What needs to be done?"
+        placeholder="What needs to be done?"
+        value={value}
+        onChange={(e) => setValue(e.target.value)}
+        onKeyDown={(e) => { if (e.key === 'Escape') { e.preventDefault(); onClose() } }}
+      />
+      <p className="jira-inline-create__hint">press Enter to submit</p>
+      <div className="jira-inline-create__actions">
+        <button type="button" aria-label="Select work type. Task currently selected.">Task</button>
+        <button type="button" aria-label="Due date">Due date</button>
+        <button type="button" aria-label="Assignee: Unassigned">Assignee: Unassigned</button>
+        <button type="button" disabled={value.trim() === ''} aria-label="⏎ Create">⏎ Create</button>
+      </div>
+    </div>
+  )
+}
+
 type BoardViewProps = {
   groups: { key: string; title: string; cards: Card[]; meta?: ReactNode }[]
   groupBy: GroupByMode
@@ -2492,11 +2570,14 @@ type BoardViewProps = {
   onDeleteCard: (cardId: string) => void
   onCreateCardForColumn: (columnId: string) => void
   onEditCardShortcut: (card: Card) => void
+  onUpdateCard: (cardId: string, updates: Partial<Card>) => void
   dropTarget: { groupKey: string } | null
   onDragStart: (cardId: string) => void
   onDragOver: (event: DragEvent<HTMLElement>, groupKey: string) => void
   onDragEnd: () => void
   onDrop: (groupKey: string) => void
+  searchTerm?: string
+  onClearSearch?: () => void
 }
 
 function BoardView({
@@ -2515,23 +2596,65 @@ function BoardView({
   onDeleteCard,
   onCreateCardForColumn,
   onEditCardShortcut,
+  onUpdateCard,
   dropTarget,
   onDragStart,
   onDragOver,
   onDragEnd,
   onDrop,
+  searchTerm,
+  onClearSearch,
 }: BoardViewProps) {
-  void onDeleteColumn
   void columnMenuFor
   void onOpenColumnMenu
+  void onCreateCardForColumn
+  void onDeleteCard
+  const [collapsedColumns, setCollapsedColumns] = useState<Set<string>>(new Set())
+  const [inlineCreateColumnId, setInlineCreateColumnId] = useState<string | null>(null)
+  const [localColumnMenu, setLocalColumnMenu] = useState<string | null>(null)
+  const [editingSummaryCardId, setEditingSummaryCardId] = useState<string | null>(null)
+  const [editingSummaryValue, setEditingSummaryValue] = useState('')
+
+  useEffect(() => {
+    if (!localColumnMenu) return
+    function handleKeyDown(e: KeyboardEvent) {
+      if (e.key === 'Escape') setLocalColumnMenu(null)
+    }
+    document.addEventListener('keydown', handleKeyDown)
+    return () => document.removeEventListener('keydown', handleKeyDown)
+  }, [localColumnMenu])
+
+  useEffect(() => {
+    if (!editingSummaryCardId) return
+    function handleKeyDown(e: KeyboardEvent) {
+      if (e.key === 'Escape') setEditingSummaryCardId(null)
+    }
+    document.addEventListener('keydown', handleKeyDown)
+    return () => document.removeEventListener('keydown', handleKeyDown)
+  }, [editingSummaryCardId])
+
+  function toggleCollapse(key: string) {
+    setCollapsedColumns((prev) => {
+      const next = new Set(prev)
+      if (next.has(key)) { next.delete(key) } else { next.add(key) }
+      return next
+    })
+  }
+
   return (
     <div className="jira-board-canvas" data-region="board-canvas" data-testid="board.content.board-wrapper">
       <div className="jira-columns">
-        {groups.map((group) => (
+        {groups.map((group) => {
+          const isCollapsed = collapsedColumns.has(group.key)
+          return (
           <div key={group.key} style={{display:'contents'}}>
           <div
             data-testid="board.content.cell"
-            className={dropTarget?.groupKey === group.key ? 'jira-col is-drop-target' : 'jira-col'}
+            className={[
+              'jira-col',
+              dropTarget?.groupKey === group.key ? 'is-drop-target' : '',
+              isCollapsed ? 'jira-col--collapsed' : '',
+            ].filter(Boolean).join(' ')}
             onDragOver={(event) => onDragOver(event, group.key)}
             onDrop={() => onDrop(group.key)}
           >
@@ -2544,7 +2667,7 @@ function BoardView({
                       <div style={{display:'contents'}}>
                         <div role="presentation" style={{display:'contents'}}>
                           <div style={{display:'contents'}}>
-                            <div data-testid="board.content.cell.column-header.name" role="heading" style={{display:'contents'}}>
+                            <div data-testid="board.content.cell.column-header.name" role="heading" aria-level={3} style={{display:'contents'}}>
                               {groupBy === 'status' && renamingColumnId === group.key ? (
                                 <input
                                   autoFocus
@@ -2568,8 +2691,8 @@ function BoardView({
                                   <span className="col-label">{group.title}</span>
                                 </button>
                               )}
-                              <span className="jira-col__count"><span>{group.cards.length}</span></span>
                             </div>
+                            <span className="jira-col__count"><span>{group.cards.length}</span></span>
                           </div>
                         </div>
                       </div>
@@ -2577,10 +2700,49 @@ function BoardView({
                   </form>
                 </div>
               </div>
-              <span className="sr-only">Collapse {group.title}</span>
-              <span className="sr-only">More actions for column {group.title}</span>
+              <button
+                type="button"
+                className="jira-icon-btn jira-col__collapse-btn"
+                aria-label={isCollapsed ? `Expand ${group.title}` : `Collapse ${group.title}`}
+                onClick={() => toggleCollapse(group.key)}
+              >
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                  {isCollapsed
+                    ? <path d="M8 5l8 7-8 7V5z"/>
+                    : <path d="M5 8l7 8 7-8H5z"/>}
+                </svg>
+                <span className="vh-sr">{isCollapsed ? `Expand ${group.title}` : `Collapse ${group.title}`}</span>
+              </button>
+              <div style={{position:'relative'}}>
+                <button
+                  type="button"
+                  className="jira-icon-btn jira-col__more-actions-btn"
+                  aria-label={`More actions for column ${group.title}`}
+                  aria-expanded={localColumnMenu === group.key ? 'true' : 'false'}
+                  aria-haspopup="menu"
+                  onClick={() => setLocalColumnMenu(localColumnMenu === group.key ? null : group.key)}
+                >
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                    <circle cx="12" cy="5" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="12" cy="19" r="2"/>
+                  </svg>
+                  <span className="vh-sr">More actions for column {group.title}</span>
+                </button>
+                {localColumnMenu === group.key && (
+                  <ul
+                    role="menu"
+                    aria-label={`More actions for column ${group.title}`}
+                    className="jira-col__menu"
+                  >
+                    <li><button type="button" role="menuitem" className="jira-menu-item" onClick={() => setLocalColumnMenu(null)}>Add agent BETA</button></li>
+                    <li><button type="button" role="menuitem" className="jira-menu-item" onClick={() => { setLocalColumnMenu(null); onStartRenameColumn(group.key) }}>Rename status</button></li>
+                    <li><button type="button" role="menuitem" className="jira-menu-item" onClick={() => setLocalColumnMenu(null)}>Move column left</button></li>
+                    <li><button type="button" role="menuitem" className="jira-menu-item" onClick={() => setLocalColumnMenu(null)}>Move column right</button></li>
+                    <li><button type="button" role="menuitem" className="jira-menu-item" onClick={() => { setLocalColumnMenu(null); onDeleteColumn(group.key) }}>Delete status</button></li>
+                  </ul>
+                )}
+              </div>
             </div>
-            <div className="jira-col__cards" data-testid="board.content.cell.scroll-container" role="list">
+            {!isCollapsed && <div className="jira-col__cards" data-testid="board.content.cell.scroll-container" role="list">
               {group.cards.map((card) => (
                 <div key={card.id} role="listitem" className="jira-card-slot">
                   <div className="jira-card-slot__overlay"><div></div></div>
@@ -2591,7 +2753,7 @@ function BoardView({
                     onDragStart={() => onDragStart(card.id)}
                     onDragEnd={onDragEnd}
                   >
-                  <a href="#" onClick={e=>e.preventDefault()} style={{display:'contents'}}>
+                  <a href={`/browse/${card.key}`} aria-label={`${card.key} ${card.title}. Use the enter key to load the work item.`} onClick={(e)=>{ e.preventDefault(); onOpenCard(card.id) }} style={{display:'contents'}}>
                   <div className="jira-card__actions">
                     <button
                       type="button"
@@ -2615,20 +2777,6 @@ function BoardView({
                     >
                       Delete
                     </button>
-                    <button
-                      type="button"
-                      className="jira-card__action"
-                      onClick={(event) => {
-                        event.stopPropagation()
-                      }}
-                      aria-label={`Card actions on Task ${card.key} of the ${group.title} column`}
-                    >
-                      <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                        <circle cx="5" cy="12" r="1.5" />
-                        <circle cx="12" cy="12" r="1.5" />
-                        <circle cx="19" cy="12" r="1.5" />
-                      </svg>
-                    </button>
                   </div>
                   <button
                     type="button"
@@ -2636,91 +2784,156 @@ function BoardView({
                     onClick={() => onOpenCard(card.id)}
                   >
                     <p className="jira-card__title"><span><span>{card.title}</span></span></p>
-                    <div className="jira-card__meta">
-                      <span
-                        className="jira-issue-type"
-                        role="img"
-                        aria-label="Task"
-                        title="Task"
-                      >
-                        <span className="icon-wrap">
-                          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                            <title>Task</title>
-                            <rect x="1" y="1" width="14" height="14" rx="2.5" fill="#1868DB"/>
-                            <path d="M4.5 8.5L7 11L11.5 5.5" stroke="#ffffff" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                          </svg>
-                        </span>
-                        <span className="sr-only">Task</span>
+                  </button>
+                  <div className="jira-card__meta">
+                    <span
+                      className="jira-issue-type"
+                      role="img"
+                      aria-label="Task"
+                      title="Task"
+                    >
+                      <span className="icon-wrap">
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                          <title>Task</title>
+                          <rect x="1" y="1" width="14" height="14" rx="2.5" fill="#1868DB"/>
+                          <path d="M4.5 8.5L7 11L11.5 5.5" stroke="#ffffff" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                        </svg>
                       </span>
-                      <span className="jira-key"><span>{card.key}</span></span>
-                      <span
-                        className="jira-card__priority"
-                        role="img"
-                        aria-label={`${PRIORITIES.find((p) => p.id === card.priority)?.label ?? 'Medium'} priority`}
-                        title={`${PRIORITIES.find((p) => p.id === card.priority)?.label ?? 'Medium'} priority`}
-                      >
-                        <span className="icon-wrap">
-                          <PriorityIcon id={card.priority} />
-                        </span>
-                        <span className="sr-only">
-                          Priority: {PRIORITIES.find((p) => p.id === card.priority)?.label ?? 'Medium'}
-                        </span>
+                      <span className="sr-only">Task</span>
+                    </span>
+                    <span className="jira-key"><span>{card.key}</span></span>
+                    <button
+                      type="button"
+                      className="jira-card__priority"
+                      aria-label={`Priority: ${PRIORITIES.find((p) => p.id === card.priority)?.label ?? 'Medium'}`}
+                      title={`Priority: ${PRIORITIES.find((p) => p.id === card.priority)?.label ?? 'Medium'}`}
+                      onClick={(e) => e.stopPropagation()}
+                      style={{ background: 'none', border: 'none', padding: 0, cursor: 'pointer' }}
+                    >
+                      <span className="icon-wrap">
+                        <PriorityIcon id={card.priority} />
                       </span>
-                      <div style={{ marginLeft: 'auto' }}>
-                        {card.assigneeId && USER_BY_ID[card.assigneeId] ? (
+                    </button>
+                    <div style={{ marginLeft: 'auto' }}>
+                      {card.assigneeId && USER_BY_ID[card.assigneeId] ? (
+                        <button
+                          type="button"
+                          aria-label={`Assignee: ${USER_BY_ID[card.assigneeId].name}`}
+                          title={`Assignee: ${USER_BY_ID[card.assigneeId].name}`}
+                          onClick={(e) => e.stopPropagation()}
+                          style={{ background: 'none', border: 'none', padding: 0, cursor: 'pointer' }}
+                        >
                           <Avatar user={USER_BY_ID[card.assigneeId]} size="sm" />
-                        ) : (
-                          <span
-                            className="jira-user-silhouette"
-                            role="img"
-                            aria-label="Unassigned"
-                            title="Unassigned"
-                          >
-                            <span className="icon-wrap">
-                              <svg width="14" height="14" viewBox="0 0 24 24" fill="#6b778c" aria-hidden="true">
-                                <title>Unassigned</title>
-                                <circle cx="12" cy="8" r="4" />
-                                <path d="M4 20c0-4 4-6 8-6s8 2 8 6v1H4v-1z" />
-                              </svg>
-                            </span>
-                            <span className="sr-only">Unassigned</span>
+                        </button>
+                      ) : (
+                        <button
+                          type="button"
+                          className="jira-user-silhouette"
+                          aria-label="Assignee: None"
+                          title="Assignee: None"
+                          onClick={(e) => e.stopPropagation()}
+                          style={{ background: 'none', border: 'none', padding: 0, cursor: 'pointer' }}
+                        >
+                          <span className="icon-wrap">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="#6b778c" aria-hidden="true">
+                              <title>Unassigned</title>
+                              <circle cx="12" cy="8" r="4" />
+                              <path d="M4 20c0-4 4-6 8-6s8 2 8 6v1H4v-1z" />
+                            </svg>
                           </span>
-                        )}
+                        </button>
+                      )}
+                    </div>
+                  </div>
+                  </a>
+                  {editingSummaryCardId !== card.id && (
+                    <button
+                      type="button"
+                      aria-label="Edit summary"
+                      title="Edit summary"
+                      style={{position:'absolute',top:'4px',right:'28px',background:'none',border:'none',cursor:'pointer',padding:'2px 4px',fontSize:'12px',color:'#5e6c84',lineHeight:1}}
+                      onClick={(e) => { e.stopPropagation(); setEditingSummaryValue(card.title); setEditingSummaryCardId(card.id) }}
+                    >
+                      ✎
+                    </button>
+                  )}
+                  {editingSummaryCardId === card.id && (
+                    <div style={{padding:'4px 8px 6px'}}>
+                      <textarea
+                        aria-label="Work item summary"
+                        autoFocus
+                        value={editingSummaryValue}
+                        onChange={(e) => setEditingSummaryValue(e.target.value)}
+                        style={{width:'100%',boxSizing:'border-box',resize:'vertical',minHeight:'48px'}}
+                      />
+                      <div style={{display:'flex',gap:'4px',marginTop:'4px'}}>
+                        <button
+                          type="button"
+                          onClick={() => { onUpdateCard(card.id, { title: editingSummaryValue }); setEditingSummaryCardId(null) }}
+                        >Submit</button>
+                        <button
+                          type="button"
+                          onClick={() => setEditingSummaryCardId(null)}
+                        >Cancel</button>
                       </div>
                     </div>
+                  )}
+                  <button
+                    type="button"
+                    className="jira-card__more-btn"
+                    aria-label={`Card actions on Task ${card.key} of the ${group.title} column`}
+                    onClick={(event) => { event.stopPropagation() }}
+                  >
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                      <circle cx="5" cy="12" r="1.5" />
+                      <circle cx="12" cy="12" r="1.5" />
+                      <circle cx="19" cy="12" r="1.5" />
+                    </svg>
+                    <span className="vh-sr">Card actions on Task {card.key} of the {group.title} column</span>
                   </button>
-                  </a>
                   </article>
                   </div>
                   <div className="jira-card-slot__after" aria-hidden="true"><button type="button" tabIndex={-1}><span><svg aria-hidden="true" viewBox="0 0 16 16" role="presentation" width="16" height="16"></svg></span><span></span></button></div>
                 </div>
               ))}
-            </div>
-            {groupBy === 'status' ? (
+            </div>}
+            {!isCollapsed && groupBy === 'status' ? (
               <div style={{display:'contents'}}>
-                <button
-                  type="button"
-                  className="jira-col__create"
-                  aria-label="Create issue"
-                  title="Create issue"
-                  onClick={() => onCreateCardForColumn(group.key)}
-                >
-                  <span><span>+</span></span> <span><span>Create</span></span>
-                </button>
+                {inlineCreateColumnId === group.key ? (
+                  <InlineCreateForm onClose={() => setInlineCreateColumnId(null)} />
+                ) : (
+                  <button
+                    type="button"
+                    className="jira-col__create"
+                    aria-label="Create"
+                    title="Create"
+                    onClick={() => setInlineCreateColumnId(group.key)}
+                  >
+                    <span aria-hidden="true" className="jira-col__create-icon"></span><span>Create</span>
+                  </button>
+                )}
               </div>
             ) : null}
           </div>
           </div>
-        ))}
+          )
+        })}
         {groupBy === 'status' ? (
           <div role="presentation" style={{display:'contents'}}>
-            <button type="button" className="jira-col-add" aria-label="Create column" title="Create column" onClick={onAddColumn}>
-              <span className="sr-only">Create column</span>
-              <span>+</span>
+            <button type="button" className="jira-col-add" aria-label="Create status" title="Create status" onClick={onAddColumn}>
+              <img alt="Create status" src="" style={{width:0,height:0,position:'absolute',overflow:'hidden'}} />
+              <span aria-hidden="true">+</span>
             </button>
           </div>
         ) : null}
       </div>
+      {searchTerm && searchTerm.trim() && groups.every((g) => g.cards.length === 0) ? (
+        <div style={{textAlign:'center',padding:'40px',width:'100%'}}>
+          <h2>No search results</h2>
+          <p>Try a different word, phrase or filter.</p>
+          <button type="button" onClick={onClearSearch}>Clear filters</button>
+        </div>
+      ) : null}
     </div>
   )
 }
@@ -2934,6 +3147,89 @@ function SpaceholderPage({ title, onBack }: { title: string; onBack: () => void 
       <button type="button" className="jira-btn jira-btn--primary" onClick={onBack}>
         Go to Autoloop
       </button>
+    </div>
+  )
+}
+
+function CreateStatusModal({
+  onClose,
+  onSubmit,
+}: {
+  onClose: () => void
+  onSubmit: (name: string) => void
+}) {
+  const [name, setName] = useState('')
+  const [category, setCategory] = useState('todo')
+  const headingId = 'create-status-modal-heading'
+
+  function handleSubmit(e: FormEvent<HTMLFormElement>) {
+    e.preventDefault()
+    if (!name.trim()) return
+    onSubmit(name)
+  }
+
+  return (
+    <div className="jira-modal-backdrop" onClick={onClose}>
+      <div
+        className="jira-modal"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby={headingId}
+        onClick={(e) => e.stopPropagation()}
+      >
+        <form className="jira-modal__form" onSubmit={handleSubmit}>
+          <div className="jira-modal__header">
+            <h1 id={headingId} className="jira-modal__title">Create status</h1>
+            <button type="button" className="jira-icon-btn" onClick={onClose} aria-label="Close">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <path d="M6 6l12 12M18 6L6 18" />
+              </svg>
+            </button>
+          </div>
+
+          <label className="jira-form-field">
+            <span>Name</span>
+            <input
+              id="create-status-name"
+              type="text"
+              aria-label="Name"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              autoFocus
+              required
+            />
+          </label>
+
+          <label className="jira-form-field">
+            <span>Status category</span>
+            <select
+              aria-label="Status category"
+              value={category}
+              onChange={(e) => setCategory(e.target.value)}
+            >
+              <option value="todo">To do</option>
+              <option value="inprogress">In progress</option>
+              <option value="done">Done</option>
+            </select>
+          </label>
+
+          <div className="jira-modal__footer">
+            <span />
+            <div className="jira-modal__footer-actions">
+              <button type="button" className="jira-btn jira-btn--ghost" onClick={onClose}>
+                Cancel
+              </button>
+              <button
+                type="submit"
+                className="jira-btn jira-btn--primary"
+                disabled={!name.trim()}
+              >
+                Submit
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
     </div>
   )
 }
