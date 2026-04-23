@@ -35,7 +35,7 @@ function isPortOpen(host, port) {
   })
 }
 
-async function ensureDevServer({ appUrl, autoStart, loadState }) {
+async function ensureDevServer({ appUrl, autoStart }) {
   const u = new URL(appUrl)
   const host = u.hostname
   const port = Number(u.port || (u.protocol === 'https:' ? 443 : 80))
@@ -44,14 +44,6 @@ async function ensureDevServer({ appUrl, autoStart, loadState }) {
   }
   if (!autoStart) {
     throw new Error(`Nothing listening on ${host}:${port} and autoStart=false`)
-  }
-
-  if (loadState) {
-    await new Promise((resolve, reject) => {
-      const p = spawn('npm', ['run', 'state:load'], { cwd: PROJECT_ROOT, stdio: 'inherit' })
-      p.on('exit', (code) => (code === 0 ? resolve() : reject(new Error(`state:load exited ${code}`))))
-      p.on('error', reject)
-    })
   }
 
   const child = spawn('npm', ['run', 'dev', '--', '--port', String(port), '--host', host], {
@@ -144,7 +136,6 @@ export async function runTests({
   testDir = DEFAULT_TEST_DIR,
   artifactDir = ARTIFACT_DIR,
   autoStart = true,
-  loadState = true,
   headed = false,
   extraArgs = [],
 } = {}) {
@@ -153,7 +144,7 @@ export async function runTests({
   await mkdir(outDir, { recursive: true })
   const jsonOutPath = path.join(outDir, 'playwright.json')
 
-  const server = await ensureDevServer({ appUrl, autoStart, loadState })
+  const server = await ensureDevServer({ appUrl, autoStart })
   try {
     const { exitCode, stdout, stderr } = await runPlaywright({
       testTarget: testDir,
@@ -208,7 +199,6 @@ function parseArgs(argv) {
     appUrl: DEFAULT_APP_URL,
     testDir: DEFAULT_TEST_DIR,
     autoStart: true,
-    loadState: true,
     headed: false,
     extraArgs: [],
   }
@@ -217,7 +207,6 @@ function parseArgs(argv) {
     if (a === '--app-url') args.appUrl = argv[++i]
     else if (a === '--dir' || a === '--test-dir') args.testDir = argv[++i]
     else if (a === '--no-autostart') args.autoStart = false
-    else if (a === '--no-load-state') args.loadState = false
     else if (a === '--headed') args.headed = true
     else if (a === '--grep') { args.extraArgs.push('--grep', argv[++i]) }
     else if (a === '--') { args.extraArgs.push(...argv.slice(i + 1)); i = argv.length }

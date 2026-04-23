@@ -28,6 +28,7 @@ dist-ssr
 # Tooling scratch / run artifacts
 .playwright-mcp/
 reward-artifacts/
+test-artifacts/
 board.png
 tests/reports/
 tests/.pw-profile-jira/

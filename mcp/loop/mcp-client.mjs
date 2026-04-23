@@ -67,7 +67,6 @@ export async function callMcp(mcp, name, input) {
 export async function scoreApp(mcp, appUrl) {
   const res = await callMcp(mcp, "score_app", {
     app_url: appUrl,
-    load_state: false,
   });
   const reward =
     res.structured && typeof res.structured.reward === "number"

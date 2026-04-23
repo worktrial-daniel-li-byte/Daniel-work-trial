@@ -498,20 +498,12 @@ function isPortOpen(host, port) {
   })
 }
 
-async function ensureDevServer({ appUrl, autoStart, loadState }) {
+async function ensureDevServer({ appUrl, autoStart }) {
   const u = new URL(appUrl)
   const host = u.hostname
   const port = Number(u.port || (u.protocol === 'https:' ? 443 : 80))
   if (await isPortOpen(host, port)) return { started: false, stop: async () => {} }
   if (!autoStart) throw new Error(`Nothing listening on ${host}:${port} and autoStart=false`)
-
-  if (loadState) {
-    await new Promise((resolve, reject) => {
-      const p = spawn('npm', ['run', 'state:load'], { cwd: PROJECT_ROOT, stdio: 'inherit' })
-      p.on('exit', (code) => (code === 0 ? resolve() : reject(new Error(`state:load exited ${code}`))))
-      p.on('error', reject)
-    })
-  }
 
   const child = spawn('npm', ['run', 'dev', '--', '--port', String(port), '--host', host], {
     cwd: PROJECT_ROOT,
@@ -588,7 +580,6 @@ export async function runReward({
   refHtml = REF_HTML,
   artifactDir = ARTIFACT_DIR,
   autoStart = true,
-  loadState = true,
   settleMs = 500,
 } = {}) {
   const runStamp = new Date().toISOString().replace(/[:.]/g, '-')
@@ -596,7 +587,7 @@ export async function runReward({
   const refShotPath = path.join(outDir, 'board.png')
   const genShotPath = path.join(outDir, 'app.png')
 
-  const server = await ensureDevServer({ appUrl, autoStart, loadState })
+  const server = await ensureDevServer({ appUrl, autoStart })
   const browser = await chromium.launch({ headless: true })
   try {
     // Reference is a static saved-page snapshot. Its inline scripts try to
@@ -662,13 +653,12 @@ export async function runReward({
 // ── CLI entry point ───────────────────────────────────────────────────────────
 
 function parseArgs(argv) {
-  const args = { appUrl: DEFAULT_APP_URL, autoStart: true, loadState: true }
+  const args = { appUrl: DEFAULT_APP_URL, autoStart: true }
   for (let i = 0; i < argv.length; i++) {
     const a = argv[i]
     if (a === '--app-url') args.appUrl = argv[++i]
     else if (a === '--ref-html') args.refHtml = argv[++i]
     else if (a === '--no-autostart') args.autoStart = false
-    else if (a === '--no-load-state') args.loadState = false
     else if (a === '--settle-ms') args.settleMs = Number(argv[++i])
   }
   return args

@@ -401,7 +401,7 @@ type Column = {
   cards: Card[]
 }
 
-type GroupByMode = 'status' | 'priority' | 'assignee'
+type GroupByMode = 'status' | 'priority' | 'assignee' | 'category'
 
 type Filters = {
   assignees: string[]
@@ -536,7 +536,15 @@ export default function App() {
   const initial = useMemo(loadState, [])
   const [columns, setColumns] = useState<Column[]>(initial.columns)
   const [notifications, setNotifications] = useState<Notification[]>(initial.notifications)
-  const [groupBy, setGroupBy] = useState<GroupByMode>(initial.preferences.groupBy)
+  const [groupBy, setGroupBy] = useState<GroupByMode>(() => {
+    if (typeof window !== 'undefined') {
+      const urlGroupBy = new URL(window.location.href).searchParams.get('groupBy')
+      if (urlGroupBy && (['status', 'priority', 'assignee', 'category'] as string[]).includes(urlGroupBy)) {
+        return urlGroupBy as GroupByMode
+      }
+    }
+    return initial.preferences.groupBy
+  })
   const [filters, setFilters] = useState<Filters>(initial.preferences.filters)
   const [activeSidebar, setActiveSidebar] = useState<SidebarItemId>(initial.preferences.activeSidebar)
   const [activeTab, setActiveTab] = useState<Tab>(initial.preferences.activeTab)
@@ -566,6 +574,15 @@ export default function App() {
       preferences: { groupBy, filters, activeSidebar, activeTab },
     })
   }, [columns, notifications, groupBy, filters, activeSidebar, activeTab])
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return
+    const url = new URL(window.location.href)
+    url.searchParams.set('groupBy', groupBy)
+    if (url.toString() !== window.location.href) {
+      window.history.replaceState({}, '', url.toString())
+    }
+  }, [groupBy])
 
   useEffect(() => {
     if (!toast) return
@@ -1318,29 +1335,40 @@ export default function App() {
                   <button
                     type="button"
                     className="jira-btn jira-btn--ghost jira-btn--sm jira-group-status-btn"
-                    aria-label="Group by"
-                    title="Group by"
+                    aria-label={`Group by ${groupBy === 'status' ? 'Status' : groupBy === 'priority' ? 'Priority' : groupBy === 'assignee' ? 'Assignee' : 'Category'}`}
+                    title={`Group by ${groupBy === 'status' ? 'Status' : groupBy === 'priority' ? 'Priority' : groupBy === 'assignee' ? 'Assignee' : 'Category'}`}
+                    aria-haspopup="true"
+                    aria-expanded={openMenu === 'group' ? 'true' : 'false'}
                     onClick={() => toggleMenu('group')}
                   >
-                    <span>Group:</span> <span>{groupBy === 'status' ? 'Status' : groupBy === 'priority' ? 'Priority' : 'Assignee'}</span>
+                    <span>Group:</span> <span>{groupBy === 'status' ? 'Status' : groupBy === 'priority' ? 'Priority' : groupBy === 'assignee' ? 'Assignee' : 'Category'}</span>
                     <svg className="jira-chevron" width="10" height="10" viewBox="0 0 24 24" fill="currentColor">
                       <title>Group by</title>
                       <path d="M7 10l5 5 5-5H7z" />
                     </svg>
                   </button>
                   <Popover open={openMenu === 'group'} onClose={() => setOpenMenu(null)}>
-                    {(['status', 'priority', 'assignee'] as GroupByMode[]).map((mode) => (
-                      <MenuButton
-                        key={mode}
-                        selected={groupBy === mode}
-                        onClick={() => {
-                          setGroupBy(mode)
-                          setOpenMenu(null)
-                        }}
-                      >
-                        {mode === 'status' ? 'Status' : mode === 'priority' ? 'Priority' : 'Assignee'}
-                      </MenuButton>
-                    ))}
+                    <div role="radiogroup" aria-label="Group by field">
+                      {(['assignee', 'category', 'priority', 'status'] as GroupByMode[]).map((mode) => {
+                        const label = mode === 'status' ? 'Status' : mode === 'priority' ? 'Priority' : mode === 'assignee' ? 'Assignee' : 'Category'
+                        const isSelected = groupBy === mode
+                        return (
+                          <label key={mode} className="jira-menu-item" style={{display:'flex',alignItems:'center',gap:'0.5rem',cursor:'pointer'}}>
+                            <input
+                              type="radio"
+                              name="group-by-field"
+                              value={mode}
+                              checked={isSelected}
+                              onChange={() => {
+                                setGroupBy(mode)
+                                setOpenMenu(null)
+                              }}
+                            />
+                            <span>{label}{isSelected ? ' Selected' : ''}</span>
+                          </label>
+                        )
+                      })}
+                    </div>
                   </Popover>
                 </div>
                 <div className="jira-rel">
@@ -1378,6 +1406,23 @@ export default function App() {
                     </MenuButton>
                   </Popover>
                 </div>
+                {groupBy !== 'status' ? (
+                  <button
+                    type="button"
+                    className="jira-btn jira-btn--ghost jira-btn--sm"
+                    aria-label="Save or reset view settings"
+                    title="Save or reset view settings"
+                    onClick={() => {
+                      setGroupBy('status')
+                      flash('View settings reset')
+                    }}
+                  >
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                      <path d="M17 3H7L3 9l9 13 9-13-4-6zM7.24 9l2.76-4h4l2.76 4H7.24z" />
+                    </svg>
+                    <span>Save or reset view settings</span>
+                  </button>
+                ) : null}
                 <div className="jira-rel">
                   <button
                     type="button"
@@ -1711,42 +1756,43 @@ export default function App() {
             </span></span>
             <span className="btn-text">Premium trial</span>
           </button>
-          <span data-testid="atlassian-navigation.ui.conversation-assistant.app-navigation-ai-mate" role="listitem" style={{display:'contents'}}>
-          <button
-            type="button"
-            className="jira-pill jira-pill--rovo"
-            aria-label="Ask Rovo"
-            title="Ask Rovo"
-            onClick={() => flash('Rovo says: ship it.')}
-          >
-            <span className="btn-icon"><span className="jira-rovo-cube" aria-hidden>
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
-                <defs>
-                  <linearGradient id="rovoA" x1="0" y1="0" x2="1" y2="1">
-                    <stop offset="0%" stopColor="#ff5630" />
-                    <stop offset="50%" stopColor="#ffab00" />
-                    <stop offset="100%" stopColor="#ff7452" />
-                  </linearGradient>
-                  <linearGradient id="rovoB" x1="0" y1="1" x2="1" y2="0">
-                    <stop offset="0%" stopColor="#0065ff" />
-                    <stop offset="100%" stopColor="#4c9aff" />
-                  </linearGradient>
-                  <linearGradient id="rovoC" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="0%" stopColor="#36b37e" />
-                    <stop offset="100%" stopColor="#00b8d9" />
-                  </linearGradient>
-                </defs>
-                <path d="M12 2 L22 7 L12 12 L2 7 Z" fill="url(#rovoA)" />
-                <path d="M12 12 L22 7 L22 17 L12 22 Z" fill="url(#rovoB)" />
-                <path d="M12 12 L2 7 L2 17 L12 22 Z" fill="url(#rovoC)" />
-              </svg>
-            </span></span>
-            <span className="btn-text"><span>Ask Rovo</span></span>
-          </button>
+          <span data-testid="atlassian-navigation.ui.conversation-assistant.app-navigation-ai-mate" role="listitem">
+            <div>
+              <button
+                type="button"
+                className="jira-pill jira-pill--rovo"
+                aria-label="Ask Rovo"
+                title="Ask Rovo"
+                onClick={() => flash('Rovo says: ship it.')}
+              >
+                <span><span role="img" className="jira-rovo-cube" aria-hidden>
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+                    <defs>
+                      <linearGradient id="rovoA" x1="0" y1="0" x2="1" y2="1">
+                        <stop offset="0%" stopColor="#ff5630" />
+                        <stop offset="50%" stopColor="#ffab00" />
+                        <stop offset="100%" stopColor="#ff7452" />
+                      </linearGradient>
+                      <linearGradient id="rovoB" x1="0" y1="1" x2="1" y2="0">
+                        <stop offset="0%" stopColor="#0065ff" />
+                        <stop offset="100%" stopColor="#4c9aff" />
+                      </linearGradient>
+                      <linearGradient id="rovoC" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="0%" stopColor="#36b37e" />
+                        <stop offset="100%" stopColor="#00b8d9" />
+                      </linearGradient>
+                    </defs>
+                    <path d="M12 2 L22 7 L12 12 L2 7 Z" fill="url(#rovoA)" />
+                    <path d="M12 12 L22 7 L22 17 L12 22 Z" fill="url(#rovoB)" />
+                    <path d="M12 12 L2 7 L2 17 L12 22 Z" fill="url(#rovoC)" />
+                  </svg>
+                </span><span className="btn-text">Ask Rovo</span></span>
+              </button>
+            </div>
           </span>
           <div role="listitem">
           <div data-testid="atlassian-navigation--secondary-actions--notifications--menu-trigger">
-          <div className="jira-rel topbar-bell">
+          <div className="topbar-bell jira-rel">
             <button
               type="button"
               className="jira-icon-btn"
@@ -1755,15 +1801,14 @@ export default function App() {
               onClick={() => toggleMenu('notifications')}
             >
               <span className="icon-wrap"><span>
-                <span className="sr-only">Notifications</span>
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <title>Notifications</title>
                   <path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9" />
                   <path d="M13.73 21a2 2 0 0 1-3.46 0" />
                 </svg>
-              </span></span>
+              </span><span className="sr-only">Notifications</span></span>
             </button>
-            <span className="badge">3+</span>
+            <div className="badge">3+</div>
             <Popover open={openMenu === 'notifications'} onClose={() => setOpenMenu(null)} className="jira-popover--wide">
               <div className="jira-popover__header">
                 <span>Notifications</span>
@@ -2031,11 +2076,11 @@ export default function App() {
                     <div style={{display:'contents'}}>
                       {/* d7: wrapper for projects-container */}
                       <div style={{display:'contents'}}>
-                        <div data-testid="NAV4_jira.sidebar.projects-container" style={{display:'contents'}}>
+                        <div data-testid="NAV4_jira.sidebar.projects-container" className="jira-sb-row-group">
                           <button
                             type="button"
                             data-testid="NAV4_jira.sidebar.projects"
-                            className={(activeSidebar === 'autoloop' ? 'jira-sb-link is-active' : 'jira-sb-link') + ' jira-sb-link--spaces'}
+                            className="jira-sb-link jira-sb-link--spaces"
                             title="Spaces" aria-label="Spaces"
                             onClick={() => setActiveSidebar('autoloop')}
                           >
@@ -2045,11 +2090,13 @@ export default function App() {
                             </div>
                           </button>
                           <div style={{display:'none'}}><div /><div /></div>
-                          <div style={{display:'contents'}}>
-                            <div role="presentation" style={{display:'contents'}}>
-                              <button type="button" className="sr-only" onClick={() => flash('Create space (demo).')} aria-label="Create space"><span>Create space</span></button>
-                            </div>
-                            <button type="button" data-testid="navigation-apps-sidebar-nav4-sidebars-common-core.ui.more-nav-menu-button.more-nav-menu-button-trigger" className="jira-sb-link jira-sb-link--more-actions sr-only" onClick={() => flash('More Spaces actions (demo).')} aria-label="More actions for spaces"><span>More actions for spaces</span></button>
+                          <div className="jira-sb-row-actions">
+                            <button type="button" className="jira-sb-row-action-btn" onClick={() => flash('Create space (demo).')} aria-label="Create space">
+                              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M12 5v14M5 12h14"/></svg>
+                            </button>
+                            <button type="button" data-testid="navigation-apps-sidebar-nav4-sidebars-common-core.ui.more-nav-menu-button.more-nav-menu-button-trigger" className="jira-sb-row-action-btn" onClick={() => flash('More Spaces actions (demo).')} aria-label="More actions for spaces">
+                              <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="1.5"/><circle cx="12" cy="12" r="1.5"/><circle cx="19" cy="12" r="1.5"/></svg>
+                            </button>
                           </div>
                         </div>
                       </div>
@@ -2108,6 +2155,7 @@ export default function App() {
                                       <div className="jira-sb-link__icon" aria-hidden><SidebarIcon name="space-more" /></div>
                                       <div className="jira-sb-link__label"><div aria-hidden style={{display:'contents'}} /><div><span>More spaces</span></div></div>
                                     </div>
+                                    <span className="jira-sb-link__chev" aria-hidden>›</span>
                                   </button>
                                   <div style={{display:'none'}}><span aria-hidden /></div>
                                   <div style={{display:'none'}}><div /></div>
@@ -2131,7 +2179,7 @@ export default function App() {
                                             <div className="jira-sb-link__icon" aria-hidden><SidebarIcon name="roadmap" /></div>
                                             <div className="jira-sb-link__label"><div aria-hidden style={{display:'contents'}} /><div><span>Create a roadmap</span></div></div>
                                           </div>
-                                          <span className="jira-sb-link__badge"><span id="try-this-recommendation-lozenge">Try</span></span>
+                                          <span className="jira-sb-link__badge"><span id="try-this-recommendation-lozenge">TRY</span></span>
                                         </button>
                                         <div style={{display:'contents'}} />
                                         <div style={{display:'contents'}}>
@@ -2250,6 +2298,7 @@ export default function App() {
                             >
                               <div className="jira-sb-link__icon" aria-hidden><SidebarIcon name="confluence" /></div>
                               <div className="jira-sb-link__label"><div aria-hidden style={{display:'contents'}} /><div><span aria-label="Confluence">Confluence</span></div></div>
+                              <span className="jira-sb-link__ext" aria-hidden>↗</span>
                               <span className="sr-only">, (opens new window)</span>
                             </a>
                           </div>
@@ -2267,6 +2316,7 @@ export default function App() {
                             >
                               <div className="jira-sb-link__icon" aria-hidden><SidebarIcon name="goals" /></div>
                               <div className="jira-sb-link__label"><div aria-hidden style={{display:'contents'}} /><div><span aria-label="Goals">Goals</span></div></div>
+                              <span className="jira-sb-link__ext" aria-hidden>↗</span>
                               <span className="sr-only">, (opens new window)</span>
                             </a>
                           </div>
@@ -2284,6 +2334,7 @@ export default function App() {
                             >
                               <div className="jira-sb-link__icon" aria-hidden><SidebarIcon name="teams" /></div>
                               <div className="jira-sb-link__label"><div aria-hidden style={{display:'contents'}} /><div><span aria-label="Teams">Teams</span></div></div>
+                              <span className="jira-sb-link__ext" aria-hidden>↗</span>
                               <span className="sr-only">, (opens new window)</span>
                             </a>
                             <div style={{display:'contents'}}>
@@ -2563,6 +2614,20 @@ function BoardView({
                       aria-label={`Delete ${card.title}`}
                     >
                       Delete
+                    </button>
+                    <button
+                      type="button"
+                      className="jira-card__action"
+                      onClick={(event) => {
+                        event.stopPropagation()
+                      }}
+                      aria-label={`Card actions on Task ${card.key} of the ${group.title} column`}
+                    >
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                        <circle cx="5" cy="12" r="1.5" />
+                        <circle cx="12" cy="12" r="1.5" />
+                        <circle cx="19" cy="12" r="1.5" />
+                      </svg>
                     </button>
                   </div>
                   <button

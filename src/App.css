@@ -646,10 +646,10 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 1px 6px;
+  padding: 2px 6px;
   border-radius: 10px;
-  background: #F3F0FF;
-  color: #5E4DB2;
+  background: #EDE9FE;
+  color: #6B46C1;
   font-size: 10px;
   font-weight: 700;
   letter-spacing: 0.04em;
@@ -681,6 +681,18 @@
 .jira-sb-link.is-active .jira-sb-link__label,
 .jira-sb-link.is-active .jira-sb-link__icon {
   color: #0C66E4;
+}
+
+/* Autoloop row: purple/lavender highlight overrides the default blue */
+.jira-sb-link--autoloop.is-active {
+  background: #E9D5FF;
+  color: #6B46C1;
+  border-left-color: #6B46C1;
+}
+
+.jira-sb-link--autoloop.is-active .jira-sb-link__label,
+.jira-sb-link--autoloop.is-active .jira-sb-link__icon {
+  color: #6B46C1;
 }
 
 .jira-workspace {
@@ -1929,7 +1941,7 @@ main.jira-workspace,
 }
 
 .jira-sb-link--teams .jira-sb-link__icon {
-  background: #F15B50;
+  background: #E56910;
   border-radius: 4px;
   color: #ffffff !important;
 }
@@ -2070,6 +2082,12 @@ button.jira-btn--primary *,
 
 .jira-sb-row-group:hover .jira-sb-row-actions,
 .jira-sb-row-group:focus-within .jira-sb-row-actions {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* Spaces row-actions are always visible */
+[data-testid="NAV4_jira.sidebar.projects-container"] .jira-sb-row-actions {
   opacity: 1;
   pointer-events: auto;
 }

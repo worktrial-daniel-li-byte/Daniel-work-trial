@@ -190,8 +190,7 @@ reward the loop is trying to maximize.
    real Jira board. Loaded with JavaScript disabled (the static HTML is the
    ground truth) and with the cookie banner CSS'd out of the way.
   - **Candidate**: your app at `appUrl` (default `http://localhost:5173`).
-  If nothing is listening there, the harness runs `npm run state:load`
-  followed by `npm run dev` for you.
+  If nothing is listening there, the harness runs `npm run dev` for you.
 2. Both pages render at **1920×1080**. The harness takes a screenshot, walks
   the DOM, pulls the Chrome accessibility tree via CDP, and collects: visible
    text, visible colors, the DOM tree structure, the a11y role tree, and a
@@ -271,5 +270,4 @@ on the wrong shape of tree.
 npm run reward                              # scores http://localhost:5173
 npm run reward -- --app-url http://localhost:4173
 npm run reward -- --no-autostart            # expect dev server already up
-npm run reward -- --no-load-state           # skip npm run state:load
 ```

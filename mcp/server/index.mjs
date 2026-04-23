@@ -115,10 +115,6 @@ server.registerTool(
         .boolean()
         .optional()
         .describe("Auto-start `npm run dev` if nothing is on the port (default true)."),
-      load_state: z
-        .boolean()
-        .optional()
-        .describe("Run `npm run state:load` before starting the dev server (default true)."),
       include_screenshots: z
         .boolean()
         .optional()
@@ -130,7 +126,6 @@ server.registerTool(
     ref_html,
     settle_ms,
     auto_start,
-    load_state,
     include_screenshots,
   }) => {
     try {
@@ -143,7 +138,6 @@ server.registerTool(
         refHtml,
         settleMs: settle_ms,
         autoStart: auto_start ?? true,
-        loadState: load_state ?? true,
       });
 
       const summary = {
