@@ -385,4 +385,4 @@ A key area for improvement is the LLM's resilience and its ability to surface no
 
 **My hypothesis:** this bottleneck stems from past context polluting the next-token probabilities. As the model commits further down a specific route, the latent space of possible thoughts narrows — until it eventually declares that no further solution exists.
 
-Between kickoffs, I added a `--focus` flag which let me pass specific instructions to the LLM.
+Between kickoffs, I added a `--focus` flag which let me pass specific instructions to the LLM. In the future, we could explore adding an LLM that is specifically tasked with managing context and sparking new thinking patterns. 

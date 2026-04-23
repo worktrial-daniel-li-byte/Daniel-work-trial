@@ -1,7 +1,6 @@
 import {
   type DragEvent,
   type FormEvent,
-  Fragment,
   type ReactNode,
   useCallback,
   useEffect,
@@ -416,7 +415,7 @@ const INITIAL_COLUMNS: Column[] = [
       {
         id: 'card-aut-1',
         key: 'AUT-1',
-        title: 'Design autonomous replanning loop',
+        title: 'This is a test',
         description: 'Define the state machine for the replanner',
         priority: 'medium',
         assigneeId: null,
@@ -693,7 +692,7 @@ export default function App() {
       .slice(0, 6)
   }, [topSearch, allCards])
 
-  const unreadCount = notifications.filter((n) => !n.read).length
+  const _unreadCount = notifications.filter((n) => !n.read).length; void _unreadCount
 
   function findCardLocation(cardId: string) {
     for (const column of columns) {
@@ -944,7 +943,7 @@ export default function App() {
                 {/* Child 2: project name — div > form > div > div > [button(overlay) + div[role=presentation] > div > h1 > div[read-view]] */}
                 <div>
                   <form role="presentation" onSubmit={e=>e.preventDefault()}>
-                    <div><div>
+                    <div><div style={{position:'relative', display:'inline-block'}}>
                       <button
                         aria-label="Edit, Space name"
                         type="button"
@@ -1587,7 +1586,7 @@ export default function App() {
     )
   }
 
-  function resetBoard() {
+  const _resetBoard = () => {
     if (!window.confirm('Reset board to sample data? This removes all your cards.')) return
     setColumns(INITIAL_COLUMNS)
     setNotifications(INITIAL_NOTIFICATIONS)
@@ -1595,9 +1594,9 @@ export default function App() {
     setBoardSearch('')
     setGroupBy('status')
     flash('Board reset')
-  }
+  }; void _resetBoard
 
-  function exportBoard() {
+  const _exportBoard = () => {
     const blob = new Blob([JSON.stringify({ columns }, null, 2)], { type: 'application/json' })
     const url = URL.createObjectURL(blob)
     const link = document.createElement('a')
@@ -1607,7 +1606,7 @@ export default function App() {
     link.click()
     document.body.removeChild(link)
     URL.revokeObjectURL(url)
-  }
+  }; void _exportBoard
 
   async function copyBoardLink() {
     try {
@@ -1905,8 +1904,9 @@ export default function App() {
           </div>
           </div>
           </div>
-          <div data-testid="atlassian-navigation--secondary-actions--help--menu-trigger" style={{display:'contents'}}>
-          <div style={{display:'contents'}}>
+          <div data-testid="atlassian-navigation--secondary-actions--help--menu-trigger">
+          <div>
+          <div role="listitem">
           <button
             type="button"
             className="jira-icon-btn jira-help-btn"
@@ -1924,10 +1924,12 @@ export default function App() {
               </svg>
             </span></span>
           </button>
+          <div><span><span></span></span></div>
           </div>
           </div>
-          <div data-testid="atlassian-navigation--secondary-actions--settings--menu-trigger" style={{display:'contents'}}>
-          <div className="jira-rel">
+          </div>
+          <div data-testid="atlassian-navigation--secondary-actions--settings--menu-trigger">
+          <div className="jira-rel" role="listitem">
             <button
               type="button"
               className="jira-icon-btn"
@@ -1964,8 +1966,7 @@ export default function App() {
             </Popover>
           </div>
           </div>
-          <div style={{display:'contents'}}>
-          <div className="jira-rel">
+          <div role="listitem">
             <button
               type="button"
               data-testid="atlassian-navigation--secondary-actions--profile--trigger"
@@ -1993,7 +1994,6 @@ export default function App() {
               <MenuButton onClick={() => { flash('Account opened.'); setOpenMenu(null) }}>Account</MenuButton>
               <MenuButton onClick={() => { flash('Signed out (demo).'); setOpenMenu(null) }}>Sign out</MenuButton>
             </Popover>
-          </div>
           </div>
           </div>
         </nav>
@@ -2068,7 +2068,7 @@ export default function App() {
                   <div role="listitem" style={{display:'contents'}}>
                     <div style={{display:'contents'}}>
                       <div style={{display:'contents'}}>
-                        <div data-testid="NAV4_jira.sidebar.apps-container" style={{display:'contents'}}>
+                        <div data-testid="NAV4_jira.sidebar.apps-container">
                           <button
                             type="button"
                             data-testid="NAV4_jira.sidebar.apps"
@@ -2076,13 +2076,11 @@ export default function App() {
                             title="Apps" aria-label="Apps"
                             onClick={() => setActiveSidebar('apps')}
                           >
-                            <div style={{display:'contents'}}>
-                              <div className="jira-sb-link__icon" aria-hidden><SidebarIcon name="apps" /></div>
-                              <div className="jira-sb-link__label"><div aria-hidden style={{display:'contents'}} /><div><span>Apps</span></div></div>
-                            </div>
+                            <div style={{display:'contents'}}><div aria-hidden="true" className="jira-sb-link__icon"><SidebarIcon name="apps" /></div><div><span>Apps</span></div></div>
                           </button>
-                          <div style={{display:'contents'}}>
-                            <button type="button" data-testid="navigation-apps-sidebar-nav4-sidebars-common-core.ui.more-nav-menu-button.more-nav-menu-button-trigger" className="jira-sb-link jira-sb-link--more-actions sr-only" onClick={() => flash('More Apps actions (demo).')} aria-label="More actions for Apps"><span>More actions for Apps</span></button>
+                          <div aria-hidden="true" style={{display:'none'}}><div><span aria-hidden="true"><svg fill="none" viewBox="0 0 16 16" role="presentation" width="16" height="16"><path fill="currentColor" d="m6 1.5 6 6-6 6-1.06-1.06L10.44 8 4.94 2.53z"/></svg></span></div><div><span aria-hidden="true"><svg fill="none" viewBox="0 0 16 16" role="presentation" width="16" height="16"><path fill="currentColor" d="M8 2a6 6 0 1 0 0 12A6 6 0 0 0 8 2"/></svg></span></div></div>
+                          <div>
+                            <button type="button" data-testid="navigation-apps-sidebar-nav4-sidebars-common-core.ui.more-nav-menu-button.more-nav-menu-button-trigger" className="jira-sb-link jira-sb-link--more-actions sr-only" onClick={() => flash('More Apps actions (demo).')} aria-label="More actions for Apps"><span><span><svg fill="none" viewBox="0 0 16 16" role="presentation" width="16" height="16"><path fill="currentColor" d="M3 8a1 1 0 1 1 2 0 1 1 0 0 1-2 0m4 0a1 1 0 1 1 2 0 1 1 0 0 1-2 0m4 0a1 1 0 1 1 2 0 1 1 0 0 1-2 0"/></svg></span><span>More actions for Apps</span></span></button>
                           </div>
                         </div>
                       </div>
@@ -2093,7 +2091,7 @@ export default function App() {
                   <div role="listitem" style={{display:'contents'}}>
                     <div style={{display:'contents'}}>
                       <div style={{display:'contents'}}>
-                        <div data-testid="NAV4_jira.sidebar.plans-container" style={{display:'contents'}}>
+                        <div data-testid="NAV4_jira.sidebar.plans-container">
                           <button
                             type="button"
                             data-testid="NAV4_jira.sidebar.plans"
@@ -2101,17 +2099,14 @@ export default function App() {
                             title="Plans" aria-label="Plans"
                             onClick={() => setActiveSidebar('plans')}
                           >
-                            <div style={{display:'contents'}}>
-                              <div className="jira-sb-link__icon" aria-hidden><SidebarIcon name="plans" /></div>
-                              <div className="jira-sb-link__label"><div aria-hidden style={{display:'contents'}} /><div><span>Plans</span></div></div>
-                            </div>
+                            <div style={{display:'contents'}}><div aria-hidden="true" className="jira-sb-link__icon"><SidebarIcon name="plans" /></div><div><span>Plans</span></div></div>
                           </button>
-                          <div style={{display:'none'}}><div /><div /></div>
-                          <div style={{display:'contents'}}>
-                            <div role="presentation" style={{display:'contents'}}>
+                          <div aria-hidden="true" style={{display:'none'}}><div><span aria-hidden="true"><svg fill="none" viewBox="0 0 16 16" role="presentation" width="16" height="16"><path fill="currentColor" d="m6 1.5 6 6-6 6-1.06-1.06L10.44 8 4.94 2.53z"/></svg></span></div><div><span aria-hidden="true"><svg fill="none" viewBox="0 0 16 16" role="presentation" width="16" height="16"><path fill="currentColor" d="M8 2a6 6 0 1 0 0 12A6 6 0 0 0 8 2"/></svg></span></div></div>
+                          <div>
+                            <div role="presentation">
                               <button type="button" className="sr-only" onClick={() => flash('Create plan (demo).')} aria-label="Create plan"><span>Create plan</span></button>
                             </div>
-                            <button type="button" data-testid="navigation-apps-sidebar-nav4-sidebars-common-core.ui.more-nav-menu-button.more-nav-menu-button-trigger" className="jira-sb-link jira-sb-link--more-actions sr-only" onClick={() => flash('More Plans actions (demo).')} aria-label="More actions for Plans"><span>More actions for Plans</span></button>
+                            <button type="button" data-testid="navigation-apps-sidebar-nav4-sidebars-common-core.ui.more-nav-menu-button.more-nav-menu-button-trigger" className="jira-sb-link jira-sb-link--more-actions sr-only" onClick={() => flash('More Plans actions (demo).')} aria-label="More actions for Plans"><span><span><svg fill="none" viewBox="0 0 16 16" role="presentation" width="16" height="16"><path fill="currentColor" d="M3 8a1 1 0 1 1 2 0 1 1 0 0 1-2 0m4 0a1 1 0 1 1 2 0 1 1 0 0 1-2 0m4 0a1 1 0 1 1 2 0 1 1 0 0 1-2 0"/></svg></span><span>More actions for Plans</span></span></button>
                           </div>
                         </div>
                       </div>
@@ -2123,7 +2118,7 @@ export default function App() {
                     <div style={{display:'contents'}}>
                       {/* d7: wrapper for projects-container */}
                       <div style={{display:'contents'}}>
-                        <div data-testid="NAV4_jira.sidebar.projects-container" className="jira-sb-row-group">
+                        <div data-testid="NAV4_jira.sidebar.projects-container">
                           <button
                             type="button"
                             data-testid="NAV4_jira.sidebar.projects"
@@ -2131,19 +2126,14 @@ export default function App() {
                             title="Spaces" aria-label="Spaces"
                             onClick={() => setActiveSidebar('autoloop')}
                           >
-                            <div style={{display:'contents'}}>
-                              <div className="jira-sb-link__icon" aria-hidden><SidebarIcon name="spaces" /></div>
-                              <div className="jira-sb-link__label"><div aria-hidden style={{display:'contents'}} /><div><span>Spaces</span></div></div>
-                            </div>
+                            <div style={{display:'contents'}}><div aria-hidden="true" className="jira-sb-link__icon"><SidebarIcon name="spaces" /></div><div><span>Spaces</span></div></div>
                           </button>
-                          <div style={{display:'none'}}><div /><div /></div>
-                          <div className="jira-sb-row-actions">
-                            <button type="button" className="jira-sb-row-action-btn" onClick={() => flash('Create space (demo).')} aria-label="Create space">
-                              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M12 5v14M5 12h14"/></svg>
-                            </button>
-                            <button type="button" data-testid="navigation-apps-sidebar-nav4-sidebars-common-core.ui.more-nav-menu-button.more-nav-menu-button-trigger" className="jira-sb-row-action-btn" onClick={() => flash('More Spaces actions (demo).')} aria-label="More actions for spaces">
-                              <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="1.5"/><circle cx="12" cy="12" r="1.5"/><circle cx="19" cy="12" r="1.5"/></svg>
-                            </button>
+                          <div aria-hidden="true" style={{display:'none'}}><div><span aria-hidden="true"><svg fill="none" viewBox="0 0 16 16" role="presentation" width="16" height="16"><path fill="currentColor" d="m6 1.5 6 6-6 6-1.06-1.06L10.44 8 4.94 2.53z"/></svg></span></div><div><span aria-hidden="true"><svg fill="none" viewBox="0 0 16 16" role="presentation" width="16" height="16"><path fill="currentColor" d="M8 2a6 6 0 1 0 0 12A6 6 0 0 0 8 2"/></svg></span></div></div>
+                          <div>
+                            <div role="presentation">
+                              <button type="button" className="jira-sb-row-action-btn sr-only" onClick={() => flash('Create space (demo).')} aria-label="Create space"><span>Create space</span></button>
+                            </div>
+                            <button type="button" data-testid="navigation-apps-sidebar-nav4-sidebars-common-core.ui.more-nav-menu-button.more-nav-menu-button-trigger" className="jira-sb-row-action-btn" onClick={() => flash('More Spaces actions (demo).')} aria-label="More actions for spaces"><span><span><svg fill="none" viewBox="0 0 16 16" role="presentation" width="16" height="16"><path fill="currentColor" d="M3 8a1 1 0 1 1 2 0 1 1 0 0 1-2 0m4 0a1 1 0 1 1 2 0 1 1 0 0 1-2 0m4 0a1 1 0 1 1 2 0 1 1 0 0 1-2 0"/></svg></span><span className="vh-sr">More actions for Spaces</span></span></button>
                           </div>
                         </div>
                       </div>
@@ -2277,7 +2267,7 @@ export default function App() {
                   <div role="listitem" style={{display:'contents'}}>
                     <div style={{display:'contents'}}>
                       <div style={{display:'contents'}}>
-                        <div data-testid="NAV4_jira.sidebar.filters-container" style={{display:'contents'}}>
+                        <div data-testid="NAV4_jira.sidebar.filters-container">
                           <button
                             type="button"
                             data-testid="NAV4_jira.sidebar.filters"
@@ -2285,14 +2275,11 @@ export default function App() {
                             title="Filters" aria-label="Filters"
                             onClick={() => setActiveSidebar('filters')}
                           >
-                            <div style={{display:'contents'}}>
-                              <div className="jira-sb-link__icon" aria-hidden><SidebarIcon name="filter" /></div>
-                              <div className="jira-sb-link__label"><div aria-hidden style={{display:'contents'}} /><div><span>Filters</span></div></div>
-                            </div>
+                            <div style={{display:'contents'}}><div aria-hidden="true" className="jira-sb-link__icon"><SidebarIcon name="filter" /></div><div><span>Filters</span></div></div>
                           </button>
-                          <div style={{display:'none'}}><div /><div /></div>
-                          <div style={{display:'contents'}}>
-                            <button type="button" data-testid="navigation-apps-sidebar-nav4-sidebars-common-core.ui.more-nav-menu-button.more-nav-menu-button-trigger" className="jira-sb-link jira-sb-link--more-actions sr-only" onClick={() => flash('More Filters actions (demo).')} aria-label="More actions for Filters"><span>More actions for Filters</span></button>
+                          <div aria-hidden="true" style={{display:'none'}}><div><span aria-hidden="true"><svg fill="none" viewBox="0 0 16 16" role="presentation" width="16" height="16"><path fill="currentColor" d="m6 1.5 6 6-6 6-1.06-1.06L10.44 8 4.94 2.53z"/></svg></span></div><div><span aria-hidden="true"><svg fill="none" viewBox="0 0 16 16" role="presentation" width="16" height="16"><path fill="currentColor" d="M8 2a6 6 0 1 0 0 12A6 6 0 0 0 8 2"/></svg></span></div></div>
+                          <div>
+                            <button type="button" data-testid="navigation-apps-sidebar-nav4-sidebars-common-core.ui.more-nav-menu-button.more-nav-menu-button-trigger" className="jira-sb-link jira-sb-link--more-actions sr-only" onClick={() => flash('More Filters actions (demo).')} aria-label="More actions for Filters"><span><span><svg fill="none" viewBox="0 0 16 16" role="presentation" width="16" height="16"><path fill="currentColor" d="M3 8a1 1 0 1 1 2 0 1 1 0 0 1-2 0m4 0a1 1 0 1 1 2 0 1 1 0 0 1-2 0m4 0a1 1 0 1 1 2 0 1 1 0 0 1-2 0"/></svg></span><span>More actions for Filters</span></span></button>
                           </div>
                         </div>
                       </div>
@@ -2303,7 +2290,7 @@ export default function App() {
                   <div role="listitem" style={{display:'contents'}}>
                     <div style={{display:'contents'}}>
                       <div style={{display:'contents'}}>
-                        <div data-testid="NAV4_jira.sidebar.dashboards-container" style={{display:'contents'}}>
+                        <div data-testid="NAV4_jira.sidebar.dashboards-container">
                           <button
                             type="button"
                             data-testid="NAV4_jira.sidebar.dashboards"
@@ -2311,17 +2298,14 @@ export default function App() {
                             title="Dashboards" aria-label="Dashboards"
                             onClick={() => setActiveSidebar('dashboards')}
                           >
-                            <div style={{display:'contents'}}>
-                              <div className="jira-sb-link__icon" aria-hidden><SidebarIcon name="dashboard" /></div>
-                              <div className="jira-sb-link__label"><div aria-hidden style={{display:'contents'}} /><div><span>Dashboards</span></div></div>
-                            </div>
+                            <div style={{display:'contents'}}><div aria-hidden="true" className="jira-sb-link__icon"><SidebarIcon name="dashboard" /></div><div><span>Dashboards</span></div></div>
                           </button>
-                          <div style={{display:'none'}}><div /><div /></div>
-                          <div style={{display:'contents'}}>
-                            <div role="presentation" style={{display:'contents'}}>
+                          <div aria-hidden="true" style={{display:'none'}}><div><span aria-hidden="true"><svg fill="none" viewBox="0 0 16 16" role="presentation" width="16" height="16"><path fill="currentColor" d="m6 1.5 6 6-6 6-1.06-1.06L10.44 8 4.94 2.53z"/></svg></span></div><div><span aria-hidden="true"><svg fill="none" viewBox="0 0 16 16" role="presentation" width="16" height="16"><path fill="currentColor" d="M8 2a6 6 0 1 0 0 12A6 6 0 0 0 8 2"/></svg></span></div></div>
+                          <div>
+                            <div role="presentation">
                               <button type="button" className="sr-only" onClick={() => flash('Create dashboard (demo).')} aria-label="Create dashboard"><span>Create dashboard</span></button>
                             </div>
-                            <button type="button" data-testid="navigation-apps-sidebar-nav4-sidebars-common-core.ui.more-nav-menu-button.more-nav-menu-button-trigger" className="jira-sb-link jira-sb-link--more-actions sr-only" onClick={() => flash('More Dashboards actions (demo).')} aria-label="More actions for Dashboards"><span>More actions for Dashboards</span></button>
+                            <button type="button" data-testid="navigation-apps-sidebar-nav4-sidebars-common-core.ui.more-nav-menu-button.more-nav-menu-button-trigger" className="jira-sb-link jira-sb-link--more-actions sr-only" onClick={() => flash('More Dashboards actions (demo).')} aria-label="More actions for Dashboards"><span><span><svg fill="none" viewBox="0 0 16 16" role="presentation" width="16" height="16"><path fill="currentColor" d="M3 8a1 1 0 1 1 2 0 1 1 0 0 1-2 0m4 0a1 1 0 1 1 2 0 1 1 0 0 1-2 0m4 0a1 1 0 1 1 2 0 1 1 0 0 1-2 0"/></svg></span><span>More actions for Dashboards</span></span></button>
                           </div>
                         </div>
                       </div>
@@ -2595,7 +2579,6 @@ function BoardView({
   onOpenCard,
   onDeleteCard,
   onCreateCardForColumn,
-  onEditCardShortcut,
   onUpdateCard,
   dropTarget,
   onDragStart,
@@ -2746,152 +2729,117 @@ function BoardView({
               {group.cards.map((card) => (
                 <div key={card.id} role="listitem" className="jira-card-slot">
                   <div className="jira-card-slot__overlay"><div></div></div>
-                  <div data-testid="board.content.cell.card">
-                  <article
-                    className="jira-card"
+                  <div data-testid="board.content.cell.card" data-vc="business-board-card" className="jira-card"
                     draggable
                     onDragStart={() => onDragStart(card.id)}
                     onDragEnd={onDragEnd}
                   >
-                  <a href={`/browse/${card.key}`} aria-label={`${card.key} ${card.title}. Use the enter key to load the work item.`} onClick={(e)=>{ e.preventDefault(); onOpenCard(card.id) }} style={{display:'contents'}}>
-                  <div className="jira-card__actions">
-                    <button
-                      type="button"
-                      className="jira-card__action"
-                      onClick={(event) => {
-                        event.stopPropagation()
-                        onEditCardShortcut(card)
-                      }}
-                      aria-label={`Edit ${card.title}`}
-                    >
-                      Edit
-                    </button>
-                    <button
-                      type="button"
-                      className="jira-card__action jira-card__action--danger"
-                      onClick={(event) => {
-                        event.stopPropagation()
-                        if (window.confirm(`Delete ${card.key}?`)) onDeleteCard(card.id)
-                      }}
-                      aria-label={`Delete ${card.title}`}
-                    >
-                      Delete
-                    </button>
-                  </div>
-                  <button
-                    type="button"
-                    className="jira-card__open"
-                    onClick={() => onOpenCard(card.id)}
-                  >
-                    <p className="jira-card__title"><span><span>{card.title}</span></span></p>
-                  </button>
-                  <div className="jira-card__meta">
-                    <span
-                      className="jira-issue-type"
-                      role="img"
-                      aria-label="Task"
-                      title="Task"
-                    >
-                      <span className="icon-wrap">
-                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                          <title>Task</title>
-                          <rect x="1" y="1" width="14" height="14" rx="2.5" fill="#1868DB"/>
-                          <path d="M4.5 8.5L7 11L11.5 5.5" stroke="#ffffff" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                        </svg>
+                    <a draggable="true" href={`/browse/${card.key}`} onClick={(e) => { e.preventDefault(); onOpenCard(card.id) }}></a>
+                    <div>{/* summary row */}
+                      <span>
+                        <span>
+                          <span>
+                            <div role="presentation">
+                              <button
+                                type="button"
+                                onClick={(e) => { e.stopPropagation(); setEditingSummaryValue(card.title); setEditingSummaryCardId(card.id) }}
+                                aria-label="Edit summary"
+                                title="Edit summary"
+                              >
+                                <span>
+                                  <span aria-hidden="true">
+                                    <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
+                                      <path d="M11.5 2.5a1.5 1.5 0 0 1 2.12 2.12l-8 8-2.5.38.38-2.5 8-8z"/>
+                                    </svg>
+                                  </span>
+                                  <span className="vh-sr">Edit summary</span>
+                                </span>
+                              </button>
+                            </div>
+                            {editingSummaryCardId === card.id ? (
+                              <span>
+                                <textarea
+                                  aria-label="Work item summary"
+                                  autoFocus
+                                  value={editingSummaryValue}
+                                  onChange={(e) => setEditingSummaryValue(e.target.value)}
+                                  style={{width:'100%',boxSizing:'border-box',resize:'vertical',minHeight:'48px'}}
+                                />
+                                <button type="button" onClick={() => { onUpdateCard(card.id, { title: editingSummaryValue }); setEditingSummaryCardId(null) }}>Submit</button>
+                                <button type="button" onClick={() => setEditingSummaryCardId(null)}>Cancel</button>
+                              </span>
+                            ) : card.title}
+                          </span>
+                        </span>
                       </span>
-                      <span className="sr-only">Task</span>
-                    </span>
-                    <span className="jira-key"><span>{card.key}</span></span>
-                    <button
-                      type="button"
-                      className="jira-card__priority"
-                      aria-label={`Priority: ${PRIORITIES.find((p) => p.id === card.priority)?.label ?? 'Medium'}`}
-                      title={`Priority: ${PRIORITIES.find((p) => p.id === card.priority)?.label ?? 'Medium'}`}
-                      onClick={(e) => e.stopPropagation()}
-                      style={{ background: 'none', border: 'none', padding: 0, cursor: 'pointer' }}
-                    >
-                      <span className="icon-wrap">
-                        <PriorityIcon id={card.priority} />
-                      </span>
-                    </button>
-                    <div style={{ marginLeft: 'auto' }}>
-                      {card.assigneeId && USER_BY_ID[card.assigneeId] ? (
+                      <div>{/* card actions */}
                         <button
                           type="button"
-                          aria-label={`Assignee: ${USER_BY_ID[card.assigneeId].name}`}
-                          title={`Assignee: ${USER_BY_ID[card.assigneeId].name}`}
-                          onClick={(e) => e.stopPropagation()}
-                          style={{ background: 'none', border: 'none', padding: 0, cursor: 'pointer' }}
+                          className="jira-card__more-btn"
+                          aria-label={`Card actions on Task ${card.key} of the ${group.title} column`}
+                          onClick={(event) => { event.stopPropagation() }}
                         >
-                          <Avatar user={USER_BY_ID[card.assigneeId]} size="sm" />
-                        </button>
-                      ) : (
-                        <button
-                          type="button"
-                          className="jira-user-silhouette"
-                          aria-label="Assignee: None"
-                          title="Assignee: None"
-                          onClick={(e) => e.stopPropagation()}
-                          style={{ background: 'none', border: 'none', padding: 0, cursor: 'pointer' }}
-                        >
-                          <span className="icon-wrap">
-                            <svg width="14" height="14" viewBox="0 0 24 24" fill="#6b778c" aria-hidden="true">
-                              <title>Unassigned</title>
-                              <circle cx="12" cy="8" r="4" />
-                              <path d="M4 20c0-4 4-6 8-6s8 2 8 6v1H4v-1z" />
-                            </svg>
+                          <span>
+                            <span aria-hidden="true">
+                              <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                                <circle cx="5" cy="12" r="1.5" />
+                                <circle cx="12" cy="12" r="1.5" />
+                                <circle cx="19" cy="12" r="1.5" />
+                              </svg>
+                            </span>
+                            <span className="vh-sr">Card actions on Task {card.key} of the {group.title} column</span>
                           </span>
                         </button>
-                      )}
-                    </div>
-                  </div>
-                  </a>
-                  {editingSummaryCardId !== card.id && (
-                    <button
-                      type="button"
-                      aria-label="Edit summary"
-                      title="Edit summary"
-                      style={{position:'absolute',top:'4px',right:'28px',background:'none',border:'none',cursor:'pointer',padding:'2px 4px',fontSize:'12px',color:'#5e6c84',lineHeight:1}}
-                      onClick={(e) => { e.stopPropagation(); setEditingSummaryValue(card.title); setEditingSummaryCardId(card.id) }}
-                    >
-                      ✎
-                    </button>
-                  )}
-                  {editingSummaryCardId === card.id && (
-                    <div style={{padding:'4px 8px 6px'}}>
-                      <textarea
-                        aria-label="Work item summary"
-                        autoFocus
-                        value={editingSummaryValue}
-                        onChange={(e) => setEditingSummaryValue(e.target.value)}
-                        style={{width:'100%',boxSizing:'border-box',resize:'vertical',minHeight:'48px'}}
-                      />
-                      <div style={{display:'flex',gap:'4px',marginTop:'4px'}}>
-                        <button
-                          type="button"
-                          onClick={() => { onUpdateCard(card.id, { title: editingSummaryValue }); setEditingSummaryCardId(null) }}
-                        >Submit</button>
-                        <button
-                          type="button"
-                          onClick={() => setEditingSummaryCardId(null)}
-                        >Cancel</button>
                       </div>
                     </div>
-                  )}
-                  <button
-                    type="button"
-                    className="jira-card__more-btn"
-                    aria-label={`Card actions on Task ${card.key} of the ${group.title} column`}
-                    onClick={(event) => { event.stopPropagation() }}
-                  >
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                      <circle cx="5" cy="12" r="1.5" />
-                      <circle cx="12" cy="12" r="1.5" />
-                      <circle cx="19" cy="12" r="1.5" />
-                    </svg>
-                    <span className="vh-sr">Card actions on Task {card.key} of the {group.title} column</span>
-                  </button>
-                  </article>
+                    <div className="jira-card__meta">{/* metadata row */}
+                      <div>{/* issue type */}
+                        <div role="presentation">
+                          <img alt="Task" src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%231868DB'><rect width='16' height='16' rx='2'/></svg>" width="16" height="16" />
+                        </div>
+                      </div>
+                      <div>{card.key}</div>
+                      <div role="presentation">{/* priority */}
+                        <button
+                          type="button"
+                          aria-label={`Priority: ${PRIORITIES.find((p) => p.id === card.priority)?.label ?? 'Medium'}`}
+                          aria-haspopup="true"
+                          onClick={(e) => e.stopPropagation()}
+                        >
+                          <img
+                            alt={`Priority: ${PRIORITIES.find((p) => p.id === card.priority)?.label ?? 'Medium'}`}
+                            src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23FF991F'><rect width='16' height='16' rx='2'/></svg>"
+                            width="12"
+                            height="12"
+                          />
+                        </button>
+                      </div>
+                      <div role="presentation">{/* assignee */}
+                        <div>
+                          <div>
+                            <button
+                              type="button"
+                              aria-label={card.assigneeId && USER_BY_ID[card.assigneeId] ? `Assignee: ${USER_BY_ID[card.assigneeId].name}` : 'Assignee: None'}
+                              aria-haspopup="true"
+                              onClick={(e) => e.stopPropagation()}
+                            >
+                              <span>
+                                <span aria-hidden="true">
+                                  {card.assigneeId && USER_BY_ID[card.assigneeId] ? (
+                                    <Avatar user={USER_BY_ID[card.assigneeId]} size="sm" />
+                                  ) : (
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="#6b778c" aria-hidden="true">
+                                      <circle cx="12" cy="8" r="4" />
+                                      <path d="M4 20c0-4 4-6 8-6s8 2 8 6v1H4v-1z" />
+                                    </svg>
+                                  )}
+                                </span>
+                              </span>
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                   <div className="jira-card-slot__after" aria-hidden="true"><button type="button" tabIndex={-1}><span><svg aria-hidden="true" viewBox="0 0 16 16" role="presentation" width="16" height="16"></svg></span><span></span></button></div>
                 </div>
@@ -3021,7 +2969,7 @@ function ListView({
                     </td>
                     <td>
                       <select
-                        value={card.assigneeId}
+                        value={card.assigneeId ?? ''}
                         onChange={(event) => onUpdateCard(card.id, { assigneeId: event.target.value })}
                       >
                         {USERS.map((user) => (
@@ -3319,7 +3267,7 @@ function ComposerDialog({
             <label className="jira-form-field">
               <span>Assignee</span>
               <select
-                value={composer.draft.assigneeId}
+                value={composer.draft.assigneeId ?? ''}
                 onChange={(event) => updateDraft({ assigneeId: event.target.value })}
               >
                 {USERS.map((user) => (
@@ -3500,7 +3448,7 @@ function CardDetailDialog({
             <div className="jira-detail__field">
               <div className="jira-detail__label">Assignee</div>
               <select
-                value={card.assigneeId}
+                value={card.assigneeId ?? ''}
                 onChange={(event) => onUpdate({ assigneeId: event.target.value })}
               >
                 {USERS.map((user) => (
