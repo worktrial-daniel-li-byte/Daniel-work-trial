@@ -1,0 +1,38 @@
+{
+  "reward": -0.07114420826588042,
+  "details": {
+    "ssim": 0.852507205034322,
+    "text": 0.5641025641025641,
+    "color": 0.31209362808842656,
+    "pqgram": {
+      "whole": 0.25856203220684965,
+      "regions": {
+        "app-shell": 0.26975411792790643,
+        "top-nav": 0.3533697632058288,
+        "left-nav": 0.1388888888888889,
+        "horizontal-nav": 0.24835164835164836,
+        "project-header": 0.19284603421461896,
+        "board-toolbar": 0,
+        "board-canvas": 0.32053422370617696,
+        "modal-portal": 0,
+        "rovo-fab": 0
+      },
+      "combined": 0.21393349811981752
+    },
+    "content_gate": 0.6512820512820513
+  },
+  "ref": {
+    "url": "file:///Users/fleet/fleet-trial/reference_app/html/reference.html",
+    "text_len": 1145,
+    "blocks": 295,
+    "colors": 769,
+    "screenshot": "/Users/fleet/fleet-trial/reward-artifacts/2026-04-22T20-42-24-658Z/board.png"
+  },
+  "gen": {
+    "url": "http://localhost:5173",
+    "text_len": 688,
+    "blocks": 288,
+    "colors": 420,
+    "screenshot": "/Users/fleet/fleet-trial/reward-artifacts/2026-04-22T20-42-24-658Z/app.png"
+  }
+}

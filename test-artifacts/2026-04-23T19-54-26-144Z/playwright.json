@@ -1,0 +1,123 @@
+{
+  "config": {
+    "configFile": "/Users/fleet/fleet-trial/playwright.config.mjs",
+    "rootDir": "/Users/fleet/fleet-trial/tests",
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "/Users/fleet/fleet-trial/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "",
+        "name": "",
+        "testDir": "/Users/fleet/fleet-trial/tests",
+        "testIgnore": [
+          "**/_fixtures/**",
+          "**/reports/**",
+          "**/.pw-profile-jira/**",
+          "tests/browser-login.js",
+          "tests/browser-test.js",
+          "tests/qa-agent.js"
+        ],
+        "testMatch": [
+          "**/*.spec.mjs",
+          "**/*.spec.js"
+        ],
+        "timeout": 60000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "json"
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.59.1",
+    "workers": 1,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "board/columns.more_actions.spec.mjs",
+      "file": "board/columns.more_actions.spec.mjs",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "columns.more_actions — Per-column More actions menu",
+          "file": "board/columns.more_actions.spec.mjs",
+          "line": 3,
+          "column": 6,
+          "specs": [
+            {
+              "title": "More actions button opens menu with all expected items for In Progress column",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 527,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-04-23T19:54:26.891Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "42430397a95cae972573-5fcb57523e9dba62e2a5",
+              "file": "board/columns.more_actions.spec.mjs",
+              "line": 4,
+              "column": 3
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-04-23T19:54:26.663Z",
+    "duration": 768.7049999999999,
+    "expected": 1,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  }
+}

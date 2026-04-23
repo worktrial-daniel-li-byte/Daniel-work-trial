@@ -1,0 +1,17 @@
+{
+  "id": "toolbar.groupby.button",
+  "feature": "Group by button reflects current grouping",
+  "status": "PASS",
+  "phase": "test",
+  "impl_attempts": 0,
+  "test_attempts": 1,
+  "spec": "tests/board/toolbar.groupby.button.spec.mjs",
+  "last_exit_code": 0,
+  "last_assertions": 9,
+  "last_failure_reason": null,
+  "last_worker_summary": "I wrote `tests/board/toolbar.groupby.button.spec.mjs`, which asserts (1) the toolbar button is visible with the accessible name `\"Group by Status\"` and contains the visible text `\"Group: Status\"`, (2) the button carries `aria-haspopup=\"true\"` / `aria-expanded=\"false\"` confirming it is a collapsed popup trigger, and (3) the three status-grouping column headings (`To Do`, `In Progress`, `Done`) are all rendered on the board.",
+  "mutation_checked": true,
+  "load_bearing": false,
+  "mutation_saboteur_skipped": true,
+  "mutation_failure_reason": "saboteur declined to edit (feature may not live in src/); mutation contract not verified"
+}

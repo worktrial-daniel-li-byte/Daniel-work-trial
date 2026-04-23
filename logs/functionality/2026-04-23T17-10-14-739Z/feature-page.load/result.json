@@ -1,0 +1,17 @@
+{
+  "id": "page.load",
+  "feature": "Route renders board with Status columns when /board?groupBy=status",
+  "status": "PASS",
+  "phase": "test",
+  "impl_attempts": 0,
+  "test_attempts": 1,
+  "spec": "tests/board/page.load.spec.mjs",
+  "last_exit_code": 0,
+  "last_assertions": 6,
+  "last_failure_reason": null,
+  "last_worker_summary": "I wrote `tests/board/page.load.spec.mjs` with six `expect()` assertions: the page title matching `/Board - Autoloop - Jira$/`, three level-3 status column headings (`To Do`, `In Progress`, `Done`), the level-1 space heading `Autoloop`, and the `Group by Status` button — all derived directly from the browser-agent evidence.",
+  "mutation_checked": true,
+  "load_bearing": false,
+  "mutation_saboteur_skipped": true,
+  "mutation_failure_reason": "saboteur made no edits AND spec did not re-pass after no-op revert (exit=1)"
+}

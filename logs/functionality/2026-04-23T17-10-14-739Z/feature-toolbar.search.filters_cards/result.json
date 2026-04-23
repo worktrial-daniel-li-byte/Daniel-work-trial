@@ -1,0 +1,17 @@
+{
+  "id": "toolbar.search.filters_cards",
+  "feature": "Typing in 'Search board' filters cards and persists in URL",
+  "status": "PASS",
+  "phase": "test",
+  "impl_attempts": 0,
+  "test_attempts": 2,
+  "spec": "tests/board/toolbar.search.filters_cards.spec.mjs",
+  "last_exit_code": 0,
+  "last_assertions": 13,
+  "last_failure_reason": null,
+  "last_worker_summary": "The fix replaces the broken `.jira-col__count span` CSS-class locator (which only exists in the local React source, not the real Jira DOM) with `getByRole('heading', { level: 3, name: 'To Do' }).locator('xpath=following-sibling::*[1]')` — derived directly from the error-context page snapshot, which shows the count badge is the first generic sibling immediately after each `h3` column heading; the `role=\"status\"` assertion now uses `toContainText` and drops the unreliable `getByText('Showing filtered work items')` fallback in favour of the preferred `getByRole('status')` locator.",
+  "mutation_checked": true,
+  "load_bearing": false,
+  "mutation_saboteur_skipped": true,
+  "mutation_failure_reason": "saboteur declined to edit (feature may not live in src/); mutation contract not verified"
+}

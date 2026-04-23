@@ -1,0 +1,10 @@
+{
+  "passed": true,
+  "exitCode": 0,
+  "assertionCount": 13,
+  "minAssertions": 2,
+  "failureReason": null,
+  "stdout": "\nRunning 1 test using 1 worker\n\n  ✓  1 tests/board/card.edit_summary.spec.mjs:8:3 › card.edit_summary — Inline Edit summary pencil opens an in-card editor › clicking Edit summary shows focused textbox with Submit/Cancel; Escape cancels and preserves original summary (3.6s)\n\n  1 passed (3.9s)\n",
+  "stderr": "(node:35781) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.\n(Use `node --trace-warnings ...` to show where the warning was created)\n(node:35781) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.\n(Use `node --trace-warnings ...` to show where the warning was created)\n",
+  "durationMs": 4394
+}

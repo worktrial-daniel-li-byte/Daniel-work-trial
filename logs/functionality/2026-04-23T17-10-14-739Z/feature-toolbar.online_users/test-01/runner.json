@@ -1,0 +1,10 @@
+{
+  "passed": true,
+  "exitCode": 0,
+  "assertionCount": 4,
+  "minAssertions": 2,
+  "failureReason": null,
+  "stdout": "\nRunning 1 test using 1 worker\n\n  ✓  1 tests/board/toolbar.online_users.spec.mjs:20:3 › toolbar.online_users — Online-users avatar (checkbox) appears next to search › Online-user assignee checkbox is visible in the board toolbar next to Search board (2.8s)\n\n  1 passed (3.1s)\n",
+  "stderr": "(node:4278) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.\n(Use `node --trace-warnings ...` to show where the warning was created)\n(node:4278) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.\n(Use `node --trace-warnings ...` to show where the warning was created)\n",
+  "durationMs": 3599
+}

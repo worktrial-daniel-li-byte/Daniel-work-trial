@@ -1,0 +1,73 @@
+# Feature toolbar.search — mutation attempt 01
+## Task to saboteur
+Remove or disable the single feature described below so the spec at
+tests/calendar/toolbar.search.spec.mjs will FAIL. The harness will revert your edits after
+it re-runs the spec — make the sabotage surgical but real.
+
+FEATURE CHECK:
+```json
+{
+  "id": "toolbar.search",
+  "feature": "Calendar search textbox filters work items on the calendar",
+  "how_to_verify": "Assert a textbox with accessible name 'Search calendar' is present in the toolbar.",
+  "expect": "Search calendar",
+  "action_is_mutating": false,
+  "status": "pass"
+}
+```
+
+BROWSER EVIDENCE (what the spec is expected to observe):
+```json
+{
+  "id": "toolbar.search",
+  "status": "PASS",
+  "navigate_url": "https://fleet-team-y0ak1u2s.atlassian.net/jira/core/projects/AUT/calendar",
+  "observations": [
+    "page.url() === https://fleet-team-y0ak1u2s.atlassian.net/jira/core/projects/AUT/calendar",
+    "page title is 'Calendar - Jira'",
+    "A textbox with accessible name 'Search calendar' is present in the calendar toolbar (snapshot ref=e491)",
+    "The underlying element is <input type=\"text\"> with aria-label=\"Search calendar\" and placeholder=\"Search calendar\", and it is visible (offsetParent !== null)",
+    "Helper text immediately preceding the input reads: 'On entering data into the following input field, the calendar content will update below.'",
+    "The textbox sits in the toolbar next to the 'Filter by assignee' group and '0 filters applied' Filter button, above the calendar grid whose heading is 'Apr 2026'",
+    "Calendar heading 'Autoloop' (h1) and space-nav heading 'Calendar' (h2) confirm we are on the AUT project calendar"
+  ],
+  "playwright_hints": {
+    "locators": [
+      {
+        "purpose": "Calendar search textbox in the toolbar",
+        "preferred": "getByRole('textbox', { name: 'Search calendar' })",
+        "fallback": "getByPlaceholder('Search calendar')"
+      },
+      {
+        "purpose": "Current month heading (confirms calendar loaded before asserting)",
+        "preferred": "getByRole('heading', { level: 3, name: /\\b\\d{4}\\b/ })",
+        "fallback": "locator('h3')"
+      },
+      {
+        "purpose": "Space/project title confirming AUT project",
+        "preferred": "getByRole('heading', { level: 1, name: 'Autoloop' })",
+        "fallback": "getByText('Autoloop')"
+      }
+    ],
+    "url_assertions": [
+      "/jira/core/projects/AUT/calendar"
+    ],
+    "interactions": null,
+    "mutation_and_revert": null
+  },
+  "notes": "The search input exposes accessible name 'Search calendar' via aria-label (also duplicated as placeholder), so getByRole('textbox', { name: 'Search calendar' }) is the cleanest locator. No mutation required — this check only asserts presence. Unscheduled-work panel has a separate textbox named 'Search field for unscheduled items...'; do not confuse the two.",
+  "turns": 4,
+  "stopped_for_budget": false
+}
+```
+
+Spec file (read-only — do NOT edit it): tests/calendar/toolbar.search.spec.mjs
+
+Keep the app compiling. Break only this one feature.
+## Saboteur summary
+The test navigates directly to `https://fleet-team-y0ak1u2s.atlassian.net/jira/core/projects/AUT/calendar` — the live Jira Cloud instance — and the `Search calendar` `<input aria-label="Search calendar">` it checks is rendered by Atlassian's own frontend, not by anything in `src/` or `public/`. The local `src/App.tsx` doesn't implement a calendar toolbar search at all (the Calendar tab renders a `PlaceholderTab`), and there is no `JIRA_BASE_URL` override in `.env` that would redirect the tests to localhost. There is no code in the edit-allowlist that controls this feature, so I am making **no edits**.
+- saboteur_skipped: true
+- after-sabotage runner: exit=0 passed=true
+- after-revert runner:   exit=0 passed=true
+- load_bearing:          true
+- failure_reason:        saboteur declined to edit (feature may not live in src/); mutation contract not verified

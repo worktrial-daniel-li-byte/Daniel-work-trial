@@ -1,0 +1,26 @@
+{
+  "app_url": "http://localhost:5173",
+  "test_dir": "tests/calendar",
+  "started_at": "2026-04-23T18:20:26.419Z",
+  "exit_code": 1,
+  "counts": {
+    "total": 1,
+    "passed": 0,
+    "failed": 1,
+    "skipped": 0,
+    "flaky": 0,
+    "timedOut": 0
+  },
+  "tests": [
+    {
+      "file": "calendar/page.load.spec.mjs",
+      "title": "calendar page loads with active Calendar heading and all sibling tab links visible",
+      "project": "",
+      "status": "failed",
+      "ok": false,
+      "duration_ms": 10579,
+      "error": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mpage\u001b[39m\u001b[2m).\u001b[22mtoHaveTitle\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nExpected: \u001b[32m\"\u001b[7mCalendar\u001b[27m - Jira\"\u001b[39m\nReceived: \u001b[31m\"\u001b[7mBoard - Autoloop\u001b[27m - Jira\"\u001b[39m\nTimeout:  10000ms\n\nCall log:\n\u001b[2m  - Expect \"toHaveTitle\" with timeout 10000ms\u001b[22m\n\u001b[2m    14 × unexpected value \"Board - Autoloop - Jira\"\u001b[22m\n"
+    }
+  ],
+  "artifact_dir": "/Users/fleet/fleet-trial/test-artifacts/2026-04-23T18-20-13-887Z"
+}

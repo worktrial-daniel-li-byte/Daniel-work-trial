@@ -1,0 +1,51 @@
+{
+  "id": "toolbar.groupby.button",
+  "status": "PASS",
+  "navigate_url": "https://fleet-team-y0ak1u2s.atlassian.net/jira/core/projects/AUT/board?filter=&groupBy=status",
+  "observations": [
+    "page.url() === 'https://fleet-team-y0ak1u2s.atlassian.net/jira/core/projects/AUT/board?filter=&groupBy=status'",
+    "A button with accessible name (aria-label) 'Group by Status' is visible in the board toolbar",
+    "The visible text inside that button is 'Group: Status' (span.css-178ag6o)",
+    "The button has aria-haspopup='true' and aria-expanded='false' indicating it opens a menu",
+    "Board columns reflect status grouping: headings 'To Do' (level=3), 'In Progress' (level=3), 'Done' (level=3) are rendered",
+    "Neighboring toolbar buttons 'View settings' and 'More actions' exist alongside the Group by button",
+    "heading level=1 'Autoloop' and heading level=2 'Board' confirm we are on the Autoloop board view"
+  ],
+  "playwright_hints": {
+    "locators": [
+      {
+        "purpose": "Group by button reflecting current grouping (default: Status)",
+        "preferred": "getByRole('button', { name: 'Group by Status' })",
+        "fallback": "getByText('Group: Status')"
+      },
+      {
+        "purpose": "Visible label span inside the Group by button",
+        "preferred": "getByRole('button', { name: 'Group by Status' }).getByText('Group: Status')",
+        "fallback": "locator('button[aria-label=\"Group by Status\"] span')"
+      },
+      {
+        "purpose": "To Do column heading (confirms status grouping is active)",
+        "preferred": "getByRole('heading', { level: 3, name: 'To Do' })",
+        "fallback": "getByText('To Do', { exact: true })"
+      },
+      {
+        "purpose": "In Progress column heading",
+        "preferred": "getByRole('heading', { level: 3, name: 'In Progress' })",
+        "fallback": "getByText('In Progress', { exact: true })"
+      },
+      {
+        "purpose": "Done column heading",
+        "preferred": "getByRole('heading', { level: 3, name: 'Done' })",
+        "fallback": "getByText('Done', { exact: true })"
+      }
+    ],
+    "url_assertions": [
+      "groupBy=status"
+    ],
+    "interactions": null,
+    "mutation_and_revert": null
+  },
+  "notes": "Accessible name of the button is 'Group by Status' (from aria-label); visible text within the button is 'Group: Status'. Both are valid assertions; prefer the role+name locator. No mutation required for this check. Console reported 2 errors/6 warnings but none affected rendering of the toolbar.",
+  "turns": 4,
+  "stopped_for_budget": false
+}

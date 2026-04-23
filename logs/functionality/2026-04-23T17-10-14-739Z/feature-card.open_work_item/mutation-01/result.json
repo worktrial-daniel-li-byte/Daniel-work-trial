@@ -1,0 +1,25 @@
+{
+  "saboteur_skipped": false,
+  "run_after_sabotage": {
+    "passed": true,
+    "exitCode": 0,
+    "assertionCount": 8,
+    "minAssertions": 2,
+    "failureReason": null,
+    "stdout": "\nRunning 1 test using 1 worker\n\n  ✓  1 tests/board/card.open_work_item.spec.mjs:4:3 › card.open_work_item — Clicking the card opens the work item › clicking AUT-1 card link opens a work-item dialog and appends selectedIssue=AUT-1 to the URL (3.8s)\n\n  1 passed (4.1s)\n",
+    "stderr": "(node:25114) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.\n(Use `node --trace-warnings ...` to show where the warning was created)\n(node:25114) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.\n(Use `node --trace-warnings ...` to show where the warning was created)\n",
+    "durationMs": 4610
+  },
+  "run_after_revert": {
+    "passed": true,
+    "exitCode": 0,
+    "assertionCount": 8,
+    "minAssertions": 2,
+    "failureReason": null,
+    "stdout": "\nRunning 1 test using 1 worker\n\n  ✓  1 tests/board/card.open_work_item.spec.mjs:4:3 › card.open_work_item — Clicking the card opens the work item › clicking AUT-1 card link opens a work-item dialog and appends selectedIssue=AUT-1 to the URL (3.2s)\n\n  1 passed (3.5s)\n",
+    "stderr": "(node:25289) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.\n(Use `node --trace-warnings ...` to show where the warning was created)\n(node:25289) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.\n(Use `node --trace-warnings ...` to show where the warning was created)\n",
+    "durationMs": 3920
+  },
+  "load_bearing": false,
+  "failure_reason": "spec STAYED GREEN after feature was removed — the test is not load-bearing. Tighten its assertions against the specific DOM the feature produces."
+}

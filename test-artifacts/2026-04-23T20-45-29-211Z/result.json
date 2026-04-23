@@ -1,0 +1,26 @@
+{
+  "app_url": "http://localhost:5173",
+  "test_dir": "board/toolbar.view_settings.spec.mjs",
+  "started_at": "2026-04-23T20:45:49.530Z",
+  "exit_code": 1,
+  "counts": {
+    "total": 1,
+    "passed": 0,
+    "failed": 1,
+    "skipped": 0,
+    "flaky": 0,
+    "timedOut": 0
+  },
+  "tests": [
+    {
+      "file": "board/toolbar.view_settings.spec.mjs",
+      "title": "open panel shows heading, resize handle and close button; closing removes the panel",
+      "project": "",
+      "status": "failed",
+      "ok": false,
+      "duration_ms": 19529,
+      "error": "TimeoutError: locator.click: Timeout 15000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('complementary', { name: 'Sidebar' }).getByRole('button', { name: 'Close' })\u001b[22m\n\u001b[2m    - locator resolved to <button type=\"button\" aria-label=\"Close\">✕</button>\u001b[22m\n\u001b[2m  - attempting click action\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is visible, enabled and stable\u001b[22m\n\u001b[2m      - scrolling into view if needed\u001b[22m\n\u001b[2m      - done scrolling\u001b[22m\n\u001b[2m      - <span aria-label=\"DL\" class=\"jira-avatar jira-avatar--dl\">DL</span> from <header class=\"jira-topbar\" data-region=\"top-nav\" data-testid=\"page-layout.top-nav\">…</header> subtree intercepts pointer events\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m    - waiting 20ms\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is visible, enabled and stable\u001b[22m\n\u001b[2m      - scrolling into view if needed\u001b[22m\n\u001b[2m      - done scrolling\u001b[22m\n\u001b[2m      - <span aria-label=\"DL\" class=\"jira-avatar jira-avatar--dl\">DL</span> from <header class=\"jira-topbar\" data-region=\"top-nav\" data-testid=\"page-layout.top-nav\">…</header> subtree intercepts pointer events\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m      - waiting 100ms\u001b[22m\n\u001b[2m    29 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m       - element is visible, enabled and stable\u001b[22m\n\u001b[2m       - scrolling into view if needed\u001b[22m\n\u001b[2m       - done scrolling\u001b[22m\n\u001b[2m       - <span aria-label=\"DL\" class=\"jira-avatar jira-avatar--dl\">DL</span> from <header class=\"jira-topbar\" data-region=\"top-nav\" data-testid=\"page-layout.top-nav\">…</header> subtree intercepts pointer events\u001b[22m\n\u001b[2m     - retrying click action\u001b[22m\n\u001b[2m       - waiting 500ms\u001b[22m\n"
+    }
+  ],
+  "artifact_dir": "/Users/fleet/fleet-trial/test-artifacts/2026-04-23T20-45-29-211Z"
+}

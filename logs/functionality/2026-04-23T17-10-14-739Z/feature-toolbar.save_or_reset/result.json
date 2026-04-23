@@ -1,0 +1,17 @@
+{
+  "id": "toolbar.save_or_reset",
+  "feature": "'Save or reset view settings' button appears when current view differs from saved",
+  "status": "TEST_FAILED",
+  "phase": "test",
+  "impl_attempts": 0,
+  "test_attempts": 3,
+  "spec": "tests/board/toolbar.save_or_reset.spec.mjs",
+  "last_exit_code": 0,
+  "last_assertions": 10,
+  "last_failure_reason": null,
+  "last_worker_summary": "The single-line fix in `tests/board/toolbar.save_or_reset.spec.mjs` adds `exact: true` to the `'View settings'` button locator on line 51 — without it Playwright's substring name-matching also resolves the `'Save or reset view settings'` button, causing the strict-mode violation; `exact: true` constrains it to the literal name and eliminates the ambiguity.",
+  "mutation_checked": true,
+  "load_bearing": false,
+  "mutation_saboteur_skipped": false,
+  "mutation_failure_reason": "spec STAYED GREEN after feature was removed — the test is not load-bearing. Tighten its assertions against the specific DOM the feature produces."
+}

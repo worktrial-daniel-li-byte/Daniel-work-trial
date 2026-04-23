@@ -1,0 +1,17 @@
+{
+  "id": "toolbar.filter.button",
+  "feature": "Filter button shows active count",
+  "status": "PASS",
+  "phase": "test",
+  "impl_attempts": 0,
+  "test_attempts": 2,
+  "spec": "tests/board/toolbar.filter.button.spec.mjs",
+  "last_exit_code": 0,
+  "last_assertions": 7,
+  "last_failure_reason": null,
+  "last_worker_summary": "I rewrote `tests/board/toolbar.filter.button.spec.mjs` replacing the `getByRole` name-match approach (which can be satisfied via fallback accessible-name computation against the live Jira) with three **direct `aria-label` attribute assertions**: a CSS suffix selector `button[aria-label$=\" filters applied\"]`, an exact `toHaveAttribute('aria-label', '0 filters applied')` on the testId-anchored element, and a regex variant `toHaveAttribute('aria-label', /^\\d+ filters applied$/)` — all of which fail immediately when the attribute is changed to anything like `\"Filter options\"`.",
+  "mutation_checked": true,
+  "load_bearing": false,
+  "mutation_saboteur_skipped": true,
+  "mutation_failure_reason": "saboteur declined to edit (feature may not live in src/); mutation contract not verified"
+}

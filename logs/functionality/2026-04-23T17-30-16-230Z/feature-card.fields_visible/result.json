@@ -1,0 +1,10 @@
+{
+  "id": "card.fields_visible",
+  "feature": "Card visually surfaces expected fields",
+  "status": "VERIFY_FAILED",
+  "phase": "browser",
+  "test_attempts": 0,
+  "spec": "tests/board/card.fields_visible.spec.mjs",
+  "browser_status": "PARTIAL",
+  "reason": "browser agent reported PARTIAL: The feature claim that AUT-1's summary is 'This is a test' is INCORRECT in the current environment; actual summary is 'Design autonomous replanning loop'. The claim of default priority 'Medium' is also incorrect; observed priority is 'High' (button aria-label='Priority: High'). All four expected field TYPES (summary, key badge with Task icon + 'AUT-1', priority icon, assignee avatar for 'None') are visibly present, which is why status is PARTIAL rather than FAIL. The green-check-for-Done behaviour could not be observed because AUT-1 is in 'To Do'. Specs should assert by aria-label pattern (e.g. /^Priority:/) rather than a specific priority value to be robust."
+}

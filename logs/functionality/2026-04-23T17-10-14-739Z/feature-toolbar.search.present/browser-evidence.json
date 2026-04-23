@@ -1,0 +1,44 @@
+{
+  "id": "toolbar.search.present",
+  "status": "PASS",
+  "navigate_url": "https://fleet-team-y0ak1u2s.atlassian.net/jira/core/projects/AUT/board?filter=&groupBy=status",
+  "observations": [
+    "page.url() === https://fleet-team-y0ak1u2s.atlassian.net/jira/core/projects/AUT/board?filter=&groupBy=status",
+    "Page title is 'Board - Autoloop - Jira'",
+    "role=textbox with accessible name 'Search board' is present inside the board toolbar (ref=e407)",
+    "Adjacent status element reads 'Showing all work items' (ref=e408), confirming it is the board search toolbar",
+    "Toolbar also shows 'Group by Status' button and 'View settings' button, confirming toolbar context",
+    "Column heading role=heading level=3 name='To Do' is visible on the board"
+  ],
+  "playwright_hints": {
+    "locators": [
+      {
+        "purpose": "Search board textbox in the board toolbar",
+        "preferred": "getByRole('textbox', { name: 'Search board' })",
+        "fallback": "locator('input[placeholder=\"Search board\"]')"
+      },
+      {
+        "purpose": "Adjacent status indicator that confirms toolbar context",
+        "preferred": "getByText('Showing all work items')",
+        "fallback": "locator('[role=status]', { hasText: 'Showing all work items' })"
+      },
+      {
+        "purpose": "Board view heading (page context)",
+        "preferred": "getByRole('heading', { level: 2, name: 'Board' })",
+        "fallback": "getByText('Board', { exact: true })"
+      }
+    ],
+    "url_assertions": [
+      "/jira/core/projects/AUT/board",
+      "groupBy=status"
+    ],
+    "interactions": [
+      "await page.goto('https://fleet-team-y0ak1u2s.atlassian.net/jira/core/projects/AUT/board?filter=&groupBy=status')",
+      "await expect(page.getByRole('textbox', { name: 'Search board' })).toBeVisible()"
+    ],
+    "mutation_and_revert": null
+  },
+  "notes": "Textbox is observed with no initial value; it is a plain input (not combobox). The accessible name 'Search board' comes from the element itself. Page already authenticated as worktrial-daniel-li@fleet.so; no login redirect occurred.",
+  "turns": 15,
+  "stopped_for_budget": false
+}

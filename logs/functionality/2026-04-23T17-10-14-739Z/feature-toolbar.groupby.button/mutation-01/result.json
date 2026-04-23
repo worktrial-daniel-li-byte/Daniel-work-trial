@@ -1,0 +1,25 @@
+{
+  "saboteur_skipped": true,
+  "run_after_sabotage": {
+    "passed": true,
+    "exitCode": 0,
+    "assertionCount": 9,
+    "minAssertions": 2,
+    "failureReason": null,
+    "stdout": "\nRunning 1 test using 1 worker\n\n  ✓  1 tests/board/toolbar.groupby.button.spec.mjs:4:3 › toolbar.groupby.button — Group by button reflects current grouping › Group by button shows \"Group by Status\" and board renders status columns (5.5s)\n\n  1 passed (5.8s)\n",
+    "stderr": "(node:14970) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.\n(Use `node --trace-warnings ...` to show where the warning was created)\n(node:14970) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.\n(Use `node --trace-warnings ...` to show where the warning was created)\n",
+    "durationMs": 6320
+  },
+  "run_after_revert": {
+    "passed": true,
+    "exitCode": 0,
+    "assertionCount": 9,
+    "minAssertions": 2,
+    "failureReason": null,
+    "stdout": "\nRunning 1 test using 1 worker\n\n  ✓  1 tests/board/toolbar.groupby.button.spec.mjs:4:3 › toolbar.groupby.button — Group by button reflects current grouping › Group by button shows \"Group by Status\" and board renders status columns (5.1s)\n\n  1 passed (5.3s)\n",
+    "stderr": "(node:15115) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.\n(Use `node --trace-warnings ...` to show where the warning was created)\n(node:15115) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.\n(Use `node --trace-warnings ...` to show where the warning was created)\n",
+    "durationMs": 5898
+  },
+  "load_bearing": true,
+  "failure_reason": "saboteur declined to edit (feature may not live in src/); mutation contract not verified"
+}

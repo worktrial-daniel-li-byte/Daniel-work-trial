@@ -1,0 +1,25 @@
+{
+  "saboteur_skipped": false,
+  "run_after_sabotage": {
+    "passed": true,
+    "exitCode": 0,
+    "assertionCount": 6,
+    "minAssertions": 2,
+    "failureReason": null,
+    "stdout": "\nRunning 1 test using 1 worker\n\n  ✓  1 tests/board/toolbar.filter.button.spec.mjs:4:3 › toolbar.filter.button — Filter button shows active count › Filter button is visible with default \"0 filters applied\" accessible name (2.1s)\n\n  1 passed (2.3s)\n",
+    "stderr": "(node:6193) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.\n(Use `node --trace-warnings ...` to show where the warning was created)\n(node:6193) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.\n(Use `node --trace-warnings ...` to show where the warning was created)\n",
+    "durationMs": 2852
+  },
+  "run_after_revert": {
+    "passed": true,
+    "exitCode": 0,
+    "assertionCount": 6,
+    "minAssertions": 2,
+    "failureReason": null,
+    "stdout": "\nRunning 1 test using 1 worker\n\n  ✓  1 tests/board/toolbar.filter.button.spec.mjs:4:3 › toolbar.filter.button — Filter button shows active count › Filter button is visible with default \"0 filters applied\" accessible name (2.0s)\n\n  1 passed (2.2s)\n",
+    "stderr": "(node:6294) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.\n(Use `node --trace-warnings ...` to show where the warning was created)\n(node:6294) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.\n(Use `node --trace-warnings ...` to show where the warning was created)\n",
+    "durationMs": 2624
+  },
+  "load_bearing": false,
+  "failure_reason": "spec STAYED GREEN after feature was removed — the test is not load-bearing. Tighten its assertions against the specific DOM the feature produces."
+}

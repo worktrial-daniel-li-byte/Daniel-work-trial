@@ -1,0 +1,123 @@
+{
+  "config": {
+    "configFile": "/Users/fleet/fleet-trial/playwright.config.mjs",
+    "rootDir": "/Users/fleet/fleet-trial/tests",
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "/Users/fleet/fleet-trial/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "",
+        "name": "",
+        "testDir": "/Users/fleet/fleet-trial/tests",
+        "testIgnore": [
+          "**/_fixtures/**",
+          "**/reports/**",
+          "**/.pw-profile-jira/**",
+          "tests/browser-login.js",
+          "tests/browser-test.js",
+          "tests/qa-agent.js"
+        ],
+        "testMatch": [
+          "**/*.spec.mjs",
+          "**/*.spec.js"
+        ],
+        "timeout": 60000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "json"
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.59.1",
+    "workers": 1,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "board/toolbar.filter.panel.spec.mjs",
+      "file": "board/toolbar.filter.panel.spec.mjs",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "toolbar.filter.panel — Filter popover contents",
+          "file": "board/toolbar.filter.panel.spec.mjs",
+          "line": 3,
+          "column": 6,
+          "specs": [
+            {
+              "title": "popover renders all expected sections after clicking filter trigger",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 529,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-04-23T19:59:51.241Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "15314daba91254a81e6e-eb229ab4ba9e475b31eb",
+              "file": "board/toolbar.filter.panel.spec.mjs",
+              "line": 4,
+              "column": 3
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-04-23T19:59:51.006Z",
+    "duration": 779.2669999999999,
+    "expected": 1,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  }
+}

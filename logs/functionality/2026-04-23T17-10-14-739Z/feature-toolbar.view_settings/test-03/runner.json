@@ -1,0 +1,10 @@
+{
+  "passed": true,
+  "exitCode": 0,
+  "assertionCount": 13,
+  "minAssertions": 2,
+  "failureReason": null,
+  "stdout": "\nRunning 1 test using 1 worker\n\n  ✓  1 tests/board/toolbar.view_settings.spec.mjs:4:3 › toolbar.view_settings — View settings opens a right-side panel › open panel shows heading, resize handle and close button; closing removes the panel (4.1s)\n\n  1 passed (4.4s)\n",
+  "stderr": "(node:46922) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.\n(Use `node --trace-warnings ...` to show where the warning was created)\n(node:46922) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.\n(Use `node --trace-warnings ...` to show where the warning was created)\n",
+  "durationMs": 5004
+}

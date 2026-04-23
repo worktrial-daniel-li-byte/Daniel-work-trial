@@ -1,0 +1,10 @@
+{
+  "passed": true,
+  "exitCode": 0,
+  "assertionCount": 12,
+  "minAssertions": 2,
+  "failureReason": null,
+  "stdout": "\nRunning 1 test using 1 worker\n\n  ✓  1 tests/board/columns.add_column.spec.mjs:4:3 › columns.add_column — '+' button at the end of the columns row to add a new column/status › Create status button opens modal; Cancel reverts board to original 3-column state (4.2s)\n\n  1 passed (4.6s)\n",
+  "stderr": "(node:97129) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.\n(Use `node --trace-warnings ...` to show where the warning was created)\n(node:97129) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.\n(Use `node --trace-warnings ...` to show where the warning was created)\n",
+  "durationMs": 5328
+}

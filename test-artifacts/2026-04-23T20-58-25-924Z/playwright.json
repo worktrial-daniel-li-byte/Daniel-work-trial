@@ -1,0 +1,157 @@
+{
+  "config": {
+    "configFile": "/Users/fleet/fleet-trial/playwright.config.mjs",
+    "rootDir": "/Users/fleet/fleet-trial/tests",
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "/Users/fleet/fleet-trial/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "",
+        "name": "",
+        "testDir": "/Users/fleet/fleet-trial/tests",
+        "testIgnore": [
+          "**/_fixtures/**",
+          "**/reports/**",
+          "**/.pw-profile-jira/**",
+          "tests/browser-login.js",
+          "tests/browser-test.js"
+        ],
+        "testMatch": [
+          "**/*.spec.mjs",
+          "**/*.spec.js"
+        ],
+        "timeout": 60000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "json"
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.59.1",
+    "workers": 1,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "board/card.edit_summary.spec.mjs",
+      "file": "board/card.edit_summary.spec.mjs",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "card.edit_summary — Inline Edit summary pencil opens an in-card editor",
+          "file": "board/card.edit_summary.spec.mjs",
+          "line": 7,
+          "column": 6,
+          "specs": [
+            {
+              "title": "clicking Edit summary shows focused textbox with Submit/Cancel; Escape cancels and preserves original summary",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "failed",
+                      "duration": 15526,
+                      "error": {
+                        "message": "TimeoutError: locator.click: Timeout 15000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('button', { name: 'Edit summary' })\u001b[22m\n\u001b[2m    - locator resolved to <button type=\"button\" title=\"Edit summary\" aria-label=\"Edit summary\">✎</button>\u001b[22m\n\u001b[2m  - attempting click action\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is visible, enabled and stable\u001b[22m\n\u001b[2m      - scrolling into view if needed\u001b[22m\n\u001b[2m      - done scrolling\u001b[22m\n\u001b[2m      - <button type=\"button\" aria-label=\"Edit, Space name\"></button> from <header class=\"jira-project-top\" data-region=\"horizontal-nav\" data-testid=\"horizontal-nav.ui.content.horizontal-nav\">…</header> subtree intercepts pointer events\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m    - waiting 20ms\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is visible, enabled and stable\u001b[22m\n\u001b[2m      - scrolling into view if needed\u001b[22m\n\u001b[2m      - done scrolling\u001b[22m\n\u001b[2m      - <button type=\"button\" aria-label=\"Edit, Space name\"></button> from <header class=\"jira-project-top\" data-region=\"horizontal-nav\" data-testid=\"horizontal-nav.ui.content.horizontal-nav\">…</header> subtree intercepts pointer events\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m      - waiting 100ms\u001b[22m\n\u001b[2m    29 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m       - element is visible, enabled and stable\u001b[22m\n\u001b[2m       - scrolling into view if needed\u001b[22m\n\u001b[2m       - done scrolling\u001b[22m\n\u001b[2m       - <button type=\"button\" aria-label=\"Edit, Space name\"></button> from <header class=\"jira-project-top\" data-region=\"horizontal-nav\" data-testid=\"horizontal-nav.ui.content.horizontal-nav\">…</header> subtree intercepts pointer events\u001b[22m\n\u001b[2m     - retrying click action\u001b[22m\n\u001b[2m       - waiting 500ms\u001b[22m\n",
+                        "stack": "TimeoutError: locator.click: Timeout 15000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('button', { name: 'Edit summary' })\u001b[22m\n\u001b[2m    - locator resolved to <button type=\"button\" title=\"Edit summary\" aria-label=\"Edit summary\">✎</button>\u001b[22m\n\u001b[2m  - attempting click action\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is visible, enabled and stable\u001b[22m\n\u001b[2m      - scrolling into view if needed\u001b[22m\n\u001b[2m      - done scrolling\u001b[22m\n\u001b[2m      - <button type=\"button\" aria-label=\"Edit, Space name\"></button> from <header class=\"jira-project-top\" data-region=\"horizontal-nav\" data-testid=\"horizontal-nav.ui.content.horizontal-nav\">…</header> subtree intercepts pointer events\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m    - waiting 20ms\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is visible, enabled and stable\u001b[22m\n\u001b[2m      - scrolling into view if needed\u001b[22m\n\u001b[2m      - done scrolling\u001b[22m\n\u001b[2m      - <button type=\"button\" aria-label=\"Edit, Space name\"></button> from <header class=\"jira-project-top\" data-region=\"horizontal-nav\" data-testid=\"horizontal-nav.ui.content.horizontal-nav\">…</header> subtree intercepts pointer events\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m      - waiting 100ms\u001b[22m\n\u001b[2m    29 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m       - element is visible, enabled and stable\u001b[22m\n\u001b[2m       - scrolling into view if needed\u001b[22m\n\u001b[2m       - done scrolling\u001b[22m\n\u001b[2m       - <button type=\"button\" aria-label=\"Edit, Space name\"></button> from <header class=\"jira-project-top\" data-region=\"horizontal-nav\" data-testid=\"horizontal-nav.ui.content.horizontal-nav\">…</header> subtree intercepts pointer events\u001b[22m\n\u001b[2m     - retrying click action\u001b[22m\n\u001b[2m       - waiting 500ms\u001b[22m\n\n    at /Users/fleet/fleet-trial/tests/board/card.edit_summary.spec.mjs:27:19",
+                        "location": {
+                          "file": "/Users/fleet/fleet-trial/tests/board/card.edit_summary.spec.mjs",
+                          "column": 19,
+                          "line": 27
+                        },
+                        "snippet": "  25 |\n  26 |     // ── Interaction: click the Edit summary button ────────────────────────────\n> 27 |     await editBtn.click()\n     |                   ^\n  28 |\n  29 |     // ── Assertion 4: an in-card textbox with the right accessible name appears\n  30 |     const textbox = page.getByRole('textbox', { name: 'Work item summary' })"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "/Users/fleet/fleet-trial/tests/board/card.edit_summary.spec.mjs",
+                            "column": 19,
+                            "line": 27
+                          },
+                          "message": "TimeoutError: locator.click: Timeout 15000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('button', { name: 'Edit summary' })\u001b[22m\n\u001b[2m    - locator resolved to <button type=\"button\" title=\"Edit summary\" aria-label=\"Edit summary\">✎</button>\u001b[22m\n\u001b[2m  - attempting click action\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is visible, enabled and stable\u001b[22m\n\u001b[2m      - scrolling into view if needed\u001b[22m\n\u001b[2m      - done scrolling\u001b[22m\n\u001b[2m      - <button type=\"button\" aria-label=\"Edit, Space name\"></button> from <header class=\"jira-project-top\" data-region=\"horizontal-nav\" data-testid=\"horizontal-nav.ui.content.horizontal-nav\">…</header> subtree intercepts pointer events\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m    - waiting 20ms\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is visible, enabled and stable\u001b[22m\n\u001b[2m      - scrolling into view if needed\u001b[22m\n\u001b[2m      - done scrolling\u001b[22m\n\u001b[2m      - <button type=\"button\" aria-label=\"Edit, Space name\"></button> from <header class=\"jira-project-top\" data-region=\"horizontal-nav\" data-testid=\"horizontal-nav.ui.content.horizontal-nav\">…</header> subtree intercepts pointer events\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m      - waiting 100ms\u001b[22m\n\u001b[2m    29 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m       - element is visible, enabled and stable\u001b[22m\n\u001b[2m       - scrolling into view if needed\u001b[22m\n\u001b[2m       - done scrolling\u001b[22m\n\u001b[2m       - <button type=\"button\" aria-label=\"Edit, Space name\"></button> from <header class=\"jira-project-top\" data-region=\"horizontal-nav\" data-testid=\"horizontal-nav.ui.content.horizontal-nav\">…</header> subtree intercepts pointer events\u001b[22m\n\u001b[2m     - retrying click action\u001b[22m\n\u001b[2m       - waiting 500ms\u001b[22m\n\n\n  25 |\n  26 |     // ── Interaction: click the Edit summary button ────────────────────────────\n> 27 |     await editBtn.click()\n     |                   ^\n  28 |\n  29 |     // ── Assertion 4: an in-card textbox with the right accessible name appears\n  30 |     const textbox = page.getByRole('textbox', { name: 'Work item summary' })\n    at /Users/fleet/fleet-trial/tests/board/card.edit_summary.spec.mjs:27:19"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-04-23T20:58:26.692Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "/Users/fleet/fleet-trial/test-results/board-card.edit_summary-ca-668e0--preserves-original-summary/error-context.md"
+                        },
+                        {
+                          "name": "trace",
+                          "contentType": "application/zip",
+                          "path": "/Users/fleet/fleet-trial/test-results/board-card.edit_summary-ca-668e0--preserves-original-summary/trace.zip"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "/Users/fleet/fleet-trial/tests/board/card.edit_summary.spec.mjs",
+                        "column": 19,
+                        "line": 27
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "61da01d5067eb771f891-4b4c9cd6fd28b20d5f77",
+              "file": "board/card.edit_summary.spec.mjs",
+              "line": 8,
+              "column": 3
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-04-23T20:58:26.463Z",
+    "duration": 15789.574,
+    "expected": 0,
+    "skipped": 0,
+    "unexpected": 1,
+    "flaky": 0
+  }
+}

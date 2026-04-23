@@ -1,0 +1,25 @@
+{
+  "saboteur_skipped": true,
+  "run_after_sabotage": {
+    "passed": true,
+    "exitCode": 0,
+    "assertionCount": 13,
+    "minAssertions": 2,
+    "failureReason": null,
+    "stdout": "\nRunning 1 test using 1 worker\n\n  ✓  1 tests/board/toolbar.view_settings.spec.mjs:4:3 › toolbar.view_settings — View settings opens a right-side panel › open panel shows heading, resize handle and close button; closing removes the panel (3.4s)\n\n  1 passed (3.6s)\n",
+    "stderr": "(node:50299) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.\n(Use `node --trace-warnings ...` to show where the warning was created)\n(node:50299) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.\n(Use `node --trace-warnings ...` to show where the warning was created)\n",
+    "durationMs": 4189
+  },
+  "run_after_revert": {
+    "passed": true,
+    "exitCode": 0,
+    "assertionCount": 13,
+    "minAssertions": 2,
+    "failureReason": null,
+    "stdout": "\nRunning 1 test using 1 worker\n\n  ✓  1 tests/board/toolbar.view_settings.spec.mjs:4:3 › toolbar.view_settings — View settings opens a right-side panel › open panel shows heading, resize handle and close button; closing removes the panel (3.1s)\n\n  1 passed (3.8s)\n",
+    "stderr": "(node:50511) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.\n(Use `node --trace-warnings ...` to show where the warning was created)\n(node:50511) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.\n(Use `node --trace-warnings ...` to show where the warning was created)\n",
+    "durationMs": 4209
+  },
+  "load_bearing": true,
+  "failure_reason": "saboteur declined to edit (feature may not live in src/); mutation contract not verified"
+}

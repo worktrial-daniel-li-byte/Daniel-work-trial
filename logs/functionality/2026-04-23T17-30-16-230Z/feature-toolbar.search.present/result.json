@@ -1,0 +1,16 @@
+{
+  "id": "toolbar.search.present",
+  "feature": "Toolbar has a 'Search board' textbox",
+  "status": "PASS",
+  "phase": "test",
+  "test_attempts": 2,
+  "spec": "tests/board/toolbar.search.present.spec.mjs",
+  "last_exit_code": 0,
+  "last_assertions": 4,
+  "last_failure_reason": null,
+  "last_worker_summary": "The fix replaces `getByRole('button', { name: /Filter/i })` — which ambiguously matched 3 elements — with `getByLabel('0 filters applied')`, targeting the board toolbar's filter button by its exact `aria-label` as recorded in the DOM inspection evidence, eliminating the strict-mode violation while still asserting the toolbar context.",
+  "mutation_checked": false,
+  "load_bearing": null,
+  "mutation_saboteur_skipped": null,
+  "mutation_failure_reason": null
+}

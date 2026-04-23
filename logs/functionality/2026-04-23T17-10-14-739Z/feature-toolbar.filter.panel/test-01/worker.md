@@ -1,0 +1,203 @@
+# Feature toolbar.filter.panel — attempt 01
+
+## Task to worker
+
+Write a new @playwright/test spec at tests/board/toolbar.filter.panel.spec.mjs that verifies the
+feature check below.
+
+FEATURE CHECK (verbatim from mcp/summary/tabs/*.json):
+```json
+{
+  "id": "toolbar.filter.panel",
+  "feature": "Filter popover contents",
+  "how_to_verify": "Click 'N filters applied'. Popover renders sections in order.",
+  "expect_sections": [
+    "FILTERS (quick filters): 'Assigned to me', 'Due this week'",
+    "Date range: 'Start date' + 'Due date' pickers",
+    "Assignee: avatar grid of space members",
+    "Category: 'No category' checkbox",
+    "Created: 'From' + 'To' date pickers",
+    "Labels: 'No label'",
+    "Priority: 5 icons (Highest, High, Medium, Low, Lowest)"
+  ],
+  "status": "pass"
+}
+```
+
+BROWSER-AGENT EVIDENCE (verbatim):
+```json
+{
+  "id": "toolbar.filter.panel",
+  "status": "PASS",
+  "navigate_url": "https://fleet-team-y0ak1u2s.atlassian.net/jira/core/projects/AUT/board?filter=&groupBy=status",
+  "observations": [
+    "Filter trigger button has accessible name '0 filters applied' (not 'N filters applied' – project has no active filters) with data-testid='business-filters.ui.filters.trigger.button-wrapper'",
+    "After clicking, the button has aria-expanded=true and a popover appears with heading 'Filters' (role=heading, level=2)",
+    "Popover contains descriptive text 'Clicking on the items below will filter and update your view'",
+    "Quick-filter tabpanel contains a list with two buttons: 'Assigned to me' and 'Due this week'",
+    "Section heading 'Date range' (role=heading, level=3) is followed by 'Start date' and 'Due date' labelled inputs, each with an 'Open calendar' button (accessible names 'Start date, Open calendar' and 'Due date, Open calendar')",
+    "Section heading 'Assignee' (level=3) contains a list of avatar buttons including 'Daniel Li', 'Alert Integration', 'Atlas for Jira Cloud', 'Atlassian Assist', 'Automation for Jira', 'Blocker Checker', 'Brand Voice Crafter', 'Bug Report Assistant', 'Chat Notifications', 'Confluence Analytics (System)', 'Customer Insights', 'Dashboard Insights', 'Decision director', 'fred', 'Global Translator' plus a 'More options for assignee' button",
+    "Section heading 'Category' (level=3) contains exactly one listitem: button 'No category'",
+    "Section heading 'Created' (level=3) is followed by 'From' and 'To' labelled inputs, each with an 'Open calendar' button ('From, Open calendar' and 'To, Open calendar')",
+    "Section heading 'Labels' (level=3) contains buttons 'architecture', 'loop', and 'No label' (the spec mentioned only 'No label', but extra label buttons are also rendered because the project has labels on AUT-1)",
+    "Section heading 'Priority' (level=3) contains exactly 5 listitem buttons in order: 'Highest', 'High', 'Medium', 'Low', 'Lowest'",
+    "Additional sections also render after Priority: 'Reporter', 'Status', 'Team', 'Updated', 'Work type', and a 'Custom fields' heading (level=2) – these are beyond the spec's expect_sections but present",
+    "page.url() === 'https://fleet-team-y0ak1u2s.atlassian.net/jira/core/projects/AUT/board?filter=&groupBy=status' before and after opening the popover"
+  ],
+  "playwright_hints": {
+    "locators": [
+      {
+        "purpose": "Filter popover trigger button in toolbar",
+        "preferred": "getByRole('button', { name: /filters applied/ })",
+        "fallback": "getByTestId('business-filters.ui.filters.trigger.button-wrapper')"
+      },
+      {
+        "purpose": "Popover title",
+        "preferred": "getByRole('heading', { level: 2, name: 'Filters' })",
+        "fallback": "getByText('Filters', { exact: true })"
+      },
+      {
+        "purpose": "Popover descriptive text",
+        "preferred": "getByText('Clicking on the items below will filter and update your view')",
+        "fallback": "locator('text=Clicking on the items below will filter and update your view')"
+      },
+      {
+        "purpose": "Quick filter: Assigned to me",
+        "preferred": "getByRole('button', { name: 'Assigned to me' })",
+        "fallback": "getByText('Assigned to me')"
+      },
+      {
+        "purpose": "Quick filter: Due this week",
+        "preferred": "getByRole('button', { name: 'Due this week' })",
+        "fallback": "getByText('Due this week')"
+      },
+      {
+        "purpose": "Date range section heading",
+        "preferred": "getByRole('heading', { level: 3, name: 'Date range' })",
+        "fallback": "getByText('Date range', { exact: true })"
+      },
+      {
+        "purpose": "Start date open-calendar button",
+        "preferred": "getByRole('button', { name: 'Start date, Open calendar' })",
+        "fallback": "locator('button', { hasText: 'Start date' })"
+      },
+      {
+        "purpose": "Due date open-calendar button",
+        "preferred": "getByRole('button', { name: 'Due date, Open calendar' })",
+        "fallback": "locator('button', { hasText: 'Due date' })"
+      },
+      {
+        "purpose": "Assignee section heading",
+        "preferred": "getByRole('heading', { level: 3, name: 'Assignee' })",
+        "fallback": "getByText('Assignee', { exact: true })"
+      },
+      {
+        "purpose": "Assignee avatar button for Daniel Li (first in grid)",
+        "preferred": "getByRole('button', { name: 'Daniel Li' }).first()",
+        "fallback": "locator('img[alt=\"Daniel Li\"]').first()"
+      },
+      {
+        "purpose": "Assignee 'More options' overflow button",
+        "preferred": "getByRole('button', { name: 'More options for assignee' })",
+        "fallback": "locator('button[aria-label=\"More options for assignee\"]')"
+      },
+      {
+        "purpose": "Category section heading",
+        "preferred": "getByRole('heading', { level: 3, name: 'Category' })",
+        "fallback": "getByText('Category', { exact: true })"
+      },
+      {
+        "purpose": "Category 'No category' option",
+        "preferred": "getByRole('button', { name: 'No category' })",
+        "fallback": "getByText('No category')"
+      },
+      {
+        "purpose": "Created section heading",
+        "preferred": "getByRole('heading', { level: 3, name: 'Created' })",
+        "fallback": "getByText('Created', { exact: true })"
+      },
+      {
+        "purpose": "Created 'From, Open calendar' button",
+        "preferred": "getByRole('button', { name: 'From, Open calendar' }).first()",
+        "fallback": "locator('button', { hasText: 'From' }).first()"
+      },
+      {
+        "purpose": "Created 'To, Open calendar' button",
+        "preferred": "getByRole('button', { name: 'To, Open calendar' }).first()",
+        "fallback": "locator('button', { hasText: 'To' }).first()"
+      },
+      {
+        "purpose": "Labels section heading",
+        "preferred": "getByRole('heading', { level: 3, name: 'Labels' })",
+        "fallback": "getByText('Labels', { exact: true })"
+      },
+      {
+        "purpose": "Labels 'No label' option",
+        "preferred": "getByRole('button', { name: 'No label' })",
+        "fallback": "getByText('No label')"
+      },
+      {
+        "purpose": "Priority section heading",
+        "preferred": "getByRole('heading', { level: 3, name: 'Priority' })",
+        "fallback": "getByText('Priority', { exact: true })"
+      },
+      {
+        "purpose": "Priority Highest option",
+        "preferred": "getByRole('button', { name: 'Highest', exact: true })",
+        "fallback": "getByText('Highest')"
+      },
+      {
+        "purpose": "Priority High option",
+        "preferred": "getByRole('button', { name: 'High', exact: true })",
+        "fallback": "getByText('High')"
+      },
+      {
+        "purpose": "Priority Medium option",
+        "preferred": "getByRole('button', { name: 'Medium', exact: true })",
+        "fallback": "getByText('Medium')"
+      },
+      {
+        "purpose": "Priority Low option",
+        "preferred": "getByRole('button', { name: 'Low', exact: true })",
+        "fallback": "getByText('Low')"
+      },
+      {
+        "purpose": "Priority Lowest option",
+        "preferred": "getByRole('button', { name: 'Lowest', exact: true })",
+        "fallback": "getByText('Lowest')"
+      }
+    ],
+    "url_assertions": [
+      "/jira/core/projects/AUT/board",
+      "groupBy=status"
+    ],
+    "interactions": [
+      "await page.goto('https://fleet-team-y0ak1u2s.atlassian.net/jira/core/projects/AUT/board?filter=&groupBy=status')",
+      "await page.getByRole('button', { name: /filters applied/ }).click()",
+      "await expect(page.getByRole('heading', { level: 2, name: 'Filters' })).toBeVisible()"
+    ],
+    "mutation_and_revert": null
+  },
+  "notes": "Trigger reads '0 filters applied' because no filters are active – use regex /filters applied/ for stability. Popover includes all expected sections (Assigned to me + Due this week quick filters, Date range, Assignee grid, Category/No category, Created From+To, Labels/No label, Priority with exactly 5 icons in order Highest/High/Medium/Low/Lowest). Popover also renders additional sections not in the spec (Reporter, Status, Team, Updated, Work type, Custom fields) – treat expect_sections as a subset, not exhaustive. Labels section additionally shows project-specific labels 'architecture' and 'loop' beyond the 'No label' entry in the spec; scope assertions to 'No label' if targeting a stable claim. Several Assignee/Reporter avatars are app-bot users (Automation for Jira, Rovo agents) from the Atlassian site and their set can change – prefer asserting the section heading + Daniel Li + 'More options for assignee' button for stability.",
+  "turns": 5,
+  "stopped_for_budget": false
+}
+```
+
+Requirements:
+  - File to write: tests/board/toolbar.filter.panel.spec.mjs
+  - At least 2 expect() assertions.
+  - Import { test, expect, JIRA_BASE } from '../_fixtures/jira.mjs'
+  - Use the navigate_url from evidence (strip the scheme+host if it
+    matches JIRA_BASE and concatenate, otherwise use the full URL).
+  - For mutating features, mutate → assert post-state → revert → assert original state.
+
+## Worker summary
+
+I wrote `tests/board/toolbar.filter.panel.spec.mjs`, which navigates to the AUT board, clicks the `/filters applied/` trigger button, then asserts 24+ `expect()` calls covering every required popover section: the level-2 "Filters" heading and descriptive text, `aria-expanded=true` on the trigger, quick-filter buttons ("Assigned to me", "Due this week"), all six level-3 section headings (Date range, Assignee, Category, Created, Labels, Priority) plus their key child elements (calendar buttons, Daniel Li avatar, "More options for assignee", "No category", "No label", and all five Priority options Highest→Lowest in order), and a final URL assertion confirming the popover is non-navigating.
+
+## Runner
+
+- exit code: 0
+- assertions counted: 27
+- passed: true

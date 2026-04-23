@@ -1,0 +1,123 @@
+{
+  "config": {
+    "configFile": "/Users/fleet/fleet-trial/playwright.config.mjs",
+    "rootDir": "/Users/fleet/fleet-trial/tests",
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "/Users/fleet/fleet-trial/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "",
+        "name": "",
+        "testDir": "/Users/fleet/fleet-trial/tests",
+        "testIgnore": [
+          "**/_fixtures/**",
+          "**/reports/**",
+          "**/.pw-profile-jira/**",
+          "tests/browser-login.js",
+          "tests/browser-test.js",
+          "tests/qa-agent.js"
+        ],
+        "testMatch": [
+          "**/*.spec.mjs",
+          "**/*.spec.js"
+        ],
+        "timeout": 60000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "json"
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.59.1",
+    "workers": 1,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "board/card.open_work_item.spec.mjs",
+      "file": "board/card.open_work_item.spec.mjs",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "card.open_work_item — Clicking the card opens the work item",
+          "file": "board/card.open_work_item.spec.mjs",
+          "line": 3,
+          "column": 6,
+          "specs": [
+            {
+              "title": "AUT-1 card is a role=link with href=/browse/AUT-1 and clicking it opens the work-item dialog",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 536,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-04-23T20:38:41.589Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "0404a196a9b5186442e7-f21b55a64db239b2d9fb",
+              "file": "board/card.open_work_item.spec.mjs",
+              "line": 4,
+              "column": 3
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-04-23T20:38:41.362Z",
+    "duration": 777.383,
+    "expected": 1,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  }
+}

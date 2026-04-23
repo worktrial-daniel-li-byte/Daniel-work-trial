@@ -1,0 +1,25 @@
+{
+  "saboteur_skipped": true,
+  "run_after_sabotage": {
+    "passed": true,
+    "exitCode": 0,
+    "assertionCount": 4,
+    "minAssertions": 2,
+    "failureReason": null,
+    "stdout": "\nRunning 1 test using 1 worker\n\n  ✓  1 tests/board/toolbar.online_users.spec.mjs:20:3 › toolbar.online_users — Online-users avatar (checkbox) appears next to search › Online-user assignee checkbox is visible in the board toolbar next to Search board (4.3s)\n\n  1 passed (4.5s)\n",
+    "stderr": "(node:4970) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.\n(Use `node --trace-warnings ...` to show where the warning was created)\n(node:4970) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.\n(Use `node --trace-warnings ...` to show where the warning was created)\n",
+    "durationMs": 5000
+  },
+  "run_after_revert": {
+    "passed": true,
+    "exitCode": 0,
+    "assertionCount": 4,
+    "minAssertions": 2,
+    "failureReason": null,
+    "stdout": "\nRunning 1 test using 1 worker\n\n  ✓  1 tests/board/toolbar.online_users.spec.mjs:20:3 › toolbar.online_users — Online-users avatar (checkbox) appears next to search › Online-user assignee checkbox is visible in the board toolbar next to Search board (3.3s)\n\n  1 passed (3.6s)\n",
+    "stderr": "(node:5111) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.\n(Use `node --trace-warnings ...` to show where the warning was created)\n(node:5111) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.\n(Use `node --trace-warnings ...` to show where the warning was created)\n",
+    "durationMs": 4003
+  },
+  "load_bearing": true,
+  "failure_reason": "saboteur declined to edit (feature may not live in src/); mutation contract not verified"
+}

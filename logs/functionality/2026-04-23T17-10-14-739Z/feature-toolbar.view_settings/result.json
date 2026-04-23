@@ -1,0 +1,17 @@
+{
+  "id": "toolbar.view_settings",
+  "feature": "View settings opens a right-side panel",
+  "status": "PASS",
+  "phase": "test",
+  "impl_attempts": 0,
+  "test_attempts": 3,
+  "spec": "tests/board/toolbar.view_settings.spec.mjs",
+  "last_exit_code": 0,
+  "last_assertions": 13,
+  "last_failure_reason": null,
+  "last_worker_summary": "The fix replaces the broken `toHaveValue('Never')` (which targeted the React Select's hidden dummy `<input value=\"\">`) with two text-visibility checks: one for the label `'Hide done work items after:'` and one for the displayed option `'Never'` — both rendered as visible text nodes in the sidebar's single-value span, which Playwright can reliably find with `getByText`.",
+  "mutation_checked": true,
+  "load_bearing": false,
+  "mutation_saboteur_skipped": true,
+  "mutation_failure_reason": "saboteur declined to edit (feature may not live in src/); mutation contract not verified"
+}

@@ -1,0 +1,17 @@
+{
+  "run_id": "2026-04-23T20-05-56-352Z",
+  "started_at": "2026-04-23T20:05:56.353Z",
+  "app_url": "http://localhost:5173",
+  "model": "claude-opus-4-7",
+  "config": {
+    "maxDispatches": 30,
+    "targetReward": 0.85,
+    "improvementDelta": 0.005,
+    "maxTokens": 32768,
+    "claudeCliPath": "claude",
+    "workerModel": null,
+    "workerAllowedTools": "Read,Edit,Write,MultiEdit,Bash,Grep,Glob",
+    "workerPermissionMode": "acceptEdits",
+    "workerTimeoutMs": null
+  }
+}

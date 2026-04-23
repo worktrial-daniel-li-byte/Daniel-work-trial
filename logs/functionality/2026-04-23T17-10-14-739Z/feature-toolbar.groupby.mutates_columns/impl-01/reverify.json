@@ -1,0 +1,14 @@
+{
+  "id": "toolbar.groupby.mutates_columns",
+  "status": "FAIL",
+  "navigate_url": "https://fleet-team-y0ak1u2s.atlassian.net/jira/core/projects/AUT/board?filter=&groupBy=status",
+  "observations": [],
+  "playwright_hints": {
+    "locators": [],
+    "url_assertions": [],
+    "interactions": []
+  },
+  "notes": "browser agent did not emit parseable JSON. raw: Revert confirmed:\n- URL: `groupBy=status`\n- Columns: \"To Do\" (1), \"In Progress\" (0), \"Done\" (0)\n- AUT-1 in To Do, \"Card actions on Task AUT-1 of the To Do column\"\n- Group by button: \"Group by Status\"\n- \"Save or reset view settings\" button is NOT visible (still shown after click revert) — actually I notice the toolbar now only has \"View settings\" / \"More actions\" (no Save/reset), confirming it rese",
+  "turns": 15,
+  "stopped_for_budget": false
+}

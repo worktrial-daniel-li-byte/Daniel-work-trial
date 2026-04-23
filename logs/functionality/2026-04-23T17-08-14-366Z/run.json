@@ -1,0 +1,18 @@
+{
+  "run_id": "2026-04-23T17-08-14-366Z",
+  "started_at": "2026-04-23T17:08:14.366Z",
+  "tab": "calendar",
+  "source": "mcp/summary/tabs/calendar.json",
+  "app_url": "https://fleet-team-y0ak1u2s.atlassian.net/jira/core/projects/AUT/calendar",
+  "model": "claude-opus-4-7",
+  "config": {
+    "maxFixDispatches": 3,
+    "minAssertionsPerSpec": 2,
+    "browserAgentMaxTurns": 30,
+    "headless": true,
+    "pwTimeoutMs": 60000,
+    "workerModel": null,
+    "workerAllowedTools": "Read,Edit,Write,MultiEdit,Grep,Glob,Bash",
+    "workerPermissionMode": "acceptEdits"
+  }
+}

@@ -1,0 +1,83 @@
+{
+  "id": "card.fields_visible",
+  "status": "PARTIAL",
+  "navigate_url": "https://fleet-team-y0ak1u2s.atlassian.net/jira/core/projects/AUT/board?filter=&groupBy=status",
+  "observations": [
+    "page.url() === 'https://fleet-team-y0ak1u2s.atlassian.net/jira/core/projects/AUT/board?filter=&groupBy=status'",
+    "Page title: 'Board - Autoloop - Jira'",
+    "heading level=3 name='To Do' visible with count badge '1'",
+    "heading level=3 name='In Progress' visible with count badge '0'",
+    "heading level=3 name='Done' visible with count badge '0'",
+    "AUT-1 card is in the 'To Do' column (status=To Do, NOT Done — so no green checkmark on the key badge is expected nor observed)",
+    "Card link has href='/browse/AUT-1' and aria-label 'AUT-1 Design autonomous replanning loop. Use the enter key to load the work item.'",
+    "Summary text visible on the card is 'Design autonomous replanning loop' (NOT 'This is a test' as the check claimed)",
+    "Card displays the key badge: Task img with alt 'Task' followed by the visible text 'AUT-1'",
+    "Priority button is visible on the card with accessible name 'Priority: High' (aria-label 'Priority: High') — NOT 'Medium' as the check claimed",
+    "Assignee button is visible on the card with accessible name 'Assignee: None' (generic unassigned avatar)",
+    "Card container has data-testid='board.content.cell.card' and data-vc='business-board-card'",
+    "Card also shows label chips: 'architecture' and 'loop'",
+    "An 'Edit summary' button and 'Card actions on Task AUT-1 of the To Do column' button are present on the card"
+  ],
+  "playwright_hints": {
+    "locators": [
+      {
+        "purpose": "AUT-1 card container (scope for per-field assertions)",
+        "preferred": "page.locator('[data-testid=\"board.content.cell.card\"]').filter({ has: page.getByRole('link', { name: /^AUT-1 / }) })",
+        "fallback": "page.getByRole('listitem').filter({ hasText: 'Design autonomous replanning' })"
+      },
+      {
+        "purpose": "AUT-1 card link (key + summary combined accessible name)",
+        "preferred": "page.getByRole('link', { name: 'AUT-1 Design autonomous replanning loop. Use the enter key to load the work item.' })",
+        "fallback": "page.locator('a[href=\"/browse/AUT-1\"]')"
+      },
+      {
+        "purpose": "Card summary text",
+        "preferred": "card.getByText('Design autonomous replanning loop', { exact: false })",
+        "fallback": "page.getByText('Design autonomous replanning loop')"
+      },
+      {
+        "purpose": "Key badge text 'AUT-1' (next to Task icon)",
+        "preferred": "card.getByText('AUT-1', { exact: true })",
+        "fallback": "page.locator('a[href=\"/browse/AUT-1\"]')"
+      },
+      {
+        "purpose": "Task type icon next to the key badge",
+        "preferred": "card.getByRole('img', { name: 'Task' })",
+        "fallback": "card.locator('img[alt=\"Task\"]')"
+      },
+      {
+        "purpose": "Priority icon/button on the card",
+        "preferred": "card.getByRole('button', { name: 'Priority: High' })",
+        "fallback": "card.locator('button[aria-label^=\"Priority:\"]')"
+      },
+      {
+        "purpose": "Assignee avatar/button on the card (unassigned)",
+        "preferred": "card.getByRole('button', { name: 'Assignee: None' })",
+        "fallback": "card.locator('button[aria-label^=\"Assignee:\"]')"
+      },
+      {
+        "purpose": "To Do column heading",
+        "preferred": "page.getByRole('heading', { level: 3, name: 'To Do' })",
+        "fallback": "page.getByText('To Do', { exact: true })"
+      },
+      {
+        "purpose": "Card actions menu button (to assert scoping includes To Do column)",
+        "preferred": "card.getByRole('button', { name: 'Card actions on Task AUT-1 of the To Do column' })",
+        "fallback": "card.locator('button[aria-label*=\"Card actions\"][aria-label*=\"AUT-1\"]')"
+      }
+    ],
+    "url_assertions": [
+      "/jira/core/projects/AUT/board",
+      "groupBy=status"
+    ],
+    "interactions": [
+      "await page.goto('https://fleet-team-y0ak1u2s.atlassian.net/jira/core/projects/AUT/board?filter=&groupBy=status')",
+      "await expect(page.getByRole('heading', { level: 3, name: 'To Do' })).toBeVisible()",
+      "await expect(page.getByRole('link', { name: /^AUT-1 / })).toBeVisible()"
+    ],
+    "mutation_and_revert": null
+  },
+  "notes": "Sub-claims about specific VALUES in the feature check do not match the live DOM: (1) summary is 'Design autonomous replanning loop', NOT 'This is a test'; (2) priority is 'High', NOT the claimed default 'Medium'. The STRUCTURAL claims all pass: key badge (Task icon + 'AUT-1'), priority icon button, unassigned assignee button, and summary text are all rendered. AUT-1 is in the To Do column, so the 'green check on the key badge for Done' behavior was not observable this session. Spec should assert on presence/role of the four field elements rather than the exact values claimed in the check to avoid false failures.",
+  "turns": 5,
+  "stopped_for_budget": false
+}

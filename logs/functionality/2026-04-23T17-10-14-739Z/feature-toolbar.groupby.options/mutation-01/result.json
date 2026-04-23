@@ -1,0 +1,25 @@
+{
+  "saboteur_skipped": true,
+  "run_after_sabotage": {
+    "passed": true,
+    "exitCode": 0,
+    "assertionCount": 14,
+    "minAssertions": 2,
+    "failureReason": null,
+    "stdout": "\nRunning 1 test using 1 worker\n\n  ✓  1 tests/board/toolbar.groupby.options.spec.mjs:4:3 › toolbar.groupby.options — Group by options › Popover shows 4 radios with Status checked by default (2.7s)\n\n  1 passed (2.9s)\n",
+    "stderr": "(node:18225) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.\n(Use `node --trace-warnings ...` to show where the warning was created)\n(node:18225) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.\n(Use `node --trace-warnings ...` to show where the warning was created)\n",
+    "durationMs": 3375
+  },
+  "run_after_revert": {
+    "passed": true,
+    "exitCode": 0,
+    "assertionCount": 14,
+    "minAssertions": 2,
+    "failureReason": null,
+    "stdout": "\nRunning 1 test using 1 worker\n\n  ✓  1 tests/board/toolbar.groupby.options.spec.mjs:4:3 › toolbar.groupby.options — Group by options › Popover shows 4 radios with Status checked by default (2.8s)\n\n  1 passed (3.1s)\n",
+    "stderr": "(node:18356) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.\n(Use `node --trace-warnings ...` to show where the warning was created)\n(node:18356) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.\n(Use `node --trace-warnings ...` to show where the warning was created)\n",
+    "durationMs": 3406
+  },
+  "load_bearing": true,
+  "failure_reason": "saboteur declined to edit (feature may not live in src/); mutation contract not verified"
+}

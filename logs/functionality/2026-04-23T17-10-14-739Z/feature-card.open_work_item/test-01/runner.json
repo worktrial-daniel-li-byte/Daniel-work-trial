@@ -1,0 +1,10 @@
+{
+  "passed": true,
+  "exitCode": 0,
+  "assertionCount": 8,
+  "minAssertions": 2,
+  "failureReason": null,
+  "stdout": "\nRunning 1 test using 1 worker\n\n  ✓  1 tests/board/card.open_work_item.spec.mjs:4:3 › card.open_work_item — Clicking the card opens the work item › clicking AUT-1 card link opens a work-item dialog and appends selectedIssue=AUT-1 to the URL (5.0s)\n\n  1 passed (5.3s)\n",
+  "stderr": "(node:24615) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.\n(Use `node --trace-warnings ...` to show where the warning was created)\n(node:24615) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.\n(Use `node --trace-warnings ...` to show where the warning was created)\n",
+  "durationMs": 5823
+}

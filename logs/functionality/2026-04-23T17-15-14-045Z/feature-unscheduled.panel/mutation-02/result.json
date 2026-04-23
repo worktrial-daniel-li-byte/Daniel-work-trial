@@ -1,0 +1,25 @@
+{
+  "saboteur_skipped": true,
+  "run_after_sabotage": {
+    "passed": true,
+    "exitCode": 0,
+    "assertionCount": 4,
+    "minAssertions": 2,
+    "failureReason": null,
+    "stdout": "\nRunning 1 test using 1 worker\n\n  ✓  1 tests/calendar/unscheduled.panel.spec.mjs:4:3 › unscheduled.panel — Unscheduled work side panel lists items lacking a due date and supports drag-to-schedule › panel exposes heading, helper text, close button, and an unscheduled work item (11.2s)\n\n  1 passed (11.5s)\n",
+    "stderr": "(node:84206) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.\n(Use `node --trace-warnings ...` to show where the warning was created)\n(node:84206) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.\n(Use `node --trace-warnings ...` to show where the warning was created)\n",
+    "durationMs": 12147
+  },
+  "run_after_revert": {
+    "passed": true,
+    "exitCode": 0,
+    "assertionCount": 4,
+    "minAssertions": 2,
+    "failureReason": null,
+    "stdout": "\nRunning 1 test using 1 worker\n\n  ✓  1 tests/calendar/unscheduled.panel.spec.mjs:4:3 › unscheduled.panel — Unscheduled work side panel lists items lacking a due date and supports drag-to-schedule › panel exposes heading, helper text, close button, and an unscheduled work item (2.4s)\n\n  1 passed (2.8s)\n",
+    "stderr": "(node:84606) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.\n(Use `node --trace-warnings ...` to show where the warning was created)\n(node:84606) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.\n(Use `node --trace-warnings ...` to show where the warning was created)\n",
+    "durationMs": 3388
+  },
+  "load_bearing": true,
+  "failure_reason": "saboteur declined to edit (feature may not live in src/); mutation contract not verified"
+}

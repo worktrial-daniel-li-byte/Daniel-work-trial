@@ -1,0 +1,23 @@
+{
+  "reward": -0.1106435978326622,
+  "details": {
+    "ssim": 0.7983281420665417,
+    "text": 0.4909090909090909,
+    "color": 0.2535760728218466,
+    "content_gate": 0.5927272727272728
+  },
+  "ref": {
+    "url": "file:///Users/fleet/fleet-trial/reference_app/html/reference.html",
+    "text_len": 1145,
+    "blocks": 295,
+    "colors": 769,
+    "screenshot": "/Users/fleet/fleet-trial/reward-artifacts/2026-04-22T18-43-43-004Z/board.png"
+  },
+  "gen": {
+    "url": "http://localhost:5173",
+    "text_len": 395,
+    "blocks": 171,
+    "colors": 297,
+    "screenshot": "/Users/fleet/fleet-trial/reward-artifacts/2026-04-22T18-43-43-004Z/app.png"
+  }
+}

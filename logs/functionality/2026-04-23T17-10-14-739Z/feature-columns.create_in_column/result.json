@@ -1,0 +1,17 @@
+{
+  "id": "columns.create_in_column",
+  "feature": "Each column has a '+ Create' button at the bottom that opens an inline create form",
+  "status": "PASS",
+  "phase": "test",
+  "impl_attempts": 0,
+  "test_attempts": 2,
+  "spec": "tests/board/columns.create_in_column.spec.mjs",
+  "last_exit_code": 0,
+  "last_assertions": 11,
+  "last_failure_reason": null,
+  "last_worker_summary": "The key fix in `tests/board/columns.create_in_column.spec.mjs` is replacing the failing `page.locator('div').filter({ has: heading }).first()` column scope with `inProgressHeading.locator('xpath=ancestor::*[.//button[normalize-space(.)=\"Create\"]][1]')`, which walks up from the heading to find the **nearest** ancestor containing a \"Create\" button (the column div) rather than the outermost page-wrapper that also encloses the top-nav \"Create\" button — eliminating the strict-mode 3-element violation while keeping all 11 assertions intact.",
+  "mutation_checked": true,
+  "load_bearing": false,
+  "mutation_saboteur_skipped": true,
+  "mutation_failure_reason": "saboteur declined to edit (feature may not live in src/); mutation contract not verified"
+}

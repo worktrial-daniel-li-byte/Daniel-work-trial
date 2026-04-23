@@ -1,0 +1,1289 @@
+{
+  "config": {
+    "configFile": "/Users/fleet/fleet-trial/playwright.config.mjs",
+    "rootDir": "/Users/fleet/fleet-trial/tests",
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "/Users/fleet/fleet-trial/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "",
+        "name": "",
+        "testDir": "/Users/fleet/fleet-trial/tests",
+        "testIgnore": [
+          "**/_fixtures/**",
+          "**/reports/**",
+          "**/.pw-profile-jira/**",
+          "tests/browser-login.js",
+          "tests/browser-test.js",
+          "tests/qa-agent.js"
+        ],
+        "testMatch": [
+          "**/*.spec.mjs",
+          "**/*.spec.js"
+        ],
+        "timeout": 60000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "json"
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.59.1",
+    "workers": 1,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "board/columns.collapse.spec.mjs",
+      "file": "board/columns.collapse.spec.mjs",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "columns.collapse — Each column has a collapse toggle",
+          "file": "board/columns.collapse.spec.mjs",
+          "line": 3,
+          "column": 6,
+          "specs": [
+            {
+              "title": "collapse buttons present for every status column, toggle state mutates and reverts",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "failed",
+                      "duration": 10305,
+                      "error": {
+                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('button', { name: 'Collapse To Do' })\nExpected: visible\nTimeout: 10000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('button', { name: 'Collapse To Do' })\u001b[22m\n",
+                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('button', { name: 'Collapse To Do' })\nExpected: visible\nTimeout: 10000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('button', { name: 'Collapse To Do' })\u001b[22m\n\n    at /Users/fleet/fleet-trial/tests/board/columns.collapse.spec.mjs:20:72",
+                        "location": {
+                          "file": "/Users/fleet/fleet-trial/tests/board/columns.collapse.spec.mjs",
+                          "column": 72,
+                          "line": 20
+                        },
+                        "snippet": "  18 |     // ── Assertions 1-3: Collapse button visible per column (revealed by hover) ─\n  19 |     await todoHeading.hover()\n> 20 |     await expect(page.getByRole('button', { name: 'Collapse To Do' })).toBeVisible()\n     |                                                                        ^\n  21 |\n  22 |     await inProgHeading.hover()\n  23 |     await expect(page.getByRole('button', { name: 'Collapse In Progress' })).toBeVisible()"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "/Users/fleet/fleet-trial/tests/board/columns.collapse.spec.mjs",
+                            "column": 72,
+                            "line": 20
+                          },
+                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('button', { name: 'Collapse To Do' })\nExpected: visible\nTimeout: 10000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('button', { name: 'Collapse To Do' })\u001b[22m\n\n\n  18 |     // ── Assertions 1-3: Collapse button visible per column (revealed by hover) ─\n  19 |     await todoHeading.hover()\n> 20 |     await expect(page.getByRole('button', { name: 'Collapse To Do' })).toBeVisible()\n     |                                                                        ^\n  21 |\n  22 |     await inProgHeading.hover()\n  23 |     await expect(page.getByRole('button', { name: 'Collapse In Progress' })).toBeVisible()\n    at /Users/fleet/fleet-trial/tests/board/columns.collapse.spec.mjs:20:72"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-04-23T19:24:58.551Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "/Users/fleet/fleet-trial/test-results/board-columns.collapse-col-f8a86-e-state-mutates-and-reverts/error-context.md"
+                        },
+                        {
+                          "name": "trace",
+                          "contentType": "application/zip",
+                          "path": "/Users/fleet/fleet-trial/test-results/board-columns.collapse-col-f8a86-e-state-mutates-and-reverts/trace.zip"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "/Users/fleet/fleet-trial/tests/board/columns.collapse.spec.mjs",
+                        "column": 72,
+                        "line": 20
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "62cdbb31b1cb8151d3fb-bca13f22ddc99527af98",
+              "file": "board/columns.collapse.spec.mjs",
+              "line": 4,
+              "column": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "board/columns.default_set.spec.mjs",
+      "file": "board/columns.default_set.spec.mjs",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "columns.default_set — Default columns reflect statuses To Do, In Progress, Done (groupBy=status)",
+          "file": "board/columns.default_set.spec.mjs",
+          "line": 3,
+          "column": 6,
+          "specs": [
+            {
+              "title": "three status columns visible as level-3 headings with count badges when groupBy=status",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 241,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-04-23T19:25:09.160Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "f3e6b7591e685a3e3d8d-51d91ef7f679e3b4b9e9",
+              "file": "board/columns.default_set.spec.mjs",
+              "line": 4,
+              "column": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "board/columns.more_actions.spec.mjs",
+      "file": "board/columns.more_actions.spec.mjs",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "columns.more_actions — Per-column More actions menu",
+          "file": "board/columns.more_actions.spec.mjs",
+          "line": 3,
+          "column": 6,
+          "specs": [
+            {
+              "title": "More actions button opens menu with all expected items for In Progress column",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 0,
+                      "status": "failed",
+                      "duration": 10294,
+                      "error": {
+                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('button', { name: 'More actions for column In Progress' })\nExpected: visible\nTimeout: 10000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('button', { name: 'More actions for column In Progress' })\u001b[22m\n",
+                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('button', { name: 'More actions for column In Progress' })\nExpected: visible\nTimeout: 10000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('button', { name: 'More actions for column In Progress' })\u001b[22m\n\n    at /Users/fleet/fleet-trial/tests/board/columns.more_actions.spec.mjs:23:34",
+                        "location": {
+                          "file": "/Users/fleet/fleet-trial/tests/board/columns.more_actions.spec.mjs",
+                          "column": 34,
+                          "line": 23
+                        },
+                        "snippet": "  21 |\n  22 |     // ── Assertion 2: The per-column More actions trigger is present ──────────\n> 23 |     await expect(moreActionsBtn).toBeVisible()\n     |                                  ^\n  24 |\n  25 |     // ── OPEN the menu ────────────────────────────────────────────────────────\n  26 |     await moreActionsBtn.click()"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "/Users/fleet/fleet-trial/tests/board/columns.more_actions.spec.mjs",
+                            "column": 34,
+                            "line": 23
+                          },
+                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('button', { name: 'More actions for column In Progress' })\nExpected: visible\nTimeout: 10000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('button', { name: 'More actions for column In Progress' })\u001b[22m\n\n\n  21 |\n  22 |     // ── Assertion 2: The per-column More actions trigger is present ──────────\n> 23 |     await expect(moreActionsBtn).toBeVisible()\n     |                                  ^\n  24 |\n  25 |     // ── OPEN the menu ────────────────────────────────────────────────────────\n  26 |     await moreActionsBtn.click()\n    at /Users/fleet/fleet-trial/tests/board/columns.more_actions.spec.mjs:23:34"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-04-23T19:25:09.412Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "/Users/fleet/fleet-trial/test-results/board-columns.more_actions-80537-tems-for-In-Progress-column/error-context.md"
+                        },
+                        {
+                          "name": "trace",
+                          "contentType": "application/zip",
+                          "path": "/Users/fleet/fleet-trial/test-results/board-columns.more_actions-80537-tems-for-In-Progress-column/trace.zip"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "/Users/fleet/fleet-trial/tests/board/columns.more_actions.spec.mjs",
+                        "column": 34,
+                        "line": 23
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "42430397a95cae972573-5fcb57523e9dba62e2a5",
+              "file": "board/columns.more_actions.spec.mjs",
+              "line": 4,
+              "column": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "board/page.load.spec.mjs",
+      "file": "board/page.load.spec.mjs",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "page.load — Route renders board with Status columns when /board?groupBy=status",
+          "file": "board/page.load.spec.mjs",
+          "line": 3,
+          "column": 6,
+          "specs": [
+            {
+              "title": "board page loads with title and To Do / In Progress / Done columns",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 238,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-04-23T19:25:19.935Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "8c361b9130993d590791-4eece92abde912e02c93",
+              "file": "board/page.load.spec.mjs",
+              "line": 4,
+              "column": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "board/toolbar.filter.button.spec.mjs",
+      "file": "board/toolbar.filter.button.spec.mjs",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "toolbar.filter.button — Filter button shows active count",
+          "file": "board/toolbar.filter.button.spec.mjs",
+          "line": 3,
+          "column": 6,
+          "specs": [
+            {
+              "title": "Filter button aria-label is exactly \"0 filters applied\" in default state",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 216,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-04-23T19:25:20.183Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "747fd83fa7c311888022-0a7ececc007386b1c8a0",
+              "file": "board/toolbar.filter.button.spec.mjs",
+              "line": 4,
+              "column": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "board/toolbar.filter.panel.spec.mjs",
+      "file": "board/toolbar.filter.panel.spec.mjs",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "toolbar.filter.panel — Filter popover contents",
+          "file": "board/toolbar.filter.panel.spec.mjs",
+          "line": 3,
+          "column": 6,
+          "specs": [
+            {
+              "title": "popover renders all expected sections after clicking filter trigger",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "parallelIndex": 0,
+                      "status": "failed",
+                      "duration": 10353,
+                      "error": {
+                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('button', { name: 'Daniel Li' }).first()\nExpected: visible\nTimeout: 10000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('button', { name: 'Daniel Li' }).first()\u001b[22m\n",
+                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('button', { name: 'Daniel Li' }).first()\nExpected: visible\nTimeout: 10000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('button', { name: 'Daniel Li' }).first()\u001b[22m\n\n    at /Users/fleet/fleet-trial/tests/board/toolbar.filter.panel.spec.mjs:66:7",
+                        "location": {
+                          "file": "/Users/fleet/fleet-trial/tests/board/toolbar.filter.panel.spec.mjs",
+                          "column": 7,
+                          "line": 66
+                        },
+                        "snippet": "  64 |     await expect(\n  65 |       page.getByRole('button', { name: 'Daniel Li' }).first()\n> 66 |     ).toBeVisible()\n     |       ^\n  67 |\n  68 |     // Overflow button confirms the full avatar grid rendered.\n  69 |     await expect("
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "/Users/fleet/fleet-trial/tests/board/toolbar.filter.panel.spec.mjs",
+                            "column": 7,
+                            "line": 66
+                          },
+                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('button', { name: 'Daniel Li' }).first()\nExpected: visible\nTimeout: 10000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('button', { name: 'Daniel Li' }).first()\u001b[22m\n\n\n  64 |     await expect(\n  65 |       page.getByRole('button', { name: 'Daniel Li' }).first()\n> 66 |     ).toBeVisible()\n     |       ^\n  67 |\n  68 |     // Overflow button confirms the full avatar grid rendered.\n  69 |     await expect(\n    at /Users/fleet/fleet-trial/tests/board/toolbar.filter.panel.spec.mjs:66:7"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-04-23T19:25:20.407Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "/Users/fleet/fleet-trial/test-results/board-toolbar.filter.panel-de57d-ter-clicking-filter-trigger/error-context.md"
+                        },
+                        {
+                          "name": "trace",
+                          "contentType": "application/zip",
+                          "path": "/Users/fleet/fleet-trial/test-results/board-toolbar.filter.panel-de57d-ter-clicking-filter-trigger/trace.zip"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "/Users/fleet/fleet-trial/tests/board/toolbar.filter.panel.spec.mjs",
+                        "column": 7,
+                        "line": 66
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "15314daba91254a81e6e-eb229ab4ba9e475b31eb",
+              "file": "board/toolbar.filter.panel.spec.mjs",
+              "line": 4,
+              "column": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "board/toolbar.groupby.button.spec.mjs",
+      "file": "board/toolbar.groupby.button.spec.mjs",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "toolbar.groupby.button — Group by button reflects current grouping",
+          "file": "board/toolbar.groupby.button.spec.mjs",
+          "line": 3,
+          "column": 6,
+          "specs": [
+            {
+              "title": "Group by button shows \"Group by Status\" and board renders status columns",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 3,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 256,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-04-23T19:25:31.028Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "1674cfca3be43dcd159b-6e061e27fdaafdb6897a",
+              "file": "board/toolbar.groupby.button.spec.mjs",
+              "line": 4,
+              "column": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "board/toolbar.groupby.options.spec.mjs",
+      "file": "board/toolbar.groupby.options.spec.mjs",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "toolbar.groupby.options — Group by options",
+          "file": "board/toolbar.groupby.options.spec.mjs",
+          "line": 3,
+          "column": 6,
+          "specs": [
+            {
+              "title": "Popover shows 4 radios with Status checked by default",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 3,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 325,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-04-23T19:25:31.299Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "b4dcecc46ca30899359b-bc401ab0c0125c6df2e8",
+              "file": "board/toolbar.groupby.options.spec.mjs",
+              "line": 4,
+              "column": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "board/toolbar.more_actions.spec.mjs",
+      "file": "board/toolbar.more_actions.spec.mjs",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "toolbar.more_actions — Board-level More actions menu",
+          "file": "board/toolbar.more_actions.spec.mjs",
+          "line": 3,
+          "column": 6,
+          "specs": [
+            {
+              "title": "clicking More actions toolbar button opens menu with Stand-up and Configure columns items",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 3,
+                      "parallelIndex": 0,
+                      "status": "failed",
+                      "duration": 10323,
+                      "error": {
+                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveAttribute\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator:  getByRole('button', { name: 'More actions', exact: true }).nth(1)\nExpected: \u001b[32m\"true\"\u001b[39m\nReceived: \u001b[31m\"\"\u001b[39m\nTimeout:  10000ms\n\nCall log:\n\u001b[2m  - Expect \"toHaveAttribute\" with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('button', { name: 'More actions', exact: true }).nth(1)\u001b[22m\n\u001b[2m    14 × locator resolved to <button type=\"button\" title=\"More actions\" aria-label=\"More actions\" class=\"jira-icon-btn jira-tiny\" data-testid=\"navigation-project-action-menu.ui.themed-button\">…</button>\u001b[22m\n\u001b[2m       - unexpected value \"null\"\u001b[22m\n",
+                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveAttribute\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator:  getByRole('button', { name: 'More actions', exact: true }).nth(1)\nExpected: \u001b[32m\"true\"\u001b[39m\nReceived: \u001b[31m\"\"\u001b[39m\nTimeout:  10000ms\n\nCall log:\n\u001b[2m  - Expect \"toHaveAttribute\" with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('button', { name: 'More actions', exact: true }).nth(1)\u001b[22m\n\u001b[2m    14 × locator resolved to <button type=\"button\" title=\"More actions\" aria-label=\"More actions\" class=\"jira-icon-btn jira-tiny\" data-testid=\"navigation-project-action-menu.ui.themed-button\">…</button>\u001b[22m\n\u001b[2m       - unexpected value \"null\"\u001b[22m\n\n    at /Users/fleet/fleet-trial/tests/board/toolbar.more_actions.spec.mjs:35:34",
+                        "location": {
+                          "file": "/Users/fleet/fleet-trial/tests/board/toolbar.more_actions.spec.mjs",
+                          "column": 34,
+                          "line": 35
+                        },
+                        "snippet": "  33 |\n  34 |     // Button aria-expanded should become true after click.\n> 35 |     await expect(moreActionsBtn).toHaveAttribute('aria-expanded', 'true')\n     |                                  ^\n  36 |\n  37 |     // The menu container itself must be visible.\n  38 |     const menu = page.getByRole('menu', { name: 'More actions on board view' })"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "/Users/fleet/fleet-trial/tests/board/toolbar.more_actions.spec.mjs",
+                            "column": 34,
+                            "line": 35
+                          },
+                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveAttribute\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator:  getByRole('button', { name: 'More actions', exact: true }).nth(1)\nExpected: \u001b[32m\"true\"\u001b[39m\nReceived: \u001b[31m\"\"\u001b[39m\nTimeout:  10000ms\n\nCall log:\n\u001b[2m  - Expect \"toHaveAttribute\" with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('button', { name: 'More actions', exact: true }).nth(1)\u001b[22m\n\u001b[2m    14 × locator resolved to <button type=\"button\" title=\"More actions\" aria-label=\"More actions\" class=\"jira-icon-btn jira-tiny\" data-testid=\"navigation-project-action-menu.ui.themed-button\">…</button>\u001b[22m\n\u001b[2m       - unexpected value \"null\"\u001b[22m\n\n\n  33 |\n  34 |     // Button aria-expanded should become true after click.\n> 35 |     await expect(moreActionsBtn).toHaveAttribute('aria-expanded', 'true')\n     |                                  ^\n  36 |\n  37 |     // The menu container itself must be visible.\n  38 |     const menu = page.getByRole('menu', { name: 'More actions on board view' })\n    at /Users/fleet/fleet-trial/tests/board/toolbar.more_actions.spec.mjs:35:34"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-04-23T19:25:31.632Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "/Users/fleet/fleet-trial/test-results/board-toolbar.more_actions-8f0ab-and-Configure-columns-items/error-context.md"
+                        },
+                        {
+                          "name": "trace",
+                          "contentType": "application/zip",
+                          "path": "/Users/fleet/fleet-trial/test-results/board-toolbar.more_actions-8f0ab-and-Configure-columns-items/trace.zip"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "/Users/fleet/fleet-trial/tests/board/toolbar.more_actions.spec.mjs",
+                        "column": 34,
+                        "line": 35
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "5c3f0fcd2d9f3bb40ed6-61443840b404b1ae2ec4",
+              "file": "board/toolbar.more_actions.spec.mjs",
+              "line": 4,
+              "column": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "board/toolbar.online_users.spec.mjs",
+      "file": "board/toolbar.online_users.spec.mjs",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "toolbar.online_users — Online-users avatar (checkbox) appears next to search",
+          "file": "board/toolbar.online_users.spec.mjs",
+          "line": 13,
+          "column": 6,
+          "specs": [
+            {
+              "title": "Online-user assignee checkbox is visible in the board toolbar next to Search board",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 4,
+                      "parallelIndex": 0,
+                      "status": "failed",
+                      "duration": 10280,
+                      "error": {
+                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('textbox', { name: 'Search board' })\nExpected: visible\nTimeout: 10000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('textbox', { name: 'Search board' })\u001b[22m\n",
+                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('textbox', { name: 'Search board' })\nExpected: visible\nTimeout: 10000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('textbox', { name: 'Search board' })\u001b[22m\n\n    at /Users/fleet/fleet-trial/tests/board/toolbar.online_users.spec.mjs:48:29",
+                        "location": {
+                          "file": "/Users/fleet/fleet-trial/tests/board/toolbar.online_users.spec.mjs",
+                          "column": 29,
+                          "line": 48
+                        },
+                        "snippet": "  46 |     // both at y=186).\n  47 |     const searchBox = page.getByRole('textbox', { name: 'Search board' })\n> 48 |     await expect(searchBox).toBeVisible()\n     |                             ^\n  49 |   })\n  50 | })\n  51 |"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "/Users/fleet/fleet-trial/tests/board/toolbar.online_users.spec.mjs",
+                            "column": 29,
+                            "line": 48
+                          },
+                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('textbox', { name: 'Search board' })\nExpected: visible\nTimeout: 10000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('textbox', { name: 'Search board' })\u001b[22m\n\n\n  46 |     // both at y=186).\n  47 |     const searchBox = page.getByRole('textbox', { name: 'Search board' })\n> 48 |     await expect(searchBox).toBeVisible()\n     |                             ^\n  49 |   })\n  50 | })\n  51 |\n    at /Users/fleet/fleet-trial/tests/board/toolbar.online_users.spec.mjs:48:29"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-04-23T19:25:42.177Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "/Users/fleet/fleet-trial/test-results/board-toolbar.online_users-b82c9-oolbar-next-to-Search-board/error-context.md"
+                        },
+                        {
+                          "name": "trace",
+                          "contentType": "application/zip",
+                          "path": "/Users/fleet/fleet-trial/test-results/board-toolbar.online_users-b82c9-oolbar-next-to-Search-board/trace.zip"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "/Users/fleet/fleet-trial/tests/board/toolbar.online_users.spec.mjs",
+                        "column": 29,
+                        "line": 48
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "436f6521e8805b9f7ddc-2085013d4b55c7a6c6ab",
+              "file": "board/toolbar.online_users.spec.mjs",
+              "line": 20,
+              "column": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "board/toolbar.save_or_reset.spec.mjs",
+      "file": "board/toolbar.save_or_reset.spec.mjs",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "toolbar.save_or_reset — Save or reset view settings button appears when view differs from saved",
+          "file": "board/toolbar.save_or_reset.spec.mjs",
+          "line": 3,
+          "column": 6,
+          "specs": [
+            {
+              "title": "button absent initially, appears after changing Group by, removed after reverting",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 5,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 470,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-04-23T19:25:52.674Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "6795ee5ce5d0b68be3f0-2444b7cd3af4ee52949b",
+              "file": "board/toolbar.save_or_reset.spec.mjs",
+              "line": 4,
+              "column": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "board/toolbar.search.filters_cards.spec.mjs",
+      "file": "board/toolbar.search.filters_cards.spec.mjs",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "toolbar.search.filters_cards — Typing in Search board filters cards and persists in URL",
+          "file": "board/toolbar.search.filters_cards.spec.mjs",
+          "line": 12,
+          "column": 6,
+          "specs": [
+            {
+              "title": "fill zzznomatch → URL filter, zero counts, empty state; Clear filters → original state",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 5,
+                      "parallelIndex": 0,
+                      "status": "failed",
+                      "duration": 10237,
+                      "error": {
+                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('textbox', { name: 'Search board' })\nExpected: visible\nTimeout: 10000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('textbox', { name: 'Search board' })\u001b[22m\n",
+                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('textbox', { name: 'Search board' })\nExpected: visible\nTimeout: 10000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('textbox', { name: 'Search board' })\u001b[22m\n\n    at /Users/fleet/fleet-trial/tests/board/toolbar.search.filters_cards.spec.mjs:21:31",
+                        "location": {
+                          "file": "/Users/fleet/fleet-trial/tests/board/toolbar.search.filters_cards.spec.mjs",
+                          "column": 31,
+                          "line": 21
+                        },
+                        "snippet": "  19 |     // Search input must be present\n  20 |     const searchInput = page.getByRole('textbox', { name: 'Search board' })\n> 21 |     await expect(searchInput).toBeVisible()\n     |                               ^\n  22 |\n  23 |     // To Do column must be visible (evidence: initial count=1)\n  24 |     await expect(page.getByRole('heading', { level: 3, name: 'To Do' })).toBeVisible()"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "/Users/fleet/fleet-trial/tests/board/toolbar.search.filters_cards.spec.mjs",
+                            "column": 31,
+                            "line": 21
+                          },
+                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('textbox', { name: 'Search board' })\nExpected: visible\nTimeout: 10000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('textbox', { name: 'Search board' })\u001b[22m\n\n\n  19 |     // Search input must be present\n  20 |     const searchInput = page.getByRole('textbox', { name: 'Search board' })\n> 21 |     await expect(searchInput).toBeVisible()\n     |                               ^\n  22 |\n  23 |     // To Do column must be visible (evidence: initial count=1)\n  24 |     await expect(page.getByRole('heading', { level: 3, name: 'To Do' })).toBeVisible()\n    at /Users/fleet/fleet-trial/tests/board/toolbar.search.filters_cards.spec.mjs:21:31"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-04-23T19:25:53.154Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "/Users/fleet/fleet-trial/test-results/board-toolbar.search.filte-4e0b0-ar-filters-→-original-state/error-context.md"
+                        },
+                        {
+                          "name": "trace",
+                          "contentType": "application/zip",
+                          "path": "/Users/fleet/fleet-trial/test-results/board-toolbar.search.filte-4e0b0-ar-filters-→-original-state/trace.zip"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "/Users/fleet/fleet-trial/tests/board/toolbar.search.filters_cards.spec.mjs",
+                        "column": 31,
+                        "line": 21
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "60959314ccb7ed56c017-5e42c4891f9a7528e6ea",
+              "file": "board/toolbar.search.filters_cards.spec.mjs",
+              "line": 13,
+              "column": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "board/toolbar.search.present.spec.mjs",
+      "file": "board/toolbar.search.present.spec.mjs",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "toolbar.search.present — Toolbar has a 'Search board' textbox",
+          "file": "board/toolbar.search.present.spec.mjs",
+          "line": 13,
+          "column": 6,
+          "specs": [
+            {
+              "title": "Search board input is present in the board toolbar",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 6,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 218,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-04-23T19:26:03.600Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "98c5ddceecef69bad628-4ccd20a17daf157ad438",
+              "file": "board/toolbar.search.present.spec.mjs",
+              "line": 20,
+              "column": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "board/toolbar.view_settings.spec.mjs",
+      "file": "board/toolbar.view_settings.spec.mjs",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "toolbar.view_settings — View settings opens a right-side panel",
+          "file": "board/toolbar.view_settings.spec.mjs",
+          "line": 3,
+          "column": 6,
+          "specs": [
+            {
+              "title": "open panel shows heading, resize handle and close button; closing removes the panel",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 6,
+                      "parallelIndex": 0,
+                      "status": "failed",
+                      "duration": 15350,
+                      "error": {
+                        "message": "TimeoutError: locator.click: Timeout 15000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('complementary', { name: 'Sidebar' }).getByRole('button', { name: 'Close' })\u001b[22m\n\u001b[2m    - locator resolved to <button type=\"button\" aria-label=\"Close\">✕</button>\u001b[22m\n\u001b[2m  - attempting click action\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is visible, enabled and stable\u001b[22m\n\u001b[2m      - scrolling into view if needed\u001b[22m\n\u001b[2m      - done scrolling\u001b[22m\n\u001b[2m      - <span aria-label=\"DL\" class=\"jira-avatar jira-avatar--dl\">DL</span> from <header class=\"jira-topbar\" data-region=\"top-nav\" data-testid=\"page-layout.top-nav\">…</header> subtree intercepts pointer events\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m    - waiting 20ms\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is visible, enabled and stable\u001b[22m\n\u001b[2m      - scrolling into view if needed\u001b[22m\n\u001b[2m      - done scrolling\u001b[22m\n\u001b[2m      - <span aria-label=\"DL\" class=\"jira-avatar jira-avatar--dl\">DL</span> from <header class=\"jira-topbar\" data-region=\"top-nav\" data-testid=\"page-layout.top-nav\">…</header> subtree intercepts pointer events\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m      - waiting 100ms\u001b[22m\n\u001b[2m    29 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m       - element is visible, enabled and stable\u001b[22m\n\u001b[2m       - scrolling into view if needed\u001b[22m\n\u001b[2m       - done scrolling\u001b[22m\n\u001b[2m       - <span aria-label=\"DL\" class=\"jira-avatar jira-avatar--dl\">DL</span> from <header class=\"jira-topbar\" data-region=\"top-nav\" data-testid=\"page-layout.top-nav\">…</header> subtree intercepts pointer events\u001b[22m\n\u001b[2m     - retrying click action\u001b[22m\n\u001b[2m       - waiting 500ms\u001b[22m\n",
+                        "stack": "TimeoutError: locator.click: Timeout 15000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('complementary', { name: 'Sidebar' }).getByRole('button', { name: 'Close' })\u001b[22m\n\u001b[2m    - locator resolved to <button type=\"button\" aria-label=\"Close\">✕</button>\u001b[22m\n\u001b[2m  - attempting click action\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is visible, enabled and stable\u001b[22m\n\u001b[2m      - scrolling into view if needed\u001b[22m\n\u001b[2m      - done scrolling\u001b[22m\n\u001b[2m      - <span aria-label=\"DL\" class=\"jira-avatar jira-avatar--dl\">DL</span> from <header class=\"jira-topbar\" data-region=\"top-nav\" data-testid=\"page-layout.top-nav\">…</header> subtree intercepts pointer events\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m    - waiting 20ms\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is visible, enabled and stable\u001b[22m\n\u001b[2m      - scrolling into view if needed\u001b[22m\n\u001b[2m      - done scrolling\u001b[22m\n\u001b[2m      - <span aria-label=\"DL\" class=\"jira-avatar jira-avatar--dl\">DL</span> from <header class=\"jira-topbar\" data-region=\"top-nav\" data-testid=\"page-layout.top-nav\">…</header> subtree intercepts pointer events\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m      - waiting 100ms\u001b[22m\n\u001b[2m    29 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m       - element is visible, enabled and stable\u001b[22m\n\u001b[2m       - scrolling into view if needed\u001b[22m\n\u001b[2m       - done scrolling\u001b[22m\n\u001b[2m       - <span aria-label=\"DL\" class=\"jira-avatar jira-avatar--dl\">DL</span> from <header class=\"jira-topbar\" data-region=\"top-nav\" data-testid=\"page-layout.top-nav\">…</header> subtree intercepts pointer events\u001b[22m\n\u001b[2m     - retrying click action\u001b[22m\n\u001b[2m       - waiting 500ms\u001b[22m\n\n    at /Users/fleet/fleet-trial/tests/board/toolbar.view_settings.spec.mjs:66:20",
+                        "location": {
+                          "file": "/Users/fleet/fleet-trial/tests/board/toolbar.view_settings.spec.mjs",
+                          "column": 20,
+                          "line": 66
+                        },
+                        "snippet": "  64 |\n  65 |     // --- Revert: close the panel and verify it is removed ---\n> 66 |     await closeBtn.click()\n     |                    ^\n  67 |\n  68 |     // The complementary Sidebar region must be gone from the DOM.\n  69 |     await expect("
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "/Users/fleet/fleet-trial/tests/board/toolbar.view_settings.spec.mjs",
+                            "column": 20,
+                            "line": 66
+                          },
+                          "message": "TimeoutError: locator.click: Timeout 15000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('complementary', { name: 'Sidebar' }).getByRole('button', { name: 'Close' })\u001b[22m\n\u001b[2m    - locator resolved to <button type=\"button\" aria-label=\"Close\">✕</button>\u001b[22m\n\u001b[2m  - attempting click action\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is visible, enabled and stable\u001b[22m\n\u001b[2m      - scrolling into view if needed\u001b[22m\n\u001b[2m      - done scrolling\u001b[22m\n\u001b[2m      - <span aria-label=\"DL\" class=\"jira-avatar jira-avatar--dl\">DL</span> from <header class=\"jira-topbar\" data-region=\"top-nav\" data-testid=\"page-layout.top-nav\">…</header> subtree intercepts pointer events\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m    - waiting 20ms\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is visible, enabled and stable\u001b[22m\n\u001b[2m      - scrolling into view if needed\u001b[22m\n\u001b[2m      - done scrolling\u001b[22m\n\u001b[2m      - <span aria-label=\"DL\" class=\"jira-avatar jira-avatar--dl\">DL</span> from <header class=\"jira-topbar\" data-region=\"top-nav\" data-testid=\"page-layout.top-nav\">…</header> subtree intercepts pointer events\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m      - waiting 100ms\u001b[22m\n\u001b[2m    29 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m       - element is visible, enabled and stable\u001b[22m\n\u001b[2m       - scrolling into view if needed\u001b[22m\n\u001b[2m       - done scrolling\u001b[22m\n\u001b[2m       - <span aria-label=\"DL\" class=\"jira-avatar jira-avatar--dl\">DL</span> from <header class=\"jira-topbar\" data-region=\"top-nav\" data-testid=\"page-layout.top-nav\">…</header> subtree intercepts pointer events\u001b[22m\n\u001b[2m     - retrying click action\u001b[22m\n\u001b[2m       - waiting 500ms\u001b[22m\n\n\n  64 |\n  65 |     // --- Revert: close the panel and verify it is removed ---\n> 66 |     await closeBtn.click()\n     |                    ^\n  67 |\n  68 |     // The complementary Sidebar region must be gone from the DOM.\n  69 |     await expect(\n    at /Users/fleet/fleet-trial/tests/board/toolbar.view_settings.spec.mjs:66:20"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-04-23T19:26:03.833Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "/Users/fleet/fleet-trial/test-results/board-toolbar.view_setting-4cab8-n-closing-removes-the-panel/error-context.md"
+                        },
+                        {
+                          "name": "trace",
+                          "contentType": "application/zip",
+                          "path": "/Users/fleet/fleet-trial/test-results/board-toolbar.view_setting-4cab8-n-closing-removes-the-panel/trace.zip"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "/Users/fleet/fleet-trial/tests/board/toolbar.view_settings.spec.mjs",
+                        "column": 20,
+                        "line": 66
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "1548938a3b54b49491d7-c133fe57334bae6390a1",
+              "file": "board/toolbar.view_settings.spec.mjs",
+              "line": 4,
+              "column": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "calendar/page.load.spec.mjs",
+      "file": "calendar/page.load.spec.mjs",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "page.load — Calendar tab loads under AUT project with Calendar tab marked active",
+          "file": "calendar/page.load.spec.mjs",
+          "line": 3,
+          "column": 6,
+          "specs": [
+            {
+              "title": "calendar page loads with active Calendar heading and all sibling tab links visible",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 7,
+                      "parallelIndex": 0,
+                      "status": "failed",
+                      "duration": 10268,
+                      "error": {
+                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mpage\u001b[39m\u001b[2m).\u001b[22mtoHaveTitle\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nExpected: \u001b[32m\"\u001b[7mCalendar\u001b[27m - Jira\"\u001b[39m\nReceived: \u001b[31m\"\u001b[7mBoard - Autoloop\u001b[27m - Jira\"\u001b[39m\nTimeout:  10000ms\n\nCall log:\n\u001b[2m  - Expect \"toHaveTitle\" with timeout 10000ms\u001b[22m\n\u001b[2m    14 × unexpected value \"Board - Autoloop - Jira\"\u001b[22m\n",
+                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mpage\u001b[39m\u001b[2m).\u001b[22mtoHaveTitle\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nExpected: \u001b[32m\"\u001b[7mCalendar\u001b[27m - Jira\"\u001b[39m\nReceived: \u001b[31m\"\u001b[7mBoard - Autoloop\u001b[27m - Jira\"\u001b[39m\nTimeout:  10000ms\n\nCall log:\n\u001b[2m  - Expect \"toHaveTitle\" with timeout 10000ms\u001b[22m\n\u001b[2m    14 × unexpected value \"Board - Autoloop - Jira\"\u001b[22m\n\n    at /Users/fleet/fleet-trial/tests/calendar/page.load.spec.mjs:11:24",
+                        "location": {
+                          "file": "/Users/fleet/fleet-trial/tests/calendar/page.load.spec.mjs",
+                          "column": 24,
+                          "line": 11
+                        },
+                        "snippet": "   9 |\n  10 |     // Page title must identify this as the Calendar view\n> 11 |     await expect(page).toHaveTitle('Calendar - Jira')\n     |                        ^\n  12 |\n  13 |     // Locate the Space navigation container\n  14 |     const spaceNav = page.getByRole('navigation', { name: 'Space navigation' })"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "/Users/fleet/fleet-trial/tests/calendar/page.load.spec.mjs",
+                            "column": 24,
+                            "line": 11
+                          },
+                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mpage\u001b[39m\u001b[2m).\u001b[22mtoHaveTitle\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nExpected: \u001b[32m\"\u001b[7mCalendar\u001b[27m - Jira\"\u001b[39m\nReceived: \u001b[31m\"\u001b[7mBoard - Autoloop\u001b[27m - Jira\"\u001b[39m\nTimeout:  10000ms\n\nCall log:\n\u001b[2m  - Expect \"toHaveTitle\" with timeout 10000ms\u001b[22m\n\u001b[2m    14 × unexpected value \"Board - Autoloop - Jira\"\u001b[22m\n\n\n   9 |\n  10 |     // Page title must identify this as the Calendar view\n> 11 |     await expect(page).toHaveTitle('Calendar - Jira')\n     |                        ^\n  12 |\n  13 |     // Locate the Space navigation container\n  14 |     const spaceNav = page.getByRole('navigation', { name: 'Space navigation' })\n    at /Users/fleet/fleet-trial/tests/calendar/page.load.spec.mjs:11:24"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-04-23T19:26:19.449Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "/Users/fleet/fleet-trial/test-results/calendar-page.load-page-lo-52e64-l-sibling-tab-links-visible/error-context.md"
+                        },
+                        {
+                          "name": "trace",
+                          "contentType": "application/zip",
+                          "path": "/Users/fleet/fleet-trial/test-results/calendar-page.load-page-lo-52e64-l-sibling-tab-links-visible/trace.zip"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "/Users/fleet/fleet-trial/tests/calendar/page.load.spec.mjs",
+                        "column": 24,
+                        "line": 11
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "e7887a27cc8b4bc098a7-1cb874fed4e6a07c6764",
+              "file": "calendar/page.load.spec.mjs",
+              "line": 4,
+              "column": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "calendar/toolbar.search.spec.mjs",
+      "file": "calendar/toolbar.search.spec.mjs",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "toolbar.search — Calendar search textbox filters work items on the calendar",
+          "file": "calendar/toolbar.search.spec.mjs",
+          "line": 3,
+          "column": 6,
+          "specs": [
+            {
+              "title": "search calendar textbox is present and visible in the toolbar",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 8,
+                      "parallelIndex": 0,
+                      "status": "failed",
+                      "duration": 10268,
+                      "error": {
+                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('heading', { name: /\\b\\d{4}\\b/, level: 3 })\nExpected: visible\nTimeout: 10000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('heading', { name: /\\b\\d{4}\\b/, level: 3 })\u001b[22m\n",
+                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('heading', { name: /\\b\\d{4}\\b/, level: 3 })\nExpected: visible\nTimeout: 10000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('heading', { name: /\\b\\d{4}\\b/, level: 3 })\u001b[22m\n\n    at /Users/fleet/fleet-trial/tests/calendar/toolbar.search.spec.mjs:13:7",
+                        "location": {
+                          "file": "/Users/fleet/fleet-trial/tests/calendar/toolbar.search.spec.mjs",
+                          "column": 7,
+                          "line": 13
+                        },
+                        "snippet": "  11 |     await expect(\n  12 |       page.getByRole('heading', { level: 3, name: /\\b\\d{4}\\b/ })\n> 13 |     ).toBeVisible()\n     |       ^\n  14 |\n  15 |     // Primary assertion: the 'Search calendar' textbox must be present in the toolbar\n  16 |     const searchBox = page.getByRole('textbox', { name: 'Search calendar' })"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "/Users/fleet/fleet-trial/tests/calendar/toolbar.search.spec.mjs",
+                            "column": 7,
+                            "line": 13
+                          },
+                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('heading', { name: /\\b\\d{4}\\b/, level: 3 })\nExpected: visible\nTimeout: 10000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('heading', { name: /\\b\\d{4}\\b/, level: 3 })\u001b[22m\n\n\n  11 |     await expect(\n  12 |       page.getByRole('heading', { level: 3, name: /\\b\\d{4}\\b/ })\n> 13 |     ).toBeVisible()\n     |       ^\n  14 |\n  15 |     // Primary assertion: the 'Search calendar' textbox must be present in the toolbar\n  16 |     const searchBox = page.getByRole('textbox', { name: 'Search calendar' })\n    at /Users/fleet/fleet-trial/tests/calendar/toolbar.search.spec.mjs:13:7"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-04-23T19:26:29.927Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "/Users/fleet/fleet-trial/test-results/calendar-toolbar.search-to-5629b--and-visible-in-the-toolbar/error-context.md"
+                        },
+                        {
+                          "name": "trace",
+                          "contentType": "application/zip",
+                          "path": "/Users/fleet/fleet-trial/test-results/calendar-toolbar.search-to-5629b--and-visible-in-the-toolbar/trace.zip"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "/Users/fleet/fleet-trial/tests/calendar/toolbar.search.spec.mjs",
+                        "column": 7,
+                        "line": 13
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "ef247d0448850650d887-458e6b51c738c2080a9c",
+              "file": "calendar/toolbar.search.spec.mjs",
+              "line": 4,
+              "column": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "calendar/unscheduled.panel.spec.mjs",
+      "file": "calendar/unscheduled.panel.spec.mjs",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "unscheduled.panel — Unscheduled work side panel lists items lacking a due date and supports drag-to-schedule",
+          "file": "calendar/unscheduled.panel.spec.mjs",
+          "line": 3,
+          "column": 6,
+          "specs": [
+            {
+              "title": "panel exposes heading, helper text, close button, and an unscheduled work item",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 9,
+                      "parallelIndex": 0,
+                      "status": "failed",
+                      "duration": 20270,
+                      "error": {
+                        "message": "TimeoutError: locator.waitFor: Timeout 20000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('button', { name: 'Unscheduled work' }) to be visible\u001b[22m\n",
+                        "stack": "TimeoutError: locator.waitFor: Timeout 20000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('button', { name: 'Unscheduled work' }) to be visible\u001b[22m\n\n    at /Users/fleet/fleet-trial/tests/calendar/unscheduled.panel.spec.mjs:10:21",
+                        "location": {
+                          "file": "/Users/fleet/fleet-trial/tests/calendar/unscheduled.panel.spec.mjs",
+                          "column": 21,
+                          "line": 10
+                        },
+                        "snippet": "   8 |     // The toolbar toggle button is a reliable readiness signal.\n   9 |     const toggleBtn = page.getByRole('button', { name: 'Unscheduled work' })\n> 10 |     await toggleBtn.waitFor({ state: 'visible', timeout: 20000 })\n     |                     ^\n  11 |\n  12 |     const panel = page.getByRole('complementary', { name: 'Unscheduled work' })\n  13 |"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "/Users/fleet/fleet-trial/tests/calendar/unscheduled.panel.spec.mjs",
+                            "column": 21,
+                            "line": 10
+                          },
+                          "message": "TimeoutError: locator.waitFor: Timeout 20000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('button', { name: 'Unscheduled work' }) to be visible\u001b[22m\n\n\n   8 |     // The toolbar toggle button is a reliable readiness signal.\n   9 |     const toggleBtn = page.getByRole('button', { name: 'Unscheduled work' })\n> 10 |     await toggleBtn.waitFor({ state: 'visible', timeout: 20000 })\n     |                     ^\n  11 |\n  12 |     const panel = page.getByRole('complementary', { name: 'Unscheduled work' })\n  13 |\n    at /Users/fleet/fleet-trial/tests/calendar/unscheduled.panel.spec.mjs:10:21"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-04-23T19:26:40.410Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "/Users/fleet/fleet-trial/test-results/calendar-unscheduled.panel-45444-nd-an-unscheduled-work-item/error-context.md"
+                        },
+                        {
+                          "name": "trace",
+                          "contentType": "application/zip",
+                          "path": "/Users/fleet/fleet-trial/test-results/calendar-unscheduled.panel-45444-nd-an-unscheduled-work-item/trace.zip"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "/Users/fleet/fleet-trial/tests/calendar/unscheduled.panel.spec.mjs",
+                        "column": 21,
+                        "line": 10
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "b0edd6b010d975221e8b-74919047c5e57b694588",
+              "file": "calendar/unscheduled.panel.spec.mjs",
+              "line": 4,
+              "column": 3
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-04-23T19:24:58.252Z",
+    "duration": 122457.826,
+    "expected": 7,
+    "skipped": 0,
+    "unexpected": 10,
+    "flaky": 0
+  }
+}

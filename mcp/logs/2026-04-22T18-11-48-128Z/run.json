@@ -1,0 +1,13 @@
+{
+  "run_id": "2026-04-22T18-11-48-128Z",
+  "started_at": "2026-04-22T18:11:48.129Z",
+  "app_url": "http://localhost:5173",
+  "model": "claude-opus-4-7",
+  "config": {
+    "maxDispatches": 8,
+    "maxWorkerTurns": 6,
+    "targetReward": 0.6,
+    "improvementDelta": 0.005,
+    "maxTokens": 4096
+  }
+}

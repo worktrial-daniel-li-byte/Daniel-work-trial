@@ -1,0 +1,26 @@
+{
+  "app_url": "http://localhost:5173",
+  "test_dir": "board/toolbar.online_users.spec.mjs",
+  "started_at": "2026-04-23T20:18:37.215Z",
+  "exit_code": 0,
+  "counts": {
+    "total": 1,
+    "passed": 1,
+    "failed": 0,
+    "skipped": 0,
+    "flaky": 0,
+    "timedOut": 0
+  },
+  "tests": [
+    {
+      "file": "board/toolbar.online_users.spec.mjs",
+      "title": "Online-user assignee checkbox is visible in the board toolbar next to Search board",
+      "project": "",
+      "status": "passed",
+      "ok": true,
+      "duration_ms": 442,
+      "error": null
+    }
+  ],
+  "artifact_dir": "/Users/fleet/fleet-trial/test-artifacts/2026-04-23T20-18-35-936Z"
+}

@@ -1,0 +1,172 @@
+{
+  "app_url": "http://localhost:5173",
+  "test_dir": "tests",
+  "started_at": "2026-04-23T20:00:05.975Z",
+  "exit_code": 1,
+  "counts": {
+    "total": 19,
+    "passed": 10,
+    "failed": 1,
+    "skipped": 0,
+    "flaky": 0,
+    "timedOut": 0
+  },
+  "tests": [
+    {
+      "file": "board/columns.add_column.spec.mjs",
+      "title": "Create status button opens modal; Cancel reverts board to original 3-column state",
+      "project": "",
+      "status": "passed",
+      "ok": true,
+      "duration_ms": 393,
+      "error": null
+    },
+    {
+      "file": "board/columns.collapse.spec.mjs",
+      "title": "collapse buttons present for every status column, toggle state mutates and reverts",
+      "project": "",
+      "status": "passed",
+      "ok": true,
+      "duration_ms": 430,
+      "error": null
+    },
+    {
+      "file": "board/columns.create_in_column.spec.mjs",
+      "title": "Create button opens inline form with all expected fields; Escape dismisses without persisting",
+      "project": "",
+      "status": "passed",
+      "ok": true,
+      "duration_ms": 279,
+      "error": null
+    },
+    {
+      "file": "board/columns.default_set.spec.mjs",
+      "title": "three status columns visible as level-3 headings with count badges when groupBy=status",
+      "project": "",
+      "status": "passed",
+      "ok": true,
+      "duration_ms": 237,
+      "error": null
+    },
+    {
+      "file": "board/columns.more_actions.spec.mjs",
+      "title": "More actions button opens menu with all expected items for In Progress column",
+      "project": "",
+      "status": "passed",
+      "ok": true,
+      "duration_ms": 310,
+      "error": null
+    },
+    {
+      "file": "board/page.load.spec.mjs",
+      "title": "board page loads with title and To Do / In Progress / Done columns",
+      "project": "",
+      "status": "passed",
+      "ok": true,
+      "duration_ms": 220,
+      "error": null
+    },
+    {
+      "file": "board/toolbar.filter.button.spec.mjs",
+      "title": "Filter button aria-label is exactly \"0 filters applied\" in default state",
+      "project": "",
+      "status": "passed",
+      "ok": true,
+      "duration_ms": 216,
+      "error": null
+    },
+    {
+      "file": "board/toolbar.filter.panel.spec.mjs",
+      "title": "popover renders all expected sections after clicking filter trigger",
+      "project": "",
+      "status": "passed",
+      "ok": true,
+      "duration_ms": 344,
+      "error": null
+    },
+    {
+      "file": "board/toolbar.groupby.button.spec.mjs",
+      "title": "Group by button shows \"Group by Status\" and board renders status columns",
+      "project": "",
+      "status": "passed",
+      "ok": true,
+      "duration_ms": 226,
+      "error": null
+    },
+    {
+      "file": "board/toolbar.groupby.options.spec.mjs",
+      "title": "Popover shows 4 radios with Status checked by default",
+      "project": "",
+      "status": "passed",
+      "ok": true,
+      "duration_ms": 376,
+      "error": null
+    },
+    {
+      "file": "board/toolbar.more_actions.spec.mjs",
+      "title": "clicking More actions toolbar button opens menu with Stand-up and Configure columns items",
+      "project": "",
+      "status": "failed",
+      "ok": false,
+      "duration_ms": 10319,
+      "error": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveAttribute\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator:  getByRole('button', { name: 'More actions', exact: true }).nth(1)\nExpected: \u001b[32m\"true\"\u001b[39m\nReceived: \u001b[31m\"\"\u001b[39m\nTimeout:  10000ms\n\nCall log:\n\u001b[2m  - Expect \"toHaveAttribute\" with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('button', { name: 'More actions', exact: true }).nth(1)\u001b[22m\n\u001b[2m    14 × locator resolved to <button type=\"button\" title=\"More actions\" aria-label=\"More actions\" class=\"jira-icon-btn jira-tiny\" data-testid=\"navigation-project-action-menu.ui.themed-button\">…</button>\u001b[22m\n\u001b[2m       - unexpected value \"null\"\u001b[22m\n"
+    },
+    {
+      "file": "board/toolbar.online_users.spec.mjs",
+      "title": "Online-user assignee checkbox is visible in the board toolbar next to Search board",
+      "project": "",
+      "ok": true,
+      "error": null
+    },
+    {
+      "file": "board/toolbar.save_or_reset.spec.mjs",
+      "title": "button absent initially, appears after changing Group by, removed after reverting",
+      "project": "",
+      "ok": true,
+      "error": null
+    },
+    {
+      "file": "board/toolbar.search.filters_cards.spec.mjs",
+      "title": "fill zzznomatch → URL filter, zero counts, empty state; Clear filters → original state",
+      "project": "",
+      "ok": true,
+      "error": null
+    },
+    {
+      "file": "board/toolbar.search.present.spec.mjs",
+      "title": "Search board input is present in the board toolbar",
+      "project": "",
+      "ok": true,
+      "error": null
+    },
+    {
+      "file": "board/toolbar.view_settings.spec.mjs",
+      "title": "open panel shows heading, resize handle and close button; closing removes the panel",
+      "project": "",
+      "ok": true,
+      "error": null
+    },
+    {
+      "file": "calendar/page.load.spec.mjs",
+      "title": "calendar page loads with active Calendar heading and all sibling tab links visible",
+      "project": "",
+      "ok": true,
+      "error": null
+    },
+    {
+      "file": "calendar/toolbar.search.spec.mjs",
+      "title": "search calendar textbox is present and visible in the toolbar",
+      "project": "",
+      "ok": true,
+      "error": null
+    },
+    {
+      "file": "calendar/unscheduled.panel.spec.mjs",
+      "title": "panel exposes heading, helper text, close button, and an unscheduled work item",
+      "project": "",
+      "ok": true,
+      "error": null
+    }
+  ],
+  "artifact_dir": "/Users/fleet/fleet-trial/test-artifacts/2026-04-23T19-59-51-798Z"
+}

@@ -1,0 +1,17 @@
+{
+  "id": "toolbar.more_actions",
+  "feature": "Board-level More actions menu",
+  "status": "PASS",
+  "phase": "test",
+  "impl_attempts": 0,
+  "test_attempts": 1,
+  "spec": "tests/board/toolbar.more_actions.spec.mjs",
+  "last_exit_code": 0,
+  "last_assertions": 9,
+  "last_failure_reason": null,
+  "last_worker_summary": "I wrote `tests/board/toolbar.more_actions.spec.mjs`, which navigates to the AUT board, clicks the second (toolbar-level) `More actions` button (using `.nth(1)` to skip the unrelated space-header button), and then asserts that `aria-expanded` becomes `\"true\"`, the `role=menu` named `\"More actions on board view\"` is visible, both `Stand-up` and `Configure columns` menuitems are visible, and exactly 2 menuitems exist — finishing with an Escape keypress + hidden/collapsed assertions to leave the board in its original state.",
+  "mutation_checked": true,
+  "load_bearing": false,
+  "mutation_saboteur_skipped": true,
+  "mutation_failure_reason": "saboteur declined to edit (feature may not live in src/); mutation contract not verified"
+}

@@ -1,0 +1,77 @@
+{
+  "id": "card.fields_visible",
+  "status": "PARTIAL",
+  "navigate_url": "https://fleet-team-y0ak1u2s.atlassian.net/jira/core/projects/AUT/board?filter=&groupBy=status",
+  "observations": [
+    "page.url() === 'https://fleet-team-y0ak1u2s.atlassian.net/jira/core/projects/AUT/board?filter=&groupBy=status'",
+    "role=heading level=1 with name 'Autoloop' is visible",
+    "role=heading level=3 with name 'To Do' is visible; column item count shows '1'",
+    "role=heading level=3 with name 'In Progress' is visible; column item count shows '0'",
+    "role=heading level=3 with name 'Done' is visible; column item count shows '0'",
+    "Anchor <a href='/browse/AUT-1'> exists with aria-label 'AUT-1 Design autonomous replanning loop. Use the enter key to load the work item.'",
+    "Card summary text visible: 'Design autonomous replanning loop' (NOT 'This is a test' as claimed in the check)",
+    "Edit summary button exists as role=button name='Edit summary' within the AUT-1 card",
+    "Key badge on card: img with accessible name 'Task' adjacent to visible text 'AUT-1'",
+    "Priority icon rendered as role=button name='Priority: High' containing img name='Priority: High' (check claimed default 'Medium'; actual is High)",
+    "Assignee avatar rendered as role=button name='Assignee: None' (matches 'None -> generic person icon')",
+    "Card actions menu button present: role=button name='Card actions on Task AUT-1 of the To Do column'",
+    "Create-after button present: role=button name='Create work item after work item AUT-1'",
+    "No green check mark next to AUT-1 key badge because the card is in the 'To Do' column (not Done)"
+  ],
+  "playwright_hints": {
+    "locators": [
+      {
+        "purpose": "AUT-1 card link (root anchor to /browse/AUT-1)",
+        "preferred": "getByRole('link', { name: /^AUT-1 Design autonomous replanning loop/ })",
+        "fallback": "locator('a[href=\"/browse/AUT-1\"]')"
+      },
+      {
+        "purpose": "Card summary text",
+        "preferred": "getByText('Design autonomous replanning loop', { exact: true })",
+        "fallback": "locator('a[href=\"/browse/AUT-1\"]').getByText('Design autonomous replanning loop')"
+      },
+      {
+        "purpose": "Task type icon (key badge icon)",
+        "preferred": "getByRole('img', { name: 'Task' })",
+        "fallback": "locator('a[href=\"/browse/AUT-1\"] img[alt=\"Task\"]')"
+      },
+      {
+        "purpose": "Issue key text 'AUT-1' on card",
+        "preferred": "getByText('AUT-1', { exact: true })",
+        "fallback": "locator('a[href=\"/browse/AUT-1\"]').getByText('AUT-1')"
+      },
+      {
+        "purpose": "Priority icon on card",
+        "preferred": "getByRole('button', { name: 'Priority: High' })",
+        "fallback": "locator('button[aria-label^=\"Priority:\"]')"
+      },
+      {
+        "purpose": "Assignee avatar (unassigned) on card",
+        "preferred": "getByRole('button', { name: 'Assignee: None' })",
+        "fallback": "locator('button[aria-label^=\"Assignee:\"]')"
+      },
+      {
+        "purpose": "Card actions menu (hover target)",
+        "preferred": "getByRole('button', { name: 'Card actions on Task AUT-1 of the To Do column' })",
+        "fallback": "locator('button[aria-label*=\"Card actions on Task AUT-1\"]')"
+      },
+      {
+        "purpose": "To Do column heading",
+        "preferred": "getByRole('heading', { level: 3, name: 'To Do' })",
+        "fallback": "getByText('To Do', { exact: true })"
+      }
+    ],
+    "url_assertions": [
+      "/jira/core/projects/AUT/board",
+      "groupBy=status"
+    ],
+    "interactions": [
+      "await page.goto('https://fleet-team-y0ak1u2s.atlassian.net/jira/core/projects/AUT/board?filter=&groupBy=status')",
+      "await expect(page.getByRole('link', { name: /^AUT-1 Design autonomous replanning loop/ })).toBeVisible()"
+    ],
+    "mutation_and_revert": null
+  },
+  "notes": "The feature claim that AUT-1's summary is 'This is a test' is INCORRECT in the current environment; actual summary is 'Design autonomous replanning loop'. The claim of default priority 'Medium' is also incorrect; observed priority is 'High' (button aria-label='Priority: High'). All four expected field TYPES (summary, key badge with Task icon + 'AUT-1', priority icon, assignee avatar for 'None') are visibly present, which is why status is PARTIAL rather than FAIL. The green-check-for-Done behaviour could not be observed because AUT-1 is in 'To Do'. Specs should assert by aria-label pattern (e.g. /^Priority:/) rather than a specific priority value to be robust.",
+  "turns": 4,
+  "stopped_for_budget": false
+}

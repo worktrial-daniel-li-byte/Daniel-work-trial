@@ -1,0 +1,17 @@
+{
+  "id": "columns.more_actions",
+  "feature": "Per-column More actions menu",
+  "status": "PASS",
+  "phase": "test",
+  "impl_attempts": 0,
+  "test_attempts": 1,
+  "spec": "tests/board/columns.more_actions.spec.mjs",
+  "last_exit_code": 0,
+  "last_assertions": 10,
+  "last_failure_reason": null,
+  "last_worker_summary": "I wrote `tests/board/columns.more_actions.spec.mjs` with 10 `expect()` assertions: it navigates to the board, hovers the \"In Progress\" heading to reveal the trigger, clicks \"More actions for column In Progress\", then verifies the button becomes `aria-expanded=\"true\"`, the `role=menu` appears, all five expected menu items are visible (`Add agent BETA`, `Rename status`, `Move column left`, `Move column right`, `Delete status`), and finally confirms the menu is dismissed after pressing Escape.",
+  "mutation_checked": true,
+  "load_bearing": false,
+  "mutation_saboteur_skipped": true,
+  "mutation_failure_reason": "saboteur declined to edit (feature may not live in src/); mutation contract not verified"
+}

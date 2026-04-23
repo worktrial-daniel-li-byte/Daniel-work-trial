@@ -1,0 +1,17 @@
+{
+  "id": "toolbar.groupby.options",
+  "feature": "Group by options",
+  "status": "PASS",
+  "phase": "test",
+  "impl_attempts": 0,
+  "test_attempts": 1,
+  "spec": "tests/board/toolbar.groupby.options.spec.mjs",
+  "last_exit_code": 0,
+  "last_assertions": 14,
+  "last_failure_reason": null,
+  "last_worker_summary": "I wrote `tests/board/toolbar.groupby.options.spec.mjs`. The primary assertions verify that clicking the \"Group by Status\" button expands a `radiogroup` named \"Group by field\" containing exactly 4 radios (Assignee, Category, Priority, Status), that the Status radio is `checked` by default (matched with `/^Status/` to handle the \"Status Selected\" accessible name), and that the popover collapses cleanly on Escape — leaving the board in its original state.",
+  "mutation_checked": true,
+  "load_bearing": false,
+  "mutation_saboteur_skipped": true,
+  "mutation_failure_reason": "saboteur declined to edit (feature may not live in src/); mutation contract not verified"
+}

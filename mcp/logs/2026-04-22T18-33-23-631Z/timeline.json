@@ -1,0 +1,385 @@
+[
+  {
+    "at": "2026-04-22T18:33:23.633Z",
+    "type": "start",
+    "run_id": "2026-04-22T18-33-23-631Z",
+    "started_at": "2026-04-22T18:33:23.632Z",
+    "app_url": "http://localhost:5173",
+    "model": "claude-opus-4-7",
+    "config": {
+      "maxDispatches": 30,
+      "maxWorkerTurns": 40,
+      "targetReward": 0.85,
+      "improvementDelta": 0.005,
+      "maxTokens": 32768
+    }
+  },
+  {
+    "at": "2026-04-22T18:33:31.194Z",
+    "type": "score",
+    "n": 1,
+    "reward": -0.105715722615212,
+    "details": {
+      "ssim": 0.7676107489300795,
+      "text": 0.48921749845964263,
+      "color": 0.34980494148244473,
+      "content_gate": 0.5913739987677141
+    },
+    "dir": "score-01"
+  },
+  {
+    "at": "2026-04-22T18:35:49.202Z",
+    "type": "dispatch",
+    "n": 1,
+    "mode": "fresh",
+    "before": -0.105715722615212,
+    "after": -0.154842187304707,
+    "improved": false,
+    "dir": "dispatch-01"
+  },
+  {
+    "at": "2026-04-22T18:35:49.202Z",
+    "type": "score",
+    "n": 2,
+    "reward": -0.154842187304707,
+    "details": {
+      "ssim": 0.7608706032232796,
+      "text": 0.477909147479776,
+      "color": 0.2483745123537061,
+      "content_gate": 0.5823273179838209
+    },
+    "dir": "score-02"
+  },
+  {
+    "at": "2026-04-22T18:38:48.887Z",
+    "type": "dispatch",
+    "n": 2,
+    "mode": "resumed",
+    "before": -0.154842187304707,
+    "after": -0.14518334853004788,
+    "improved": true,
+    "dir": "dispatch-02"
+  },
+  {
+    "at": "2026-04-22T18:38:48.888Z",
+    "type": "score",
+    "n": 3,
+    "reward": -0.14518334853004788,
+    "details": {
+      "ssim": 0.7583167040806698,
+      "text": 0.49135802469135803,
+      "color": 0.23146944083224968,
+      "content_gate": 0.5930864197530865
+    },
+    "dir": "score-03"
+  },
+  {
+    "at": "2026-04-22T18:41:25.230Z",
+    "type": "dispatch",
+    "n": 3,
+    "mode": "fresh",
+    "before": -0.14518334853004788,
+    "after": -0.12613318126853068,
+    "improved": true,
+    "dir": "dispatch-03"
+  },
+  {
+    "at": "2026-04-22T18:41:25.231Z",
+    "type": "score",
+    "n": 4,
+    "reward": -0.12613318126853068,
+    "details": {
+      "ssim": 0.7770993421677254,
+      "text": 0.4909090909090909,
+      "color": 0.25227568270481143,
+      "content_gate": 0.5927272727272728
+    },
+    "dir": "score-04"
+  },
+  {
+    "at": "2026-04-22T18:42:44.656Z",
+    "type": "dispatch",
+    "n": 4,
+    "mode": "fresh",
+    "before": -0.12613318126853068,
+    "after": -0.11756497680887557,
+    "improved": true,
+    "dir": "dispatch-04"
+  },
+  {
+    "at": "2026-04-22T18:42:44.657Z",
+    "type": "score",
+    "n": 5,
+    "reward": -0.11756497680887557,
+    "details": {
+      "ssim": 0.7891456418937233,
+      "text": 0.4909090909090909,
+      "color": 0.25227568270481143,
+      "content_gate": 0.5927272727272728
+    },
+    "dir": "score-05"
+  },
+  {
+    "at": "2026-04-22T18:43:45.792Z",
+    "type": "dispatch",
+    "n": 5,
+    "mode": "fresh",
+    "before": -0.11756497680887557,
+    "after": -0.1106435978326622,
+    "improved": true,
+    "dir": "dispatch-05"
+  },
+  {
+    "at": "2026-04-22T18:43:45.793Z",
+    "type": "score",
+    "n": 6,
+    "reward": -0.1106435978326622,
+    "details": {
+      "ssim": 0.7983281420665417,
+      "text": 0.4909090909090909,
+      "color": 0.2535760728218466,
+      "content_gate": 0.5927272727272728
+    },
+    "dir": "score-06"
+  },
+  {
+    "at": "2026-04-22T18:45:08.889Z",
+    "type": "dispatch",
+    "n": 6,
+    "mode": "fresh",
+    "before": -0.1106435978326622,
+    "after": -0.10663570205940631,
+    "improved": false,
+    "dir": "dispatch-06"
+  },
+  {
+    "at": "2026-04-22T18:45:08.890Z",
+    "type": "score",
+    "n": 7,
+    "reward": -0.10663570205940631,
+    "details": {
+      "ssim": 0.7982633464378222,
+      "text": 0.49318624269954575,
+      "color": 0.2574772431729519,
+      "content_gate": 0.5945489941596367
+    },
+    "dir": "score-07"
+  },
+  {
+    "at": "2026-04-22T18:48:23.366Z",
+    "type": "dispatch",
+    "n": 7,
+    "mode": "resumed",
+    "before": -0.10663570205940631,
+    "after": -0.04555675161613704,
+    "improved": true,
+    "dir": "dispatch-07"
+  },
+  {
+    "at": "2026-04-22T18:48:23.367Z",
+    "type": "score",
+    "n": 8,
+    "reward": -0.04555675161613704,
+    "details": {
+      "ssim": 0.7982633464378222,
+      "text": 0.5411111111111111,
+      "color": 0.258777633289987,
+      "content_gate": 0.6328888888888888
+    },
+    "dir": "score-08"
+  },
+  {
+    "at": "2026-04-22T18:49:07.546Z",
+    "type": "dispatch",
+    "n": 8,
+    "mode": "fresh",
+    "before": -0.04555675161613704,
+    "after": -0.03692748180092442,
+    "improved": true,
+    "dir": "dispatch-08"
+  },
+  {
+    "at": "2026-04-22T18:49:07.546Z",
+    "type": "score",
+    "n": 9,
+    "reward": -0.03692748180092442,
+    "details": {
+      "ssim": 0.8096256223532181,
+      "text": 0.5411111111111111,
+      "color": 0.258777633289987,
+      "content_gate": 0.6328888888888888
+    },
+    "dir": "score-09"
+  },
+  {
+    "at": "2026-04-22T18:50:19.668Z",
+    "type": "dispatch",
+    "n": 9,
+    "mode": "fresh",
+    "before": -0.03692748180092442,
+    "after": -0.09362985766769927,
+    "improved": false,
+    "dir": "dispatch-09"
+  },
+  {
+    "at": "2026-04-22T18:50:19.668Z",
+    "type": "score",
+    "n": 10,
+    "reward": -0.09362985766769927,
+    "details": {
+      "ssim": 0.8096288763652606,
+      "text": 0.4967148488830486,
+      "color": 0.258777633289987,
+      "content_gate": 0.5973718791064389
+    },
+    "dir": "score-10"
+  },
+  {
+    "at": "2026-04-22T18:51:16.123Z",
+    "type": "dispatch",
+    "n": 10,
+    "mode": "resumed",
+    "before": -0.09362985766769927,
+    "after": -0.0369246419219591,
+    "improved": true,
+    "dir": "dispatch-10"
+  },
+  {
+    "at": "2026-04-22T18:51:16.124Z",
+    "type": "score",
+    "n": 11,
+    "reward": -0.0369246419219591,
+    "details": {
+      "ssim": 0.8096293616601422,
+      "text": 0.5411111111111111,
+      "color": 0.258777633289987,
+      "content_gate": 0.6328888888888888
+    },
+    "dir": "score-11"
+  },
+  {
+    "at": "2026-04-22T18:53:19.933Z",
+    "type": "dispatch",
+    "n": 11,
+    "mode": "fresh",
+    "before": -0.0369246419219591,
+    "after": -0.03658540245213793,
+    "improved": false,
+    "dir": "dispatch-11"
+  },
+  {
+    "at": "2026-04-22T18:53:19.934Z",
+    "type": "score",
+    "n": 12,
+    "reward": -0.03658540245213793,
+    "details": {
+      "ssim": 0.809048698123801,
+      "text": 0.5411111111111111,
+      "color": 0.2613784135240572,
+      "content_gate": 0.6328888888888888
+    },
+    "dir": "score-12"
+  },
+  {
+    "at": "2026-04-22T18:54:50.219Z",
+    "type": "dispatch",
+    "n": 12,
+    "mode": "resumed",
+    "before": -0.03658540245213793,
+    "after": -0.04179203170749124,
+    "improved": false,
+    "dir": "dispatch-12"
+  },
+  {
+    "at": "2026-04-22T18:54:50.219Z",
+    "type": "score",
+    "n": 13,
+    "reward": -0.04179203170749124,
+    "details": {
+      "ssim": 0.8065682737336356,
+      "text": 0.5385035499726926,
+      "color": 0.2613784135240572,
+      "content_gate": 0.630802839978154
+    },
+    "dir": "score-13"
+  },
+  {
+    "at": "2026-04-22T18:55:45.621Z",
+    "type": "dispatch",
+    "n": 13,
+    "mode": "resumed",
+    "before": -0.04179203170749124,
+    "after": -0.03659032408102347,
+    "improved": true,
+    "dir": "dispatch-13"
+  },
+  {
+    "at": "2026-04-22T18:55:45.622Z",
+    "type": "score",
+    "n": 14,
+    "reward": -0.03659032408102347,
+    "details": {
+      "ssim": 0.8090422177486886,
+      "text": 0.5411111111111111,
+      "color": 0.2613784135240572,
+      "content_gate": 0.6328888888888888
+    },
+    "dir": "score-14"
+  },
+  {
+    "at": "2026-04-22T18:57:14.575Z",
+    "type": "dispatch",
+    "n": 14,
+    "mode": "fresh",
+    "before": -0.03659032408102347,
+    "after": -0.08098508593006903,
+    "improved": false,
+    "dir": "dispatch-14"
+  },
+  {
+    "at": "2026-04-22T18:57:14.575Z",
+    "type": "score",
+    "n": 15,
+    "reward": -0.08098508593006903,
+    "details": {
+      "ssim": 0.7915120550319034,
+      "text": 0.5130344108446299,
+      "color": 0.2756827048114434,
+      "content_gate": 0.6104275286757039
+    },
+    "dir": "score-15"
+  },
+  {
+    "at": "2026-04-22T18:57:56.688Z",
+    "type": "dispatch",
+    "n": 15,
+    "mode": "resumed",
+    "before": -0.08098508593006903,
+    "after": -0.036590601715181914,
+    "improved": true,
+    "dir": "dispatch-15"
+  },
+  {
+    "at": "2026-04-22T18:57:56.688Z",
+    "type": "score",
+    "n": 16,
+    "reward": -0.036590601715181914,
+    "details": {
+      "ssim": 0.8090418521840487,
+      "text": 0.5411111111111111,
+      "color": 0.2613784135240572,
+      "content_gate": 0.6328888888888888
+    },
+    "dir": "score-16"
+  },
+  {
+    "at": "2026-04-22T18:58:18.175Z",
+    "type": "end",
+    "stopReason": "verifier_done",
+    "dispatchesUsed": 15,
+    "lastReward": -0.036590601715181914,
+    "bestReward": -0.03658540245213793,
+    "doneReason": "After 15 focused dispatches, reward plateaued around -0.037 (ssim 0.81, text 0.54, color 0.26, content_gate 0.63). The current app visually matches the reference closely — sidebar structure/items/highlighting, topbar (search, Create, Premium trial, Ask Rovo, 3+ badge, settings, help, DL avatar), breadcrumb+tabs (\"Summary/Board/List/Calendar/Timeline/Approvals/Forms/Pages/More 4\"), board columns with correct \"+ Create\" placement, card with checkbox+priority+user-silhouette, and the chat orb. Recent attempts to push color (gradients) and content_gate (sr-only/sub-items) either gave marginal gains or regressed because extra text didn't match the reference semantics. The target of 0.85 is clearly out of reach without access to the reference HTML structure for pixel-level duplication; further small tweaks would continue oscillating around the current value.",
+    "doneSuccess": false
+  }
+]

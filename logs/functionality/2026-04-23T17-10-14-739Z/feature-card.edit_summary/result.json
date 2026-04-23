@@ -1,0 +1,17 @@
+{
+  "id": "card.edit_summary",
+  "feature": "Inline 'Edit summary' pencil per card opens an in-card editor",
+  "status": "PASS",
+  "phase": "test",
+  "impl_attempts": 0,
+  "test_attempts": 1,
+  "spec": "tests/board/card.edit_summary.spec.mjs",
+  "last_exit_code": 0,
+  "last_assertions": 13,
+  "last_failure_reason": null,
+  "last_worker_summary": "I wrote `tests/board/card.edit_summary.spec.mjs` with 11 `expect()` assertions covering: the board and AUT-1 card loading, the in-card editor opening (focused `role=textbox name='Work item summary'` pre-filled with the original summary, plus visible Submit and Cancel buttons), and the Escape-to-cancel revert sequence confirming the textbox/Submit/Cancel are removed from the DOM while the original summary link and Edit summary button are restored.",
+  "mutation_checked": true,
+  "load_bearing": false,
+  "mutation_saboteur_skipped": true,
+  "mutation_failure_reason": "saboteur declined to edit (feature may not live in src/); mutation contract not verified"
+}

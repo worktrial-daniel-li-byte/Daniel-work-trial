@@ -1,0 +1,149 @@
+{
+  "id": "toolbar.groupby.mutates_columns",
+  "status": "PARTIAL",
+  "navigate_url": "https://fleet-team-y0ak1u2s.atlassian.net/jira/core/projects/AUT/board?filter=&groupBy=status",
+  "observations": [
+    "Initial page.url() === 'https://fleet-team-y0ak1u2s.atlassian.net/jira/core/projects/AUT/board?filter=&groupBy=status'",
+    "Toolbar shows a button with accessible name 'Group by Status' whose visible text is 'Group: Status'",
+    "Initial column headings at level=3 are 'To Do' (count 1), 'In Progress' (count 0), 'Done' (count 0)",
+    "AUT-1 card sits in the 'To Do' column; card action button aria-name is 'Card actions on Task AUT-1 of the To Do column'",
+    "Card's priority chip exposes aria-label 'Priority: High' (NOT Medium as the claim asserted)",
+    "Clicking 'Group by Status' opens a radiogroup with accessible name 'Group by field' containing radios named Assignee, Category, Priority, Status (Status initially checked)",
+    "After clicking the 'Priority' radio, page.url() becomes 'https://fleet-team-y0ak1u2s.atlassian.net/jira/core/projects/AUT/board?filter=&groupBy=priority'",
+    "After mutation the toolbar button's accessible name becomes 'Group by Priority' with visible text 'Group: Priority'",
+    "After mutation the column headings at level=3 are exactly ['Highest','High','Medium','Low','Lowest'] in that left-to-right order",
+    "AUT-1 appears under the 'High' column (High count=1, others 0) — contradicts the claim that it would appear under Medium",
+    "AUT-1 card action button aria-name becomes 'Card actions on Task AUT-1 of the High column' (claim said 'of the Medium column')",
+    "After mutation a new button with accessible name 'Save or reset view settings' appears in the toolbar, positioned between 'View settings' and 'More actions'",
+    "Opening Group by again and clicking radio 'Status' reverts page.url() to '...?filter=&groupBy=status'",
+    "After revert, toolbar button is again 'Group by Status', columns are again ['To Do','In Progress','Done'], AUT-1 is back in 'To Do', and the 'Save or reset view settings' button is no longer present in the DOM"
+  ],
+  "playwright_hints": {
+    "locators": [
+      {
+        "purpose": "Group by toolbar button (state = Status)",
+        "preferred": "getByRole('button', { name: 'Group by Status' })",
+        "fallback": "getByText('Group: Status')"
+      },
+      {
+        "purpose": "Group by toolbar button (state = Priority)",
+        "preferred": "getByRole('button', { name: 'Group by Priority' })",
+        "fallback": "getByText('Group: Priority')"
+      },
+      {
+        "purpose": "Priority option inside Group by menu",
+        "preferred": "getByRole('radio', { name: 'Priority' })",
+        "fallback": "getByRole('radiogroup', { name: 'Group by field' }).getByText('Priority')"
+      },
+      {
+        "purpose": "Status option inside Group by menu (to revert)",
+        "preferred": "getByRole('radio', { name: 'Status' })",
+        "fallback": "getByRole('radiogroup', { name: 'Group by field' }).getByText('Status')"
+      },
+      {
+        "purpose": "Status-grouping column heading: To Do",
+        "preferred": "getByRole('heading', { level: 3, name: 'To Do' })",
+        "fallback": "getByText('To Do', { exact: true })"
+      },
+      {
+        "purpose": "Status-grouping column heading: In Progress",
+        "preferred": "getByRole('heading', { level: 3, name: 'In Progress' })",
+        "fallback": "getByText('In Progress', { exact: true })"
+      },
+      {
+        "purpose": "Status-grouping column heading: Done",
+        "preferred": "getByRole('heading', { level: 3, name: 'Done' })",
+        "fallback": "getByText('Done', { exact: true })"
+      },
+      {
+        "purpose": "Priority-grouping column heading: Highest",
+        "preferred": "getByRole('heading', { level: 3, name: 'Highest' })",
+        "fallback": "getByText('Highest', { exact: true })"
+      },
+      {
+        "purpose": "Priority-grouping column heading: High",
+        "preferred": "getByRole('heading', { level: 3, name: 'High' })",
+        "fallback": "getByText('High', { exact: true })"
+      },
+      {
+        "purpose": "Priority-grouping column heading: Medium",
+        "preferred": "getByRole('heading', { level: 3, name: 'Medium' })",
+        "fallback": "getByText('Medium', { exact: true })"
+      },
+      {
+        "purpose": "Priority-grouping column heading: Low",
+        "preferred": "getByRole('heading', { level: 3, name: 'Low' })",
+        "fallback": "getByText('Low', { exact: true })"
+      },
+      {
+        "purpose": "Priority-grouping column heading: Lowest",
+        "preferred": "getByRole('heading', { level: 3, name: 'Lowest' })",
+        "fallback": "getByText('Lowest', { exact: true })"
+      },
+      {
+        "purpose": "AUT-1 card-actions button while grouped by Status",
+        "preferred": "getByRole('button', { name: 'Card actions on Task AUT-1 of the To Do column' })",
+        "fallback": "locator('button[aria-label=\"Card actions on Task AUT-1 of the To Do column\"]')"
+      },
+      {
+        "purpose": "AUT-1 card-actions button while grouped by Priority (observed column = High, not Medium)",
+        "preferred": "getByRole('button', { name: 'Card actions on Task AUT-1 of the High column' })",
+        "fallback": "locator('button[aria-label=\"Card actions on Task AUT-1 of the High column\"]')"
+      },
+      {
+        "purpose": "Save or reset view settings button (only present after non-default grouping)",
+        "preferred": "getByRole('button', { name: 'Save or reset view settings' })",
+        "fallback": "locator('button[aria-label=\"Save or reset view settings\"]')"
+      },
+      {
+        "purpose": "More actions toolbar button (for relative positioning assertions)",
+        "preferred": "getByRole('button', { name: 'More actions', exact: true })",
+        "fallback": "locator('button[aria-label=\"More actions\"]')"
+      }
+    ],
+    "url_assertions": [
+      "filter=&groupBy=status",
+      "filter=&groupBy=priority"
+    ],
+    "interactions": [
+      "await page.goto('https://fleet-team-y0ak1u2s.atlassian.net/jira/core/projects/AUT/board?filter=&groupBy=status')",
+      "await page.getByRole('button', { name: 'Group by Status' }).click()",
+      "await page.getByRole('radio', { name: 'Priority' }).click()",
+      "await page.getByRole('button', { name: 'Group by Priority' }).click()",
+      "await page.getByRole('radio', { name: 'Status' }).click()"
+    ],
+    "mutation_and_revert": {
+      "mutate": [
+        "await page.getByRole('button', { name: 'Group by Status' }).click()",
+        "await page.getByRole('radio', { name: 'Priority' }).click()"
+      ],
+      "verify_post": [
+        "await expect(page).toHaveURL(/groupBy=priority/)",
+        "await expect(page.getByRole('button', { name: 'Group by Priority' })).toBeVisible()",
+        "await expect(page.getByRole('heading', { level: 3, name: 'Highest' })).toBeVisible()",
+        "await expect(page.getByRole('heading', { level: 3, name: 'High' })).toBeVisible()",
+        "await expect(page.getByRole('heading', { level: 3, name: 'Medium' })).toBeVisible()",
+        "await expect(page.getByRole('heading', { level: 3, name: 'Low' })).toBeVisible()",
+        "await expect(page.getByRole('heading', { level: 3, name: 'Lowest' })).toBeVisible()",
+        "await expect(page.getByRole('button', { name: 'Card actions on Task AUT-1 of the High column' })).toBeVisible()",
+        "await expect(page.getByRole('button', { name: 'Save or reset view settings' })).toBeVisible()"
+      ],
+      "revert": [
+        "await page.getByRole('button', { name: 'Group by Priority' }).click()",
+        "await page.getByRole('radio', { name: 'Status' }).click()"
+      ],
+      "verify_revert": [
+        "await expect(page).toHaveURL(/groupBy=status/)",
+        "await expect(page.getByRole('button', { name: 'Group by Status' })).toBeVisible()",
+        "await expect(page.getByRole('heading', { level: 3, name: 'To Do' })).toBeVisible()",
+        "await expect(page.getByRole('heading', { level: 3, name: 'In Progress' })).toBeVisible()",
+        "await expect(page.getByRole('heading', { level: 3, name: 'Done' })).toBeVisible()",
+        "await expect(page.getByRole('button', { name: 'Card actions on Task AUT-1 of the To Do column' })).toBeVisible()",
+        "await expect(page.getByRole('button', { name: 'Save or reset view settings' })).toHaveCount(0)"
+      ]
+    }
+  },
+  "notes": "PARTIAL because one sub-claim is incorrect for this fixture: AUT-1's priority is 'High', not 'Medium'. Consequently, when grouped by Priority, AUT-1 appears under the 'High' column and the card-actions aria-label is 'Card actions on Task AUT-1 of the High column' (NOT 'Medium column' as the check specified). All other claims verified: toolbar button rename, URL groupBy query change, the exact ordered column headings ['Highest','High','Medium','Low','Lowest'], appearance of the 'Save or reset view settings' button (positioned between 'View settings' and 'More actions'), and full revert on selecting 'Status'. The Group by menu uses radios inside a radiogroup named 'Group by field'; the selected radio has aria-checked='true' and its visible text appends ' Selected' via an inner img.",
+  "turns": 15,
+  "stopped_for_budget": false
+}

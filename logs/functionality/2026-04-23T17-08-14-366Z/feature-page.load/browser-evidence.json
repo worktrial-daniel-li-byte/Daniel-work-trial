@@ -1,0 +1,72 @@
+{
+  "id": "page.load",
+  "status": "PARTIAL",
+  "navigate_url": "https://fleet-team-y0ak1u2s.atlassian.net/jira/core/projects/AUT/calendar",
+  "observations": [
+    "page.url() === 'https://fleet-team-y0ak1u2s.atlassian.net/jira/core/projects/AUT/calendar' after navigation",
+    "document.title === 'Calendar - Jira' (the space name 'Autoloop' is NOT included, so the exact expected 'Calendar - {Space} - Jira' format is not met)",
+    "Space navigation contains tabs: Summary, Board, List, Calendar, Timeline, Approvals, Forms, Docs (plus '4 more tabs' overflow button)",
+    "All non-active tabs in nav[aria-label=\"Space navigation\"] are rendered as <a> links with href (e.g. Summary -> /jira/core/projects/AUT/summary, Board -> /jira/core/projects/AUT/board, List -> /jira/core/projects/AUT/list, Timeline -> /jira/core/projects/AUT/timeline)",
+    "The Calendar tab is uniquely rendered as a role=heading level=2 with accessible name 'Calendar' (no link element) — this is the active-tab affordance",
+    "Breadcrumb shows link 'Spaces' -> /jira/projects and heading level=1 'Autoloop' identifying the project/space",
+    "Calendar main content is present: grid with weekday columnheaders Monday–Friday and gridcells for each date (e.g. 'April 23, 2026')",
+    "Toolbar above the grid shows heading level=3 'Apr 2026' and buttons 'Today', 'Previous month', 'Next month', 'Month options', 'Unscheduled work', 'View settings'",
+    "Complementary region role with accessible name 'Unscheduled work' is visible with heading level=2 'Unscheduled work'"
+  ],
+  "playwright_hints": {
+    "locators": [
+      {
+        "purpose": "Space navigation container",
+        "preferred": "getByRole('navigation', { name: 'Space navigation' })",
+        "fallback": "locator('nav[aria-label=\"Space navigation\"]')"
+      },
+      {
+        "purpose": "Active Calendar tab (rendered as heading when active)",
+        "preferred": "getByRole('navigation', { name: 'Space navigation' }).getByRole('heading', { level: 2, name: 'Calendar' })",
+        "fallback": "locator('nav[aria-label=\"Space navigation\"] h2:has-text(\"Calendar\")')"
+      },
+      {
+        "purpose": "Inactive Board tab (link form, proves Calendar is uniquely active)",
+        "preferred": "getByRole('navigation', { name: 'Space navigation' }).getByRole('link', { name: 'Board' })",
+        "fallback": "locator('nav[aria-label=\"Space navigation\"] a[href=\"/jira/core/projects/AUT/board\"]')"
+      },
+      {
+        "purpose": "Project/space heading",
+        "preferred": "getByRole('heading', { level: 1, name: 'Autoloop' })",
+        "fallback": "locator('h1:has-text(\"Autoloop\")')"
+      },
+      {
+        "purpose": "Calendar month heading",
+        "preferred": "getByRole('heading', { level: 3, name: /^[A-Z][a-z]{2} \\d{4}$/ })",
+        "fallback": "locator('h3:has-text(\"2026\")')"
+      },
+      {
+        "purpose": "Calendar grid",
+        "preferred": "getByRole('grid')",
+        "fallback": "locator('[role=\"grid\"]')"
+      },
+      {
+        "purpose": "Weekday column header",
+        "preferred": "getByRole('columnheader', { name: 'Monday' })",
+        "fallback": "locator('[role=\"columnheader\"]:has-text(\"Mon\")')"
+      },
+      {
+        "purpose": "Today button in calendar toolbar",
+        "preferred": "getByRole('button', { name: 'Today' })",
+        "fallback": "locator('button:has-text(\"Today\")')"
+      }
+    ],
+    "url_assertions": [
+      "/jira/core/projects/AUT/calendar"
+    ],
+    "interactions": [
+      "await page.goto('https://fleet-team-y0ak1u2s.atlassian.net/jira/core/projects/AUT/calendar')",
+      "await expect(page).toHaveTitle(/^Calendar - .*Jira$/)",
+      "await expect(page).toHaveURL(/\\/jira\\/core\\/projects\\/AUT\\/calendar$/)"
+    ],
+    "mutation_and_revert": null
+  },
+  "notes": "PARTIAL because the observed document.title is 'Calendar - Jira' — the space name ('Autoloop') does NOT appear in the title, so the exact expected format 'Calendar - {Space} - Jira' is not met. Active-tab signaling does NOT use aria-selected or aria-current; instead the active tab is rendered as an <h2> (role=heading level=2) inside nav[aria-label=\"Space navigation\"] while inactive tabs remain <a> links. Spec should assert Calendar appears as a heading within the Space navigation and not as a link. The page loaded while signed in; no login redirect occurred. Some console errors were logged but did not prevent render.",
+  "turns": 5,
+  "stopped_for_budget": false
+}

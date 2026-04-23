@@ -1,0 +1,17 @@
+{
+  "id": "columns.collapse",
+  "feature": "Each column has a collapse toggle",
+  "status": "PASS",
+  "phase": "test",
+  "impl_attempts": 0,
+  "test_attempts": 2,
+  "spec": "tests/board/columns.collapse.spec.mjs",
+  "last_exit_code": 0,
+  "last_assertions": 7,
+  "last_failure_reason": null,
+  "last_worker_summary": "The root cause was that Jira CSS-hides the collapse buttons until a column header is hovered. I fixed `tests/board/columns.collapse.spec.mjs` by adding `await <heading>.hover()` before every `toBeVisible()` check and before the `.click()` on the collapse button — this triggers the ancestor `:hover` state that reveals the action buttons — while keeping the full mutate → verify-post → revert → verify-revert sequence intact across 7 `expect()` calls.",
+  "mutation_checked": true,
+  "load_bearing": false,
+  "mutation_saboteur_skipped": true,
+  "mutation_failure_reason": "saboteur made no edits AND spec did not re-pass after no-op revert (exit=1)"
+}

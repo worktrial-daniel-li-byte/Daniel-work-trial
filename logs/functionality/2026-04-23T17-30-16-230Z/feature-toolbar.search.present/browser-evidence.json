@@ -1,0 +1,45 @@
+{
+  "id": "toolbar.search.present",
+  "status": "PASS",
+  "navigate_url": "https://fleet-team-y0ak1u2s.atlassian.net/jira/core/projects/AUT/board?filter=&groupBy=status",
+  "observations": [
+    "page.url() === 'https://fleet-team-y0ak1u2s.atlassian.net/jira/core/projects/AUT/board?filter=&groupBy=status'",
+    "Page title is 'Board - Autoloop - Jira'",
+    "Snapshot shows 'textbox \"Search board\" [ref=e381]' inside the board toolbar region",
+    "DOM inspection: element is an <INPUT type=\"text\"> with aria-label=\"Search board\" and placeholder=\"Search board\", visible on screen",
+    "Adjacent status element reads 'Showing all work items', confirming the textbox sits in the board filter toolbar",
+    "Nearby toolbar controls are visible: button 'Filter' ('0 filters applied'), button 'Group: Status', button 'View settings', button 'More actions'",
+    "Main board columns render: heading level=3 'To Do', heading level=3 'In Progress', heading level=3 'Done'"
+  ],
+  "playwright_hints": {
+    "locators": [
+      {
+        "purpose": "The 'Search board' toolbar textbox",
+        "preferred": "getByRole('textbox', { name: 'Search board' })",
+        "fallback": "getByPlaceholder('Search board')"
+      },
+      {
+        "purpose": "Status text next to the search input",
+        "preferred": "getByText('Showing all work items')",
+        "fallback": "locator('[role=\"status\"]', { hasText: 'Showing all work items' })"
+      },
+      {
+        "purpose": "Board page confirmation (active Board tab)",
+        "preferred": "getByRole('heading', { level: 2, name: 'Board' })",
+        "fallback": "getByText('Board', { exact: true })"
+      }
+    ],
+    "url_assertions": [
+      "/jira/core/projects/AUT/board",
+      "groupBy=status"
+    ],
+    "interactions": [
+      "await page.goto('https://fleet-team-y0ak1u2s.atlassian.net/jira/core/projects/AUT/board?filter=&groupBy=status')",
+      "await expect(page.getByRole('textbox', { name: 'Search board' })).toBeVisible()"
+    ],
+    "mutation_and_revert": null
+  },
+  "notes": "Element is a native <input type=\"text\"> with aria-label=\"Search board\" (also placeholder=\"Search board\"), so getByRole('textbox', { name: 'Search board' }) is the correct accessible locator. No mutation required for this check.",
+  "turns": 4,
+  "stopped_for_budget": false
+}

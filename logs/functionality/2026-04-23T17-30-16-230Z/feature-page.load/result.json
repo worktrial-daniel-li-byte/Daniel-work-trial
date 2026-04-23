@@ -1,0 +1,16 @@
+{
+  "id": "page.load",
+  "feature": "Route renders board with Status columns when /board?groupBy=status",
+  "status": "PASS",
+  "phase": "test",
+  "test_attempts": 1,
+  "spec": "tests/board/page.load.spec.mjs",
+  "last_exit_code": 0,
+  "last_assertions": 6,
+  "last_failure_reason": null,
+  "last_worker_summary": "I wrote `tests/board/page.load.spec.mjs` with six `expect()` assertions drawn directly from the browser-agent evidence: the page title regex (`/Board - Autoloop - Jira$/`), the three `h3` role-based column headings (`To Do`, `In Progress`, `Done`), the `Group by Status` button confirming active grouping, and the `Board` level-2 heading confirming the active navigation tab.",
+  "mutation_checked": false,
+  "load_bearing": null,
+  "mutation_saboteur_skipped": null,
+  "mutation_failure_reason": null
+}

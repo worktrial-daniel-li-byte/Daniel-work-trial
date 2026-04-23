@@ -1,0 +1,118 @@
+{
+  "reward": 0.3105867738047088,
+  "details": {
+    "ssim": 0.8305866829281472,
+    "text": 0.826362484157161,
+    "color": 0.2756827048114434,
+    "pqgram": {
+      "whole": 0.6162507036967536,
+      "regions": {
+        "app-shell": 0.6001599360255898,
+        "top-nav": 0.6830065359477124,
+        "left-nav": 0.6200109349371241,
+        "horizontal-nav": 0.5225102319236017,
+        "project-header": 0.5806451612903226,
+        "board-toolbar": 0.5633802816901409,
+        "board-canvas": 0.4881450488145049,
+        "modal-portal": 1,
+        "rovo-fab": 0.6129032258064516
+      },
+      "combined": 0.623167649428124
+    },
+    "a11y_pqgram": 0.7024102311854402,
+    "class_density": {
+      "score": 0.06896551724137931,
+      "ref": {
+        "classed": 813,
+        "total": 9771,
+        "median": 8,
+        "p90": 29,
+        "p99": 58
+      },
+      "gen": {
+        "classed": 287,
+        "total": 349,
+        "median": 1,
+        "p90": 2,
+        "p99": 3
+      }
+    },
+    "content_gate": 0.8610899873257287
+  },
+  "ref": {
+    "url": "file:///Users/fleet/fleet-trial/reference_app/html/reference.html",
+    "text_len": 1145,
+    "blocks": 295,
+    "colors": 769,
+    "a11y_nodes": 357,
+    "a11y_grams": 955,
+    "class_p90": 29,
+    "screenshot": "/Users/fleet/fleet-trial/reward-artifacts/2026-04-23T19-12-05-302Z/board.png"
+  },
+  "gen": {
+    "url": "http://localhost:5173",
+    "text_len": 1222,
+    "blocks": 236,
+    "colors": 412,
+    "a11y_nodes": 406,
+    "a11y_grams": 1078,
+    "class_p90": 2,
+    "screenshot": "/Users/fleet/fleet-trial/reward-artifacts/2026-04-23T19-12-05-302Z/app.png"
+  },
+  "tests": {
+    "passed": 6,
+    "failed": 9,
+    "total": 15,
+    "skipped": 0,
+    "pass_rate": 0.4,
+    "reward_weight": 1,
+    "failures": [
+      {
+        "file": "board/toolbar.filter.button.spec.mjs",
+        "title": "Filter button aria-label is exactly \"0 filters applied\" in default state",
+        "error": "Error: expect(locator).toBeVisible() failed"
+      },
+      {
+        "file": "board/toolbar.filter.panel.spec.mjs",
+        "title": "popover renders all expected sections after clicking filter trigger",
+        "error": "Error: expect(locator).toBeVisible() failed"
+      },
+      {
+        "file": "board/toolbar.more_actions.spec.mjs",
+        "title": "clicking More actions toolbar button opens menu with Stand-up and Configure columns items",
+        "error": "Error: expect(locator).toHaveAttribute(expected) failed"
+      },
+      {
+        "file": "board/toolbar.online_users.spec.mjs",
+        "title": "Online-user assignee checkbox is visible in the board toolbar next to Search board",
+        "error": "Error: expect(locator).toBeVisible() failed"
+      },
+      {
+        "file": "board/toolbar.search.filters_cards.spec.mjs",
+        "title": "fill zzznomatch → URL filter, zero counts, empty state; Clear filters → original state",
+        "error": "Error: expect(locator).toBeVisible() failed"
+      },
+      {
+        "file": "board/toolbar.view_settings.spec.mjs",
+        "title": "open panel shows heading, resize handle and close button; closing removes the panel",
+        "error": "TimeoutError: locator.click: Timeout 15000ms exceeded."
+      },
+      {
+        "file": "calendar/page.load.spec.mjs",
+        "title": "calendar page loads with active Calendar heading and all sibling tab links visible",
+        "error": "Error: expect(page).toHaveTitle(expected) failed"
+      },
+      {
+        "file": "calendar/toolbar.search.spec.mjs",
+        "title": "search calendar textbox is present and visible in the toolbar",
+        "error": "Error: expect(locator).toBeVisible() failed"
+      },
+      {
+        "file": "calendar/unscheduled.panel.spec.mjs",
+        "title": "panel exposes heading, helper text, close button, and an unscheduled work item",
+        "error": "TimeoutError: locator.waitFor: Timeout 20000ms exceeded."
+      }
+    ],
+    "artifact_dir": "/Users/fleet/fleet-trial/test-artifacts/2026-04-23T19-12-08-242Z"
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "id": "columns.default_set",
+  "feature": "Default columns reflect statuses 'To Do', 'In Progress', 'Done' (when groupBy=status)",
+  "status": "TEST_FAILED",
+  "phase": "test",
+  "impl_attempts": 0,
+  "test_attempts": 3,
+  "spec": "tests/board/columns.default_set.spec.mjs",
+  "last_exit_code": 0,
+  "last_assertions": 10,
+  "last_failure_reason": null,
+  "last_worker_summary": "I rewrote `tests/board/columns.default_set.spec.mjs` with the key fix: heading locators now use `getByRole('heading', { name: '…' })` **without** the `level` filter (which Playwright doesn't enforce for `div[role=\"heading\"]` elements), and three explicit `toHaveAttribute('aria-level', '3')` assertions (lines 26–28) directly test the defining DOM attribute — so any sabotage that changes `aria-level` from `3` to `2` will immediately fail those assertions.",
+  "mutation_checked": true,
+  "load_bearing": false,
+  "mutation_saboteur_skipped": false,
+  "mutation_failure_reason": "spec did NOT re-pass after revert (exit=1); the revert may have failed or something outside src/+public/ was disturbed"
+}

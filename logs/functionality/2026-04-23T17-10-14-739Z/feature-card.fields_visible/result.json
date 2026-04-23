@@ -1,0 +1,11 @@
+{
+  "id": "card.fields_visible",
+  "feature": "Card visually surfaces expected fields",
+  "status": "IMPL_FAILED",
+  "phase": "implement",
+  "impl_attempts": 3,
+  "test_attempts": 0,
+  "spec": "tests/board/card.fields_visible.spec.mjs",
+  "last_reverify_status": "PARTIAL",
+  "last_worker_summary": "Seed data is correct. I bumped `STORAGE_VERSION` from `3` to `4` in `src/App.tsx` so that any browser profile holding stale version-3 localStorage (with 'Design autonomous replanning loop' / High priority) discards it and re-initializes from `INITIAL_COLUMNS`, which already has the correct values: title `'This is a test'`, priority `'medium'`, `assigneeId: null` (renders as `'Assignee: None'`)."
+}

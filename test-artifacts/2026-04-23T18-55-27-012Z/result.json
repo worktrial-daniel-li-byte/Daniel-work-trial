@@ -1,0 +1,134 @@
+{
+  "app_url": "http://localhost:5173",
+  "test_dir": "tests",
+  "started_at": "2026-04-23T18:59:16.382Z",
+  "exit_code": 1,
+  "counts": {
+    "total": 13,
+    "passed": 4,
+    "failed": 9,
+    "skipped": 0,
+    "flaky": 0,
+    "timedOut": 0
+  },
+  "tests": [
+    {
+      "file": "board/page.load.spec.mjs",
+      "title": "board page loads with title and To Do / In Progress / Done columns",
+      "project": "",
+      "status": "passed",
+      "ok": true,
+      "duration_ms": 1819,
+      "error": null
+    },
+    {
+      "file": "board/toolbar.filter.button.spec.mjs",
+      "title": "Filter button aria-label is exactly \"0 filters applied\" in default state",
+      "project": "",
+      "status": "failed",
+      "ok": false,
+      "duration_ms": 10230,
+      "error": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator:  locator('button[aria-label$=\" filters applied\"]')\nExpected: visible\nReceived: hidden\nTimeout:  10000ms\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for locator('button[aria-label$=\" filters applied\"]')\u001b[22m\n\u001b[2m    14 × locator resolved to <button tabindex=\"0\" type=\"button\" aria-haspopup=\"true\" aria-expanded=\"false\" aria-label=\"0 filters applied\" class=\"jira-board-bar__avatar-btn\" data-testid=\"business-filters.ui.filters.trigger.button-wrapper\">…</button>\u001b[22m\n\u001b[2m       - unexpected value \"hidden\"\u001b[22m\n"
+    },
+    {
+      "file": "board/toolbar.filter.panel.spec.mjs",
+      "title": "popover renders all expected sections after clicking filter trigger",
+      "project": "",
+      "status": "failed",
+      "ok": false,
+      "duration_ms": 10247,
+      "error": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator:  getByRole('button', { name: /filters applied/ })\nExpected: visible\nReceived: hidden\nTimeout:  10000ms\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('button', { name: /filters applied/ })\u001b[22m\n\u001b[2m    14 × locator resolved to <button tabindex=\"0\" type=\"button\" aria-haspopup=\"true\" aria-expanded=\"false\" aria-label=\"0 filters applied\" class=\"jira-board-bar__avatar-btn\" data-testid=\"business-filters.ui.filters.trigger.button-wrapper\">…</button>\u001b[22m\n\u001b[2m       - unexpected value \"hidden\"\u001b[22m\n"
+    },
+    {
+      "file": "board/toolbar.groupby.button.spec.mjs",
+      "title": "Group by button shows \"Group by Status\" and board renders status columns",
+      "project": "",
+      "status": "passed",
+      "ok": true,
+      "duration_ms": 279,
+      "error": null
+    },
+    {
+      "file": "board/toolbar.groupby.options.spec.mjs",
+      "title": "Popover shows 4 radios with Status checked by default",
+      "project": "",
+      "status": "passed",
+      "ok": true,
+      "duration_ms": 452,
+      "error": null
+    },
+    {
+      "file": "board/toolbar.online_users.spec.mjs",
+      "title": "Online-user assignee checkbox is visible in the board toolbar next to Search board",
+      "project": "",
+      "status": "failed",
+      "ok": false,
+      "duration_ms": 10247,
+      "error": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('checkbox', { name: 'Daniel Li is online' })\nExpected: visible\nTimeout: 10000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('checkbox', { name: 'Daniel Li is online' })\u001b[22m\n"
+    },
+    {
+      "file": "board/toolbar.save_or_reset.spec.mjs",
+      "title": "button absent initially, appears after changing Group by, removed after reverting",
+      "project": "",
+      "status": "failed",
+      "ok": false,
+      "duration_ms": 10433,
+      "error": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('button', { name: 'View settings', exact: true })\nExpected: visible\nTimeout: 10000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('button', { name: 'View settings', exact: true })\u001b[22m\n"
+    },
+    {
+      "file": "board/toolbar.search.filters_cards.spec.mjs",
+      "title": "fill zzznomatch → URL filter, zero counts, empty state; Clear filters → original state",
+      "project": "",
+      "status": "failed",
+      "ok": false,
+      "duration_ms": 10279,
+      "error": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('textbox', { name: 'Search board' })\nExpected: visible\nTimeout: 10000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('textbox', { name: 'Search board' })\u001b[22m\n"
+    },
+    {
+      "file": "board/toolbar.search.present.spec.mjs",
+      "title": "Search board input is present in the board toolbar",
+      "project": "",
+      "status": "passed",
+      "ok": true,
+      "duration_ms": 277,
+      "error": null
+    },
+    {
+      "file": "board/toolbar.view_settings.spec.mjs",
+      "title": "open panel shows heading, resize handle and close button; closing removes the panel",
+      "project": "",
+      "status": "failed",
+      "ok": false,
+      "duration_ms": 10257,
+      "error": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('button', { name: 'View settings' })\nExpected: visible\nTimeout: 10000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('button', { name: 'View settings' })\u001b[22m\n"
+    },
+    {
+      "file": "calendar/page.load.spec.mjs",
+      "title": "calendar page loads with active Calendar heading and all sibling tab links visible",
+      "project": "",
+      "status": "failed",
+      "ok": false,
+      "duration_ms": 10270,
+      "error": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mpage\u001b[39m\u001b[2m).\u001b[22mtoHaveTitle\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nExpected: \u001b[32m\"\u001b[7mCalendar\u001b[27m - Jira\"\u001b[39m\nReceived: \u001b[31m\"\u001b[7mBoard - Autoloop\u001b[27m - Jira\"\u001b[39m\nTimeout:  10000ms\n\nCall log:\n\u001b[2m  - Expect \"toHaveTitle\" with timeout 10000ms\u001b[22m\n\u001b[2m    14 × unexpected value \"Board - Autoloop - Jira\"\u001b[22m\n"
+    },
+    {
+      "file": "calendar/toolbar.search.spec.mjs",
+      "title": "search calendar textbox is present and visible in the toolbar",
+      "project": "",
+      "status": "failed",
+      "ok": false,
+      "duration_ms": 10287,
+      "error": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('heading', { name: /\\b\\d{4}\\b/, level: 3 })\nExpected: visible\nTimeout: 10000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('heading', { name: /\\b\\d{4}\\b/, level: 3 })\u001b[22m\n"
+    },
+    {
+      "file": "calendar/unscheduled.panel.spec.mjs",
+      "title": "panel exposes heading, helper text, close button, and an unscheduled work item",
+      "project": "",
+      "status": "failed",
+      "ok": false,
+      "duration_ms": 20245,
+      "error": "TimeoutError: locator.waitFor: Timeout 20000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('button', { name: 'Unscheduled work' }) to be visible\u001b[22m\n"
+    }
+  ],
+  "artifact_dir": "/Users/fleet/fleet-trial/test-artifacts/2026-04-23T18-55-27-012Z"
+}

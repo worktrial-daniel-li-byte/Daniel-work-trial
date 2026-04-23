@@ -1,0 +1,10 @@
+{
+  "passed": true,
+  "exitCode": 0,
+  "assertionCount": 10,
+  "minAssertions": 2,
+  "failureReason": null,
+  "stdout": "\nRunning 1 test using 1 worker\n\n  ✓  1 tests/board/columns.default_set.spec.mjs:4:3 › columns.default_set — Default columns reflect statuses To Do, In Progress, Done (groupBy=status) › three status columns visible as level-3 headings with count badges when groupBy=status (2.2s)\n\n  1 passed (2.5s)\n",
+  "stderr": "(node:70546) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.\n(Use `node --trace-warnings ...` to show where the warning was created)\n(node:70546) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.\n(Use `node --trace-warnings ...` to show where the warning was created)\n",
+  "durationMs": 3052
+}

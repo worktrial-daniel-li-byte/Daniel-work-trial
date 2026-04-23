@@ -1,0 +1,26 @@
+{
+  "app_url": "http://localhost:5173",
+  "test_dir": "board/columns.more_actions.spec.mjs",
+  "started_at": "2026-04-23T19:54:27.442Z",
+  "exit_code": 0,
+  "counts": {
+    "total": 1,
+    "passed": 1,
+    "failed": 0,
+    "skipped": 0,
+    "flaky": 0,
+    "timedOut": 0
+  },
+  "tests": [
+    {
+      "file": "board/columns.more_actions.spec.mjs",
+      "title": "More actions button opens menu with all expected items for In Progress column",
+      "project": "",
+      "status": "passed",
+      "ok": true,
+      "duration_ms": 527,
+      "error": null
+    }
+  ],
+  "artifact_dir": "/Users/fleet/fleet-trial/test-artifacts/2026-04-23T19-54-26-144Z"
+}

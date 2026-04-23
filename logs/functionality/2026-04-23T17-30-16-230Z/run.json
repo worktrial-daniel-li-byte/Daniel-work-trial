@@ -1,0 +1,18 @@
+{
+  "run_id": "2026-04-23T17-30-16-230Z",
+  "started_at": "2026-04-23T17:30:16.231Z",
+  "tab": "board",
+  "source": "mcp/summary/tabs/board.json",
+  "app_url": "https://fleet-team-y0ak1u2s.atlassian.net/jira/core/projects/AUT/board?filter=&groupBy=status",
+  "model": "claude-opus-4-7",
+  "config": {
+    "maxFixDispatches": 3,
+    "minAssertionsPerSpec": 2,
+    "browserAgentMaxTurns": 30,
+    "headless": true,
+    "pwTimeoutMs": 60000,
+    "workerModel": null,
+    "workerAllowedTools": "Read,Edit,Write,MultiEdit,Grep,Glob,Bash",
+    "workerPermissionMode": "acceptEdits"
+  }
+}

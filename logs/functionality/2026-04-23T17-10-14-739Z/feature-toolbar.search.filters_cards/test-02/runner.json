@@ -1,0 +1,10 @@
+{
+  "passed": true,
+  "exitCode": 0,
+  "assertionCount": 13,
+  "minAssertions": 2,
+  "failureReason": null,
+  "stdout": "\nRunning 1 test using 1 worker\n\n  ✓  1 tests/board/toolbar.search.filters_cards.spec.mjs:13:3 › toolbar.search.filters_cards — Typing in Search board filters cards and persists in URL › fill zzznomatch → URL filter, zero counts, empty state; Clear filters → original state (4.1s)\n\n  1 passed (4.5s)\n",
+  "stderr": "(node:446) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.\n(Use `node --trace-warnings ...` to show where the warning was created)\n(node:446) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.\n(Use `node --trace-warnings ...` to show where the warning was created)\n",
+  "durationMs": 5027
+}

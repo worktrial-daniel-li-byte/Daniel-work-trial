@@ -1,0 +1,123 @@
+# Feature columns.collapse — attempt 01
+
+## Task to worker
+
+Write a new @playwright/test spec at tests/board/columns.collapse.spec.mjs that verifies the
+feature check below.
+
+FEATURE CHECK (verbatim from mcp/summary/tabs/*.json):
+```json
+{
+  "id": "columns.collapse",
+  "feature": "Each column has a collapse toggle",
+  "how_to_verify": "Snapshot: role=button name='Collapse {Status}' per column.",
+  "status": "pass"
+}
+```
+
+BROWSER-AGENT EVIDENCE (verbatim):
+```json
+{
+  "id": "columns.collapse",
+  "status": "PASS",
+  "navigate_url": "https://fleet-team-y0ak1u2s.atlassian.net/jira/core/projects/AUT/board?filter=&groupBy=status",
+  "observations": [
+    "page.url() === 'https://fleet-team-y0ak1u2s.atlassian.net/jira/core/projects/AUT/board?filter=&groupBy=status'",
+    "role=heading level=3 name='To Do' is visible on the board",
+    "role=heading level=3 name='In Progress' is visible on the board",
+    "role=heading level=3 name='Done' is visible on the board",
+    "role=button name='Collapse To Do' exists next to the 'To Do' heading",
+    "role=button name='Collapse In Progress' exists next to the 'In Progress' heading",
+    "role=button name='Collapse Done' exists next to the 'Done' heading",
+    "After clicking 'Collapse To Do', the button's accessible name changes to 'Expand To Do' and the column is rendered in a collapsed state (heading 'To Do' still present, card list hidden)",
+    "Clicking 'Expand To Do' reverts the column: all three buttons are again 'Collapse To Do', 'Collapse In Progress', 'Collapse Done'",
+    "Other sibling button present per column: 'More actions for column {Status}'"
+  ],
+  "playwright_hints": {
+    "locators": [
+      {
+        "purpose": "To Do column heading",
+        "preferred": "getByRole('heading', { level: 3, name: 'To Do' })",
+        "fallback": "getByText('To Do', { exact: true })"
+      },
+      {
+        "purpose": "In Progress column heading",
+        "preferred": "getByRole('heading', { level: 3, name: 'In Progress' })",
+        "fallback": "getByText('In Progress', { exact: true })"
+      },
+      {
+        "purpose": "Done column heading",
+        "preferred": "getByRole('heading', { level: 3, name: 'Done' })",
+        "fallback": "getByText('Done', { exact: true })"
+      },
+      {
+        "purpose": "Collapse toggle for To Do column",
+        "preferred": "getByRole('button', { name: 'Collapse To Do' })",
+        "fallback": "locator('button[aria-label=\"Collapse To Do\"]')"
+      },
+      {
+        "purpose": "Collapse toggle for In Progress column",
+        "preferred": "getByRole('button', { name: 'Collapse In Progress' })",
+        "fallback": "locator('button[aria-label=\"Collapse In Progress\"]')"
+      },
+      {
+        "purpose": "Collapse toggle for Done column",
+        "preferred": "getByRole('button', { name: 'Collapse Done' })",
+        "fallback": "locator('button[aria-label=\"Collapse Done\"]')"
+      },
+      {
+        "purpose": "Expand toggle shown after To Do column is collapsed",
+        "preferred": "getByRole('button', { name: 'Expand To Do' })",
+        "fallback": "locator('button[aria-label=\"Expand To Do\"]')"
+      }
+    ],
+    "url_assertions": [
+      "/jira/core/projects/AUT/board",
+      "groupBy=status"
+    ],
+    "interactions": [
+      "await page.goto('https://fleet-team-y0ak1u2s.atlassian.net/jira/core/projects/AUT/board?filter=&groupBy=status')",
+      "await expect(page.getByRole('button', { name: 'Collapse To Do' })).toBeVisible()",
+      "await expect(page.getByRole('button', { name: 'Collapse In Progress' })).toBeVisible()",
+      "await expect(page.getByRole('button', { name: 'Collapse Done' })).toBeVisible()"
+    ],
+    "mutation_and_revert": {
+      "mutate": [
+        "await page.getByRole('button', { name: 'Collapse To Do' }).click()"
+      ],
+      "verify_post": [
+        "await expect(page.getByRole('button', { name: 'Expand To Do' })).toBeVisible()",
+        "await expect(page.getByRole('button', { name: 'Collapse To Do' })).toHaveCount(0)"
+      ],
+      "revert": [
+        "await page.getByRole('button', { name: 'Expand To Do' }).click()"
+      ],
+      "verify_revert": [
+        "await expect(page.getByRole('button', { name: 'Collapse To Do' })).toBeVisible()",
+        "await expect(page.getByRole('button', { name: 'Expand To Do' })).toHaveCount(0)"
+      ]
+    }
+  },
+  "notes": "Each column header contains a 'Collapse {Status}' button alongside a 'More actions for column {Status}' button and an 'Edit {Status} status column, edit' button. When a column is collapsed, its heading (role=heading, level=3) remains present but the card list is hidden and the collapse button toggles to 'Expand {Status}'. Observed column names: 'To Do' (count 1), 'In Progress' (count 0), 'Done' (count 0). A persistent sidebar button 'Collapse sidebar' also exists and must not be confused with column collapse buttons; always scope column-collapse locators by the per-status accessible name.",
+  "turns": 10,
+  "stopped_for_budget": false
+}
+```
+
+Requirements:
+  - File to write: tests/board/columns.collapse.spec.mjs
+  - At least 2 expect() assertions.
+  - Import { test, expect, JIRA_BASE } from '../_fixtures/jira.mjs'
+  - Use the navigate_url from evidence (strip the scheme+host if it
+    matches JIRA_BASE and concatenate, otherwise use the full URL).
+  - For mutating features, mutate → assert post-state → revert → assert original state.
+
+## Worker summary
+
+I wrote `tests/board/columns.collapse.spec.mjs`, which asserts that all three `Collapse {Status}` buttons are initially visible (10 total `expect()` calls), then implements a full mutate→verify→revert→verify cycle: clicking "Collapse To Do" asserts the button becomes "Expand To Do" and the Collapse variant disappears (`toHaveCount(0)`), and clicking "Expand To Do" asserts the board is fully restored with all three Collapse buttons back and no Expand button remaining.
+
+## Runner
+
+- exit code: 1
+- assertions counted: 12
+- passed: false

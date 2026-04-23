@@ -1,0 +1,26 @@
+{
+  "app_url": "http://localhost:5173",
+  "test_dir": "board/columns.add_column.spec.mjs",
+  "started_at": "2026-04-23T19:43:50.644Z",
+  "exit_code": 0,
+  "counts": {
+    "total": 1,
+    "passed": 1,
+    "failed": 0,
+    "skipped": 0,
+    "flaky": 0,
+    "timedOut": 0
+  },
+  "tests": [
+    {
+      "file": "board/columns.add_column.spec.mjs",
+      "title": "Create status button opens modal; Cancel reverts board to original 3-column state",
+      "project": "",
+      "status": "passed",
+      "ok": true,
+      "duration_ms": 485,
+      "error": null
+    }
+  ],
+  "artifact_dir": "/Users/fleet/fleet-trial/test-artifacts/2026-04-23T19-43-49-444Z"
+}

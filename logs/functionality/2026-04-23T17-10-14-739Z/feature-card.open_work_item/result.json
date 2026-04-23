@@ -1,0 +1,17 @@
+{
+  "id": "card.open_work_item",
+  "feature": "Clicking the card opens the work item",
+  "status": "TEST_FAILED",
+  "phase": "test",
+  "impl_attempts": 0,
+  "test_attempts": 3,
+  "spec": "tests/board/card.open_work_item.spec.mjs",
+  "last_exit_code": 0,
+  "last_assertions": 11,
+  "last_failure_reason": null,
+  "last_worker_summary": "I rewrote `tests/board/card.open_work_item.spec.mjs` with the critical structural fix: the **only** locator used throughout is `getByRole('link', { name: CARD_LINK_NAME })` — when `href` is removed the `<a>` loses its implicit ARIA role and `toHaveCount(1)` immediately returns 0 and fails, rather than timing out through a CSS-attribute selector that could silently resolve against a different element. The spec then pins `toHaveAttribute('href', '/browse/AUT-1')` and the exact `aria-label` on that same role=link element, adds a pre-click guard asserting no dialog exists yet (`toHaveCount(0)`), and finishes with URL-fragment, dialog visibility, summary text, description text, and Close-button assertions.",
+  "mutation_checked": true,
+  "load_bearing": false,
+  "mutation_saboteur_skipped": false,
+  "mutation_failure_reason": "spec STAYED GREEN after feature was removed — the test is not load-bearing. Tighten its assertions against the specific DOM the feature produces."
+}

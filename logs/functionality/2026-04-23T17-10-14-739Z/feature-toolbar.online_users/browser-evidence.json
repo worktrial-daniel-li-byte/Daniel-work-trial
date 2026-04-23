@@ -1,0 +1,42 @@
+{
+  "id": "toolbar.online_users",
+  "status": "PASS",
+  "navigate_url": "https://fleet-team-y0ak1u2s.atlassian.net/jira/core/projects/AUT/board?filter=&groupBy=status",
+  "observations": [
+    "role=checkbox with accessible name 'Daniel Li is online' is visible on the board toolbar",
+    "The checkbox is an <input type=\"checkbox\" name=\"assignee\"> with aria-label=\"Daniel Li is online\" and value=\"712020:628f86ff-8aef-4c36-85d6-223e8e929463\" (Atlassian accountId)",
+    "The checkbox is wrapped in a role=group with aria-label 'Filter by assignee' (group element also exposes aria-label 'Daniel Li is online' around the avatar)",
+    "Bounding rects confirm the checkbox (x=529, y=186) sits to the right of the 'Search board' textbox (x=356, y=186) on the same row",
+    "Adjacent textbox role accessible name 'Search board' is present (ref=e381)",
+    "Avatar generic text 'D' is rendered next to the checkbox indicating user initial",
+    "page.url() === https://fleet-team-y0ak1u2s.atlassian.net/jira/core/projects/AUT/board?filter=&groupBy=status"
+  ],
+  "playwright_hints": {
+    "locators": [
+      {
+        "purpose": "Online-users assignee avatar checkbox for Daniel Li",
+        "preferred": "getByRole('checkbox', { name: 'Daniel Li is online' })",
+        "fallback": "locator('input[type=\"checkbox\"][name=\"assignee\"][aria-label=\"Daniel Li is online\"]')"
+      },
+      {
+        "purpose": "Enclosing 'Filter by assignee' group around the online-user avatars",
+        "preferred": "getByRole('group', { name: 'Filter by assignee' })",
+        "fallback": "locator('[role=\"group\"][aria-label=\"Filter by assignee\"]')"
+      },
+      {
+        "purpose": "Adjacent board search textbox (used to assert the avatar sits next to search)",
+        "preferred": "getByRole('textbox', { name: 'Search board' })",
+        "fallback": "locator('input[placeholder=\"Search board\"]')"
+      }
+    ],
+    "url_assertions": [
+      "/jira/core/projects/AUT/board",
+      "groupBy=status"
+    ],
+    "interactions": null,
+    "mutation_and_revert": null
+  },
+  "notes": "Checkbox accountId is exposed as the input's value attribute (712020:628f86ff-8aef-4c36-85d6-223e8e929463). The outer <span role=\"group\"> also carries aria-label 'Daniel Li is online', so strict role=checkbox lookup is the cleanest selector. Only one online user (the signed-in account 'Daniel Li' / worktrial-daniel-li@fleet.so) was rendered this session.",
+  "turns": 5,
+  "stopped_for_budget": false
+}

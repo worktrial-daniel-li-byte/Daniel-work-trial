@@ -1,0 +1,26 @@
+{
+  "app_url": "http://localhost:5173",
+  "test_dir": "board/toolbar.filter.panel.spec.mjs",
+  "started_at": "2026-04-23T19:59:51.798Z",
+  "exit_code": 0,
+  "counts": {
+    "total": 1,
+    "passed": 1,
+    "failed": 0,
+    "skipped": 0,
+    "flaky": 0,
+    "timedOut": 0
+  },
+  "tests": [
+    {
+      "file": "board/toolbar.filter.panel.spec.mjs",
+      "title": "popover renders all expected sections after clicking filter trigger",
+      "project": "",
+      "status": "passed",
+      "ok": true,
+      "duration_ms": 529,
+      "error": null
+    }
+  ],
+  "artifact_dir": "/Users/fleet/fleet-trial/test-artifacts/2026-04-23T19-59-50-369Z"
+}

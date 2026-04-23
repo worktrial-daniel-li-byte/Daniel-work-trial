@@ -1,0 +1,17 @@
+{
+  "id": "toolbar.online_users",
+  "feature": "Online-users avatar (checkbox) appears next to search",
+  "status": "PASS",
+  "phase": "test",
+  "impl_attempts": 0,
+  "test_attempts": 1,
+  "spec": "tests/board/toolbar.online_users.spec.mjs",
+  "last_exit_code": 0,
+  "last_assertions": 4,
+  "last_failure_reason": null,
+  "last_worker_summary": "The file `tests/board/toolbar.online_users.spec.mjs` has been written with four `expect()` assertions: (1) the `role=checkbox` named `\"Daniel Li is online\"` is visible, (2) it carries the exact Atlassian accountId as its `value` attribute, (3) the enclosing `role=group` named `\"Filter by assignee\"` is visible, and (4) the adjacent `\"Search board\"` textbox is present on the same toolbar row — all derived directly from the browser-agent evidence.",
+  "mutation_checked": true,
+  "load_bearing": false,
+  "mutation_saboteur_skipped": true,
+  "mutation_failure_reason": "saboteur declined to edit (feature may not live in src/); mutation contract not verified"
+}

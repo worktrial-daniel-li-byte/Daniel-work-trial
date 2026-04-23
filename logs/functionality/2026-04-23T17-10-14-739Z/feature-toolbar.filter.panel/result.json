@@ -1,0 +1,17 @@
+{
+  "id": "toolbar.filter.panel",
+  "feature": "Filter popover contents",
+  "status": "PASS",
+  "phase": "test",
+  "impl_attempts": 0,
+  "test_attempts": 1,
+  "spec": "tests/board/toolbar.filter.panel.spec.mjs",
+  "last_exit_code": 0,
+  "last_assertions": 27,
+  "last_failure_reason": null,
+  "last_worker_summary": "I wrote `tests/board/toolbar.filter.panel.spec.mjs`, which navigates to the AUT board, clicks the `/filters applied/` trigger button, then asserts 24+ `expect()` calls covering every required popover section: the level-2 \"Filters\" heading and descriptive text, `aria-expanded=true` on the trigger, quick-filter buttons (\"Assigned to me\", \"Due this week\"), all six level-3 section headings (Date range, Assignee, Category, Created, Labels, Priority) plus their key child elements (calendar buttons, Daniel Li avatar, \"More options for assignee\", \"No category\", \"No label\", and all five Priority options Highest→Lowest in order), and a final URL assertion confirming the popover is non-navigating.",
+  "mutation_checked": true,
+  "load_bearing": false,
+  "mutation_saboteur_skipped": true,
+  "mutation_failure_reason": "saboteur declined to edit (feature may not live in src/); mutation contract not verified"
+}

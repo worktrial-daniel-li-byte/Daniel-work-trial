@@ -1,0 +1,17 @@
+{
+  "id": "page.load",
+  "feature": "Calendar tab loads under AUT project with Calendar tab marked active",
+  "status": "PASS",
+  "phase": "test",
+  "impl_attempts": 0,
+  "test_attempts": 2,
+  "spec": "tests/calendar/page.load.spec.mjs",
+  "last_exit_code": 0,
+  "last_assertions": 13,
+  "last_failure_reason": null,
+  "last_worker_summary": "I updated `tests/calendar/page.load.spec.mjs`, replacing the failing `[role=\"grid\"]` + column-header assertions with `getByRole('heading', { level: 3, name: /\\w{3} \\d{4}/ })` — the evidence-preferred locator for the calendar toolbar month heading (e.g. \"Apr 2026\") — which directly confirms the calendar view has rendered without relying on a grid ARIA role that isn't present in the live DOM.",
+  "mutation_checked": true,
+  "load_bearing": false,
+  "mutation_saboteur_skipped": true,
+  "mutation_failure_reason": "saboteur declined to edit (feature may not live in src/); mutation contract not verified"
+}

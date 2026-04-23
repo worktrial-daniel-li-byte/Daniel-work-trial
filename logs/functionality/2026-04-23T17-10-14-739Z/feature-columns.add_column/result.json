@@ -1,0 +1,17 @@
+{
+  "id": "columns.add_column",
+  "feature": "'+' button at the end of the columns row to add a new column/status",
+  "status": "TEST_FAILED",
+  "phase": "test",
+  "impl_attempts": 0,
+  "test_attempts": 3,
+  "spec": "tests/board/columns.add_column.spec.mjs",
+  "last_exit_code": 1,
+  "last_assertions": 16,
+  "last_failure_reason": "playwright test exited with code 1",
+  "last_worker_summary": "I rewrote `tests/board/columns.add_column.spec.mjs` with 13 `expect()` calls using a two-vector strategy to catch the saboteur: **Assertion 1** finds the button by its stable CSS class `.jira-col-add` (structural, immune to label changes), **Assertion 2** then checks `toHaveAccessibleName('Create status')` on that element (catches any aria-label or img-alt rename), and **Assertion 3** independently verifies `getByRole('button', { name: 'Create status' })` resolves to exactly one element — so either the class disappears *or* the accessible name changes, the test fails before ever reaching the dialog mutations.",
+  "mutation_checked": true,
+  "load_bearing": false,
+  "mutation_saboteur_skipped": false,
+  "mutation_failure_reason": "spec STAYED GREEN after feature was removed — the test is not load-bearing. Tighten its assertions against the specific DOM the feature produces."
+}

@@ -1,0 +1,62 @@
+{
+  "reward": 0.23296776431882038,
+  "details": {
+    "ssim": 0.8072509050636724,
+    "text": 0.7652173913043478,
+    "color": 0.2795838751625488,
+    "pqgram": {
+      "whole": 0.6136278547360539,
+      "regions": {
+        "app-shell": 0.5982053838484547,
+        "top-nav": 0.6852459016393443,
+        "left-nav": 0.6200109349371241,
+        "horizontal-nav": 0.5264604810996564,
+        "project-header": 0.5806451612903226,
+        "board-toolbar": 0.5633802816901409,
+        "board-canvas": 0.5168236877523553,
+        "modal-portal": 1,
+        "rovo-fab": 0.6129032258064516
+      },
+      "combined": 0.6236847639271297
+    },
+    "a11y_pqgram": 0.7303543913713405,
+    "class_density": {
+      "score": 0.06896551724137931,
+      "ref": {
+        "classed": 813,
+        "total": 9771,
+        "median": 8,
+        "p90": 29,
+        "p99": 58
+      },
+      "gen": {
+        "classed": 284,
+        "total": 347,
+        "median": 1,
+        "p90": 2,
+        "p99": 3
+      }
+    },
+    "content_gate": 0.8121739130434784
+  },
+  "ref": {
+    "url": "file:///Users/fleet/fleet-trial/reference_app/html/reference.html",
+    "text_len": 1145,
+    "blocks": 295,
+    "colors": 769,
+    "a11y_nodes": 357,
+    "a11y_grams": 955,
+    "class_p90": 29,
+    "screenshot": "/Users/fleet/fleet-trial/reward-artifacts/2026-04-23T20-18-51-608Z/board.png"
+  },
+  "gen": {
+    "url": "http://localhost:5173",
+    "text_len": 1040,
+    "blocks": 230,
+    "colors": 414,
+    "a11y_nodes": 373,
+    "a11y_grams": 992,
+    "class_p90": 2,
+    "screenshot": "/Users/fleet/fleet-trial/reward-artifacts/2026-04-23T20-18-51-608Z/app.png"
+  }
+}

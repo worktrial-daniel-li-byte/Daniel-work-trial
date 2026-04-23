@@ -1,0 +1,884 @@
+{
+  "config": {
+    "configFile": "/Users/fleet/fleet-trial/playwright.config.mjs",
+    "rootDir": "/Users/fleet/fleet-trial/tests",
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 1,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "/Users/fleet/fleet-trial/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "",
+        "name": "",
+        "testDir": "/Users/fleet/fleet-trial/tests",
+        "testIgnore": [
+          "**/_fixtures/**",
+          "**/reports/**",
+          "**/.pw-profile-jira/**",
+          "tests/browser-login.js",
+          "tests/browser-test.js",
+          "tests/qa-agent.js"
+        ],
+        "testMatch": [
+          "**/*.spec.mjs",
+          "**/*.spec.js"
+        ],
+        "timeout": 60000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "json"
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.59.1",
+    "workers": 1,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "board/columns.add_column.spec.mjs",
+      "file": "board/columns.add_column.spec.mjs",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "columns.add_column — '+' button at the end of the columns row to add a new column/status",
+          "file": "board/columns.add_column.spec.mjs",
+          "line": 3,
+          "column": 6,
+          "specs": [
+            {
+              "title": "Create status button opens modal; Cancel reverts board to original 3-column state",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 384,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-04-23T19:50:02.350Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "485983dc4b717c203792-51bb7ed52589999208f1",
+              "file": "board/columns.add_column.spec.mjs",
+              "line": 4,
+              "column": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "board/columns.collapse.spec.mjs",
+      "file": "board/columns.collapse.spec.mjs",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "columns.collapse — Each column has a collapse toggle",
+          "file": "board/columns.collapse.spec.mjs",
+          "line": 3,
+          "column": 6,
+          "specs": [
+            {
+              "title": "collapse buttons present for every status column, toggle state mutates and reverts",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 383,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-04-23T19:50:02.744Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "62cdbb31b1cb8151d3fb-bca13f22ddc99527af98",
+              "file": "board/columns.collapse.spec.mjs",
+              "line": 4,
+              "column": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "board/columns.create_in_column.spec.mjs",
+      "file": "board/columns.create_in_column.spec.mjs",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "columns.create_in_column — Per-column inline create form",
+          "file": "board/columns.create_in_column.spec.mjs",
+          "line": 3,
+          "column": 6,
+          "specs": [
+            {
+              "title": "Create button opens inline form with all expected fields; Escape dismisses without persisting",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 279,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-04-23T19:50:03.134Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "37370cdff79b0ea2d9bd-698ce404e954a125bd37",
+              "file": "board/columns.create_in_column.spec.mjs",
+              "line": 4,
+              "column": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "board/columns.default_set.spec.mjs",
+      "file": "board/columns.default_set.spec.mjs",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "columns.default_set — Default columns reflect statuses To Do, In Progress, Done (groupBy=status)",
+          "file": "board/columns.default_set.spec.mjs",
+          "line": 3,
+          "column": 6,
+          "specs": [
+            {
+              "title": "three status columns visible as level-3 headings with count badges when groupBy=status",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 228,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-04-23T19:50:03.420Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "f3e6b7591e685a3e3d8d-51d91ef7f679e3b4b9e9",
+              "file": "board/columns.default_set.spec.mjs",
+              "line": 4,
+              "column": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "board/columns.more_actions.spec.mjs",
+      "file": "board/columns.more_actions.spec.mjs",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "columns.more_actions — Per-column More actions menu",
+          "file": "board/columns.more_actions.spec.mjs",
+          "line": 3,
+          "column": 6,
+          "specs": [
+            {
+              "title": "More actions button opens menu with all expected items for In Progress column",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "failed",
+                      "duration": 10277,
+                      "error": {
+                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('button', { name: 'More actions for column In Progress' })\nExpected: visible\nTimeout: 10000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('button', { name: 'More actions for column In Progress' })\u001b[22m\n",
+                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('button', { name: 'More actions for column In Progress' })\nExpected: visible\nTimeout: 10000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('button', { name: 'More actions for column In Progress' })\u001b[22m\n\n    at /Users/fleet/fleet-trial/tests/board/columns.more_actions.spec.mjs:23:34",
+                        "location": {
+                          "file": "/Users/fleet/fleet-trial/tests/board/columns.more_actions.spec.mjs",
+                          "column": 34,
+                          "line": 23
+                        },
+                        "snippet": "  21 |\n  22 |     // ── Assertion 2: The per-column More actions trigger is present ──────────\n> 23 |     await expect(moreActionsBtn).toBeVisible()\n     |                                  ^\n  24 |\n  25 |     // ── OPEN the menu ────────────────────────────────────────────────────────\n  26 |     await moreActionsBtn.click()"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "/Users/fleet/fleet-trial/tests/board/columns.more_actions.spec.mjs",
+                            "column": 34,
+                            "line": 23
+                          },
+                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('button', { name: 'More actions for column In Progress' })\nExpected: visible\nTimeout: 10000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('button', { name: 'More actions for column In Progress' })\u001b[22m\n\n\n  21 |\n  22 |     // ── Assertion 2: The per-column More actions trigger is present ──────────\n> 23 |     await expect(moreActionsBtn).toBeVisible()\n     |                                  ^\n  24 |\n  25 |     // ── OPEN the menu ────────────────────────────────────────────────────────\n  26 |     await moreActionsBtn.click()\n    at /Users/fleet/fleet-trial/tests/board/columns.more_actions.spec.mjs:23:34"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-04-23T19:50:03.655Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "/Users/fleet/fleet-trial/test-results/board-columns.more_actions-80537-tems-for-In-Progress-column/error-context.md"
+                        },
+                        {
+                          "name": "trace",
+                          "contentType": "application/zip",
+                          "path": "/Users/fleet/fleet-trial/test-results/board-columns.more_actions-80537-tems-for-In-Progress-column/trace.zip"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "/Users/fleet/fleet-trial/tests/board/columns.more_actions.spec.mjs",
+                        "column": 34,
+                        "line": 23
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "42430397a95cae972573-5fcb57523e9dba62e2a5",
+              "file": "board/columns.more_actions.spec.mjs",
+              "line": 4,
+              "column": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "board/page.load.spec.mjs",
+      "file": "board/page.load.spec.mjs",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "page.load — Route renders board with Status columns when /board?groupBy=status",
+          "file": "board/page.load.spec.mjs",
+          "line": 3,
+          "column": 6,
+          "specs": [
+            {
+              "title": "board page loads with title and To Do / In Progress / Done columns",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "8c361b9130993d590791-4eece92abde912e02c93",
+              "file": "board/page.load.spec.mjs",
+              "line": 4,
+              "column": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "board/toolbar.filter.button.spec.mjs",
+      "file": "board/toolbar.filter.button.spec.mjs",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "toolbar.filter.button — Filter button shows active count",
+          "file": "board/toolbar.filter.button.spec.mjs",
+          "line": 3,
+          "column": 6,
+          "specs": [
+            {
+              "title": "Filter button aria-label is exactly \"0 filters applied\" in default state",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "747fd83fa7c311888022-0a7ececc007386b1c8a0",
+              "file": "board/toolbar.filter.button.spec.mjs",
+              "line": 4,
+              "column": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "board/toolbar.filter.panel.spec.mjs",
+      "file": "board/toolbar.filter.panel.spec.mjs",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "toolbar.filter.panel — Filter popover contents",
+          "file": "board/toolbar.filter.panel.spec.mjs",
+          "line": 3,
+          "column": 6,
+          "specs": [
+            {
+              "title": "popover renders all expected sections after clicking filter trigger",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "15314daba91254a81e6e-eb229ab4ba9e475b31eb",
+              "file": "board/toolbar.filter.panel.spec.mjs",
+              "line": 4,
+              "column": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "board/toolbar.groupby.button.spec.mjs",
+      "file": "board/toolbar.groupby.button.spec.mjs",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "toolbar.groupby.button — Group by button reflects current grouping",
+          "file": "board/toolbar.groupby.button.spec.mjs",
+          "line": 3,
+          "column": 6,
+          "specs": [
+            {
+              "title": "Group by button shows \"Group by Status\" and board renders status columns",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "1674cfca3be43dcd159b-6e061e27fdaafdb6897a",
+              "file": "board/toolbar.groupby.button.spec.mjs",
+              "line": 4,
+              "column": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "board/toolbar.groupby.options.spec.mjs",
+      "file": "board/toolbar.groupby.options.spec.mjs",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "toolbar.groupby.options — Group by options",
+          "file": "board/toolbar.groupby.options.spec.mjs",
+          "line": 3,
+          "column": 6,
+          "specs": [
+            {
+              "title": "Popover shows 4 radios with Status checked by default",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "b4dcecc46ca30899359b-bc401ab0c0125c6df2e8",
+              "file": "board/toolbar.groupby.options.spec.mjs",
+              "line": 4,
+              "column": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "board/toolbar.more_actions.spec.mjs",
+      "file": "board/toolbar.more_actions.spec.mjs",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "toolbar.more_actions — Board-level More actions menu",
+          "file": "board/toolbar.more_actions.spec.mjs",
+          "line": 3,
+          "column": 6,
+          "specs": [
+            {
+              "title": "clicking More actions toolbar button opens menu with Stand-up and Configure columns items",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "5c3f0fcd2d9f3bb40ed6-61443840b404b1ae2ec4",
+              "file": "board/toolbar.more_actions.spec.mjs",
+              "line": 4,
+              "column": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "board/toolbar.online_users.spec.mjs",
+      "file": "board/toolbar.online_users.spec.mjs",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "toolbar.online_users — Online-users avatar (checkbox) appears next to search",
+          "file": "board/toolbar.online_users.spec.mjs",
+          "line": 13,
+          "column": 6,
+          "specs": [
+            {
+              "title": "Online-user assignee checkbox is visible in the board toolbar next to Search board",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "436f6521e8805b9f7ddc-2085013d4b55c7a6c6ab",
+              "file": "board/toolbar.online_users.spec.mjs",
+              "line": 20,
+              "column": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "board/toolbar.save_or_reset.spec.mjs",
+      "file": "board/toolbar.save_or_reset.spec.mjs",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "toolbar.save_or_reset — Save or reset view settings button appears when view differs from saved",
+          "file": "board/toolbar.save_or_reset.spec.mjs",
+          "line": 3,
+          "column": 6,
+          "specs": [
+            {
+              "title": "button absent initially, appears after changing Group by, removed after reverting",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "6795ee5ce5d0b68be3f0-2444b7cd3af4ee52949b",
+              "file": "board/toolbar.save_or_reset.spec.mjs",
+              "line": 4,
+              "column": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "board/toolbar.search.filters_cards.spec.mjs",
+      "file": "board/toolbar.search.filters_cards.spec.mjs",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "toolbar.search.filters_cards — Typing in Search board filters cards and persists in URL",
+          "file": "board/toolbar.search.filters_cards.spec.mjs",
+          "line": 12,
+          "column": 6,
+          "specs": [
+            {
+              "title": "fill zzznomatch → URL filter, zero counts, empty state; Clear filters → original state",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "60959314ccb7ed56c017-5e42c4891f9a7528e6ea",
+              "file": "board/toolbar.search.filters_cards.spec.mjs",
+              "line": 13,
+              "column": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "board/toolbar.search.present.spec.mjs",
+      "file": "board/toolbar.search.present.spec.mjs",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "toolbar.search.present — Toolbar has a 'Search board' textbox",
+          "file": "board/toolbar.search.present.spec.mjs",
+          "line": 13,
+          "column": 6,
+          "specs": [
+            {
+              "title": "Search board input is present in the board toolbar",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "98c5ddceecef69bad628-4ccd20a17daf157ad438",
+              "file": "board/toolbar.search.present.spec.mjs",
+              "line": 20,
+              "column": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "board/toolbar.view_settings.spec.mjs",
+      "file": "board/toolbar.view_settings.spec.mjs",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "toolbar.view_settings — View settings opens a right-side panel",
+          "file": "board/toolbar.view_settings.spec.mjs",
+          "line": 3,
+          "column": 6,
+          "specs": [
+            {
+              "title": "open panel shows heading, resize handle and close button; closing removes the panel",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "1548938a3b54b49491d7-c133fe57334bae6390a1",
+              "file": "board/toolbar.view_settings.spec.mjs",
+              "line": 4,
+              "column": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "calendar/page.load.spec.mjs",
+      "file": "calendar/page.load.spec.mjs",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "page.load — Calendar tab loads under AUT project with Calendar tab marked active",
+          "file": "calendar/page.load.spec.mjs",
+          "line": 3,
+          "column": 6,
+          "specs": [
+            {
+              "title": "calendar page loads with active Calendar heading and all sibling tab links visible",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "e7887a27cc8b4bc098a7-1cb874fed4e6a07c6764",
+              "file": "calendar/page.load.spec.mjs",
+              "line": 4,
+              "column": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "calendar/toolbar.search.spec.mjs",
+      "file": "calendar/toolbar.search.spec.mjs",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "toolbar.search — Calendar search textbox filters work items on the calendar",
+          "file": "calendar/toolbar.search.spec.mjs",
+          "line": 3,
+          "column": 6,
+          "specs": [
+            {
+              "title": "search calendar textbox is present and visible in the toolbar",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "ef247d0448850650d887-458e6b51c738c2080a9c",
+              "file": "calendar/toolbar.search.spec.mjs",
+              "line": 4,
+              "column": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "calendar/unscheduled.panel.spec.mjs",
+      "file": "calendar/unscheduled.panel.spec.mjs",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "unscheduled.panel — Unscheduled work side panel lists items lacking a due date and supports drag-to-schedule",
+          "file": "calendar/unscheduled.panel.spec.mjs",
+          "line": 3,
+          "column": 6,
+          "specs": [
+            {
+              "title": "panel exposes heading, helper text, close button, and an unscheduled work item",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "b0edd6b010d975221e8b-74919047c5e57b694588",
+              "file": "calendar/unscheduled.panel.spec.mjs",
+              "line": 4,
+              "column": 3
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "errors": [
+    {
+      "message": "\u001b[31mTesting stopped early after 1 maximum allowed failures.\u001b[39m"
+    }
+  ],
+  "stats": {
+    "startTime": "2026-04-23T19:50:02.078Z",
+    "duration": 11872.495,
+    "expected": 4,
+    "skipped": 14,
+    "unexpected": 1,
+    "flaky": 0
+  }
+}

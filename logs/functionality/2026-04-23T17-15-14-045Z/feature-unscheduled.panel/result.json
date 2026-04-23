@@ -1,0 +1,17 @@
+{
+  "id": "unscheduled.panel",
+  "feature": "Unscheduled work side panel lists items lacking a due date and supports drag-to-schedule",
+  "status": "PASS",
+  "phase": "test",
+  "impl_attempts": 0,
+  "test_attempts": 2,
+  "spec": "tests/calendar/unscheduled.panel.spec.mjs",
+  "last_exit_code": 0,
+  "last_assertions": 4,
+  "last_failure_reason": null,
+  "last_worker_summary": "Updated `tests/calendar/unscheduled.panel.spec.mjs`. The root cause was that `isVisible()` (non-waiting) returned `false` while the panel was still rendering — triggering a toggle click that *closed* the in-flight panel; the fix replaces it with `waitFor({ state: 'visible', timeout: 8000 })` so we only click the toolbar toggle if the panel genuinely hasn't appeared after 8 seconds, and if we do click we then explicitly `waitFor` the panel before proceeding to the four `toBeVisible` assertions.",
+  "mutation_checked": true,
+  "load_bearing": false,
+  "mutation_saboteur_skipped": true,
+  "mutation_failure_reason": "saboteur declined to edit (feature may not live in src/); mutation contract not verified"
+}

@@ -1,0 +1,26 @@
+{
+  "app_url": "http://localhost:5173",
+  "test_dir": "board/columns.collapse.spec.mjs",
+  "started_at": "2026-04-23T20:19:47.548Z",
+  "exit_code": 0,
+  "counts": {
+    "total": 1,
+    "passed": 1,
+    "failed": 0,
+    "skipped": 0,
+    "flaky": 0,
+    "timedOut": 0
+  },
+  "tests": [
+    {
+      "file": "board/columns.collapse.spec.mjs",
+      "title": "collapse buttons present for every status column, toggle state mutates and reverts",
+      "project": "",
+      "status": "passed",
+      "ok": true,
+      "duration_ms": 685,
+      "error": null
+    }
+  ],
+  "artifact_dir": "/Users/fleet/fleet-trial/test-artifacts/2026-04-23T20-19-46-066Z"
+}

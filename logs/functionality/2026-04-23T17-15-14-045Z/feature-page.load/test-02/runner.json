@@ -1,0 +1,10 @@
+{
+  "passed": true,
+  "exitCode": 0,
+  "assertionCount": 13,
+  "minAssertions": 2,
+  "failureReason": null,
+  "stdout": "\nRunning 1 test using 1 worker\n\n  ✓  1 tests/calendar/page.load.spec.mjs:4:3 › page.load — Calendar tab loads under AUT project with Calendar tab marked active › calendar page loads with active Calendar heading and all sibling tab links visible (2.9s)\n\n  1 passed (3.2s)\n",
+  "stderr": "(node:74509) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.\n(Use `node --trace-warnings ...` to show where the warning was created)\n(node:74509) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.\n(Use `node --trace-warnings ...` to show where the warning was created)\n",
+  "durationMs": 3726
+}
