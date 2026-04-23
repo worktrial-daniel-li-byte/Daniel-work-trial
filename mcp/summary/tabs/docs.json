@@ -1,8 +1,0 @@
-{
-  "tab": "Docs",
-  "url": "/jira/core/projects/{key}/pages",
-  "purpose": "Connect/create Confluence pages, whiteboards, and other docs from Jira space",
-  "toolbar": ["Search content", "Type filter", "Sort", "Manage connection"],
-  "powered_by": "Confluence",
-  "empty_state": { "cta": "Create page", "link": "Learn more" }
-}

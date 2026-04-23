@@ -525,6 +525,13 @@
   border-radius: 3px;
   cursor: pointer;
   padding: 0;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.jira-sidebar__label:hover .jira-sidebar__label-action {
+  opacity: 1;
+  pointer-events: auto;
 }
 
 .jira-sidebar__label-action:hover {
@@ -744,6 +751,12 @@
   color: #1868DB;
   font-weight: 600;
   border-bottom-color: #1868DB;
+}
+
+h2.jira-tab {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 600;
 }
 
 .jira-tab--add {

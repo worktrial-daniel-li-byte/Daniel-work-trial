@@ -326,6 +326,47 @@ function countA11yNodes(root) {
   return n
 }
 
+// ── Class-token density ──────────────────────────────────────────────────────
+// Counts CSS class tokens per classed element and returns median / p90 / total.
+// Independent of structural pq-grams: measures how "atomic/utility-heavy" the
+// class soup is, regardless of tree shape. Reference p90 ≈ 30+; a hand-written
+// BEM app sits at ≈ 2–3. Shape of the tokens (hashed vs. human-readable) is
+// intentionally ignored — we only care about density.
+
+function extractClassDensityInPage() {
+  const counts = []
+  for (const el of document.querySelectorAll('*')) {
+    const raw = el.getAttribute('class')
+    if (!raw) continue
+    const n = raw.trim().split(/\s+/).filter(Boolean).length
+    if (n > 0) counts.push(n)
+  }
+  counts.sort((a, b) => a - b)
+  const pick = (p) =>
+    counts.length === 0
+      ? 0
+      : counts[Math.min(counts.length - 1, Math.floor(counts.length * p))]
+  const total = counts.reduce((s, n) => s + n, 0)
+  return {
+    classed: counts.length,
+    total,
+    median: pick(0.5),
+    p90: pick(0.9),
+    p99: pick(0.99),
+  }
+}
+
+// Candidate / reference ratio at p90, clamped to [0, 1]. Classes-per-element
+// at the 90th percentile lives where buttons and inputs sit — a good proxy for
+// "has this app adopted an atomic/utility CSS system".
+function classDensityScore(refMetrics, genMetrics) {
+  if (!refMetrics || !genMetrics) return 0
+  const r = refMetrics.p90
+  const g = genMetrics.p90
+  if (r <= 0) return 1
+  return Math.min(g / r, 1)
+}
+
 function pqgramDiceSimilarity(a, b) {
   if (a == null && b == null) return 1
   if (a == null || b == null) return 0
@@ -401,6 +442,7 @@ function computeReward(refInfo, genInfo) {
   const pqWhole = pqgramDiceSimilarity(refInfo.pqgrams.whole, genInfo.pqgrams.whole)
   const pqCombined = combinePqGram(pqWhole, pqRegions)
   const a11yPq = pqgramDiceSimilarity(refInfo.a11yPqGrams, genInfo.a11yPqGrams)
+  const classDensity = classDensityScore(refInfo.classDensity, genInfo.classDensity)
 
   const details = {
     ssim: visualSimilarity(refInfo.image, genInfo.image),
@@ -408,18 +450,26 @@ function computeReward(refInfo, genInfo) {
     color: colorPaletteSimilarity(refInfo.colors, genInfo.colors),
     pqgram: { whole: pqWhole, regions: pqRegions, combined: pqCombined },
     a11y_pqgram: a11yPq,
+    class_density: {
+      score: classDensity,
+      ref: refInfo.classDensity,
+      gen: genInfo.classDensity,
+    },
   }
   const content = Math.max(details.text, details.color)
   const contentGate = 0.2 + 0.8 * content
   const gatedSSIM = details.ssim * contentGate
-  // DOM pq-gram budget (was 0.20) split 50/50 with a11y-tree pq-gram. a11y
-  // tree has no div-soup mass, so matching it requires real semantic tags.
+  // Budgets:
+  //   DOM pq-gram   0.10 → 0.05  (ceding 5pp to class-density)
+  //   a11y pq-gram  0.10         (structural / semantic)
+  //   class-density        0.05  (orthogonal: how utility-heavy the class soup is)
   const raw =
     0.50 * gatedSSIM +
     0.20 * details.text +
     0.10 * details.color +
-    0.10 * pqCombined +
-    0.10 * a11yPq
+    0.05 * pqCombined +
+    0.10 * a11yPq +
+    0.05 * classDensity
   const reward = 2 * raw - 1
   return { reward, details: { ...details, content_gate: contentGate } }
 }
@@ -500,6 +550,7 @@ async function extractInfoFromPage(page, screenshotPath) {
   dom.a11yTree = await fetchA11yTree(page)
   dom.a11yPqGrams = extractA11yPqGrams(dom.a11yTree)
   dom.a11yNodeCount = countA11yNodes(pruneA11yTree(dom.a11yTree))
+  dom.classDensity = await page.evaluate(extractClassDensityInPage)
   const screenshot = await page.screenshot({ fullPage: false, type: 'png' })
   if (screenshotPath) {
     await mkdir(path.dirname(screenshotPath), { recursive: true })
@@ -583,6 +634,7 @@ export async function runReward({
         colors: refInfo.colors.length,
         a11y_nodes: refInfo.a11yNodeCount,
         a11y_grams: refInfo.a11yPqGrams.length,
+        class_p90: refInfo.classDensity.p90,
         screenshot: refShotPath,
       },
       gen: {
@@ -592,6 +644,7 @@ export async function runReward({
         colors: genInfo.colors.length,
         a11y_nodes: genInfo.a11yNodeCount,
         a11y_grams: genInfo.a11yPqGrams.length,
+        class_p90: genInfo.classDensity.p90,
         screenshot: genShotPath,
       },
     }
@@ -638,6 +691,7 @@ if (import.meta.url === `file://${process.argv[1]}`) {
         console.log(`    ${id.padEnd(16)} ${fmt(v)}`)
       }
       console.log(`  a11y_pqgram ${fmt(details.a11y_pqgram)}  (ref ${result.ref.a11y_nodes} nodes / ${result.ref.a11y_grams} grams, gen ${result.gen.a11y_nodes} / ${result.gen.a11y_grams})`)
+      console.log(`  class_dens  ${fmt(details.class_density.score)}  (p90 ref ${details.class_density.ref.p90} / gen ${details.class_density.gen.p90}; median ref ${details.class_density.ref.median} / gen ${details.class_density.gen.median})`)
       console.log(`  content_gate${fmt(details.content_gate).padStart(13)}`)
       console.log('')
       console.log(`ref screenshot: ${result.ref.screenshot}`)

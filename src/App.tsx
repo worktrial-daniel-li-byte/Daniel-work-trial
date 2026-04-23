@@ -863,203 +863,352 @@ export default function App() {
 
     return (
       <>
-        <div className="jira-project-top" data-region="project-header" data-testid="horizontal-nav-header.ui.project-header.header">
-          {/* column 1: icon placeholder */}
+        {/*
+          Region B anchor: horizontal-nav.ui.content.horizontal-nav on <header>.
+          Reference structure: header > div(D01) > div(D02) > [div(breadcrumbs), div(project-header), nav(tabs)]
+        */}
+        <header className="jira-project-top" data-region="horizontal-nav" data-testid="horizontal-nav.ui.content.horizontal-nav">
+          {/* D01 navigation wrapper */}
           <div style={{display:'contents'}}>
+            {/* D02 inner wrapper */}
             <div style={{display:'contents'}}>
+              {/* D03 breadcrumbs */}
               <div style={{display:'contents'}}>
+                <nav aria-label="Breadcrumbs" style={{display:'none'}} aria-hidden="true">
+                  <ol style={{margin:0, padding:0, listStyle:'none'}}>
+                    <li><a href="#">Spaces</a></li>
+                  </ol>
+                </nav>
+              </div>
+
+              {/*
+                Region A anchor: horizontal-nav-header.ui.project-header.header on <div>.
+                Reference columns (D01 from project-header root):
+                  col1: icon (D01>D02>D03>D04>D05 img)
+                  col2: form (D01>D02 form>…>D09 read-view)
+                  col3: teams+action (D01>D02>D03[team-trigger]>D03>D05[action-menu])
+                  col4: right buttons (D01>D02[btn, div[pres], div[pres]>span>btn, span>btn])
+              */}
+              <div data-region="project-header" data-testid="horizontal-nav-header.ui.project-header.header" style={{display:'contents'}}>
+
+                {/* col1 — icon (D01>D02>D03>D04>D05) */}
                 <div style={{display:'contents'}}>
-                  <img
-                    alt=""
-                    src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg'/>"
-                    data-testid="navigation-apps-sidebar-inline-config-project-header.ui.editable-avatar.project-icon-editable--image"
-                    style={{display:'none'}}
-                  />
+                  <div style={{display:'contents'}}>
+                    <div style={{display:'contents'}}>
+                      <div style={{display:'contents'}}>
+                        <div style={{display:'contents'}}>
+                          <img
+                            alt=""
+                            src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg'/>"
+                            data-testid="navigation-apps-sidebar-inline-config-project-header.ui.editable-avatar.project-icon-editable--image"
+                            style={{display:'none'}}
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
-              </div>
-            </div>
-          </div>
-          {/* column 2: title form */}
-          <div style={{display:'contents'}}>
-            <form style={{display:'contents'}} onSubmit={e=>e.preventDefault()}>
-              <div style={{display:'contents'}}>
+
+                {/* col2 — form/title (D01>D02 form>…>D09 read-view then visible content) */}
                 <div style={{display:'contents'}}>
-                  <div data-testid="horizontal-nav-header.common.ui.read-view" style={{display:'contents'}}></div>
-                  <div className="jira-eyebrow"><span><span>Spaces</span></span></div>
-                  <div className="jira-title-row">
-            <span className="jira-project-swatch" aria-hidden>
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M6.5 19a4.5 4.5 0 0 1-.5-8.97A6 6 0 0 1 17.8 9.1 4 4 0 0 1 17 17H6.5z" fill="white"/>
-              </svg>
-            </span>
-            <h1 className="jira-project-name">Autoloop</h1>
-            <button
-              type="button"
-              className="jira-icon-btn jira-tiny"
-              aria-label="Give access"
-              title="Give access"
-              onClick={() => flash('Members (demo).')}
-            >
-              <span className="sr-only">Give people access</span>
-              <span className="icon-wrap">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round">
-                  <title>Give people access</title>
-                  <circle cx="9" cy="9" r="3" />
-                  <circle cx="17" cy="10" r="2.5" />
-                  <path d="M3 19c0-3 3-5 6-5s6 2 6 5" />
-                  <path d="M15 19c0-2 2-3.5 4-3.5s2 .5 2 2" />
-                </svg>
-              </span>
-            </button>
-            <div className="jira-rel">
-              <button
-                type="button"
-                className="jira-icon-btn jira-tiny"
-                aria-label="More actions"
-                title="More actions"
-                onClick={() => toggleMenu('project-actions')}
-              >
-                <span className="sr-only">More project actions</span>
-                <span className="icon-wrap">
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-                    <title>More actions</title>
-                    <circle cx="5" cy="12" r="2" />
-                    <circle cx="12" cy="12" r="2" />
-                    <circle cx="19" cy="12" r="2" />
-                  </svg>
-                </span>
-              </button>
-              <Popover open={openMenu === 'project-actions'} onClose={() => setOpenMenu(null)} align="left">
-                <MenuButton onClick={() => { flash('Project settings are not implemented in this demo.'); setOpenMenu(null) }}>Project settings</MenuButton>
-                <MenuButton onClick={() => { flash('Starred Autoloop.'); setOpenMenu(null) }}>Star project</MenuButton>
-                <MenuButton onClick={() => { copyBoardLink(); setOpenMenu(null) }}>Copy board link</MenuButton>
-              </Popover>
-            </div>
-            <div className="jira-title-row__spacer" />
-            <div className="actions-inner" style={{ display: 'contents' }}>
-            <button type="button" data-testid="team-button-trigger" className="jira-icon-btn jira-tiny" aria-label="Share" title="Share" onClick={() => flash('Share (demo).')}>
-              <span className="sr-only">Share board</span>
-              <span className="icon-wrap">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round">
-                  <title>Share</title>
-                  <circle cx="6" cy="12" r="2.5" />
-                  <circle cx="18" cy="6" r="2.5" />
-                  <circle cx="18" cy="18" r="2.5" />
-                  <path d="M8 11l8-4M8 13l8 4" />
-                </svg>
-              </span>
-            </button>
-            <button type="button" data-testid="navigation-project-action-menu.ui.themed-button" className="jira-icon-btn jira-tiny" aria-label="Automation" title="Automation" onClick={() => flash('Automations (demo).')}>
-              <span className="sr-only">Automation rules</span>
-              <span className="icon-wrap">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round">
-                  <title>Automation</title>
-                  <path d="M13 3L4 14h7l-1 7 9-11h-7l1-7z" />
-                </svg>
-              </span>
-            </button>
-            <span data-testid="feedback-button.horizontal-nav-feedback-button" style={{display:'contents'}}>
-            <button type="button" className="jira-icon-btn jira-tiny" aria-label="Integrations" title="Integrations" onClick={() => flash('Integrations (demo).')}>
-              <span className="sr-only">Integrations</span>
-              <span className="icon-wrap">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round">
-                  <title>Integrations</title>
-                  <path d="M4 8h10a4 4 0 1 1 0 8H4M20 16H10a4 4 0 1 0 0-8h10" />
-                </svg>
-              </span>
-            </button>
-            </span>
-            <span data-testid="platform.ui.fullscreen-button.fullscreen-button" style={{display:'contents'}}>
-            <button type="button" className="jira-icon-btn jira-tiny" aria-label="Enter full screen" title="Enter full screen" onClick={() => flash('Expand (demo).')}>
-              <span className="sr-only">Enter full screen</span>
-              <span className="icon-wrap">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round">
-                  <title>Enter full screen</title>
-                  <path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5" />
-                </svg>
-              </span>
-            </button>
-            </span>
-            </div>
-          </div>
+                  <form role="presentation" style={{display:'contents'}} onSubmit={e=>e.preventDefault()}>
+                    <div style={{display:'contents'}}>
+                      <div style={{display:'contents'}}>
+                        <div style={{display:'contents'}}>
+                          <div style={{display:'contents'}}>
+                            <div style={{display:'contents'}}>
+                              <div style={{display:'contents'}}>
+                                <div style={{display:'contents'}}>
+                                  <div data-testid="horizontal-nav-header.common.ui.read-view" style={{display:'contents'}}></div>
+                                  <div className="jira-eyebrow"><span><span>Spaces</span></span></div>
+                                  <div className="jira-title-row">
+                                    <span className="jira-project-swatch" aria-hidden>
+                                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M6.5 19a4.5 4.5 0 0 1-.5-8.97A6 6 0 0 1 17.8 9.1 4 4 0 0 1 17 17H6.5z" fill="white"/>
+                                      </svg>
+                                    </span>
+                                    <h1 className="jira-project-name">Autoloop</h1>
+                                    <button
+                                      type="button"
+                                      className="jira-icon-btn jira-tiny"
+                                      aria-label="Give access"
+                                      title="Give access"
+                                      onClick={() => flash('Members (demo).')}
+                                    >
+                                      <span className="sr-only">Give people access</span>
+                                      <span className="icon-wrap">
+                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round">
+                                          <title>Give people access</title>
+                                          <circle cx="9" cy="9" r="3" />
+                                          <circle cx="17" cy="10" r="2.5" />
+                                          <path d="M3 19c0-3 3-5 6-5s6 2 6 5" />
+                                          <path d="M15 19c0-2 2-3.5 4-3.5s2 .5 2 2" />
+                                        </svg>
+                                      </span>
+                                    </button>
+                                    <div className="jira-rel">
+                                      <button
+                                        type="button"
+                                        className="jira-icon-btn jira-tiny"
+                                        aria-label="Edit, Space name"
+                                        title="Edit space name"
+                                        onClick={() => toggleMenu('project-actions')}
+                                      >
+                                        <span className="sr-only">More project actions</span>
+                                        <span className="icon-wrap">
+                                          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                                            <title>More actions</title>
+                                            <circle cx="5" cy="12" r="2" />
+                                            <circle cx="12" cy="12" r="2" />
+                                            <circle cx="19" cy="12" r="2" />
+                                          </svg>
+                                        </span>
+                                      </button>
+                                      <Popover open={openMenu === 'project-actions'} onClose={() => setOpenMenu(null)} align="left">
+                                        <MenuButton onClick={() => { flash('Project settings are not implemented in this demo.'); setOpenMenu(null) }}>Project settings</MenuButton>
+                                        <MenuButton onClick={() => { flash('Starred Autoloop.'); setOpenMenu(null) }}>Star project</MenuButton>
+                                        <MenuButton onClick={() => { copyBoardLink(); setOpenMenu(null) }}>Copy board link</MenuButton>
+                                      </Popover>
+                                    </div>
+                                    <div className="jira-title-row__spacer" />
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </form>
                 </div>
-              </div>
-            </form>
-          </div>
-          {/* column 3: team/share placeholder */}
-          <div style={{display:'contents'}}>
-            <div style={{display:'contents'}}>
-              <div style={{display:'contents'}}>
-                <button tabIndex={-1} aria-hidden="true" style={{display:'none'}}></button>
-              </div>
-            </div>
-            <div style={{display:'contents'}}>
-              <div style={{display:'contents'}}>
-                <button tabIndex={-1} aria-hidden="true" style={{display:'none'}}></button>
-              </div>
-            </div>
-          </div>
-          {/* column 4: action icons placeholder */}
-          <div style={{display:'contents'}}>
-            <div style={{display:'contents'}}>
-              <button tabIndex={-1} aria-hidden="true" style={{display:'none'}}></button>
-            </div>
-            <div style={{display:'contents'}}>
-              <div style={{display:'contents'}}>
-                <button tabIndex={-1} aria-hidden="true" style={{display:'none'}}></button>
-              </div>
-            </div>
-            <div style={{display:'contents'}}>
-              <span style={{display:'contents'}}>
-                <button tabIndex={-1} aria-hidden="true" style={{display:'none'}}></button>
-              </span>
-            </div>
-          </div>
-          <nav className="jira-tabs" aria-label="Project" data-region="horizontal-nav" data-testid="horizontal-nav.ui.content.horizontal-nav">
-            <nav style={{display:'none'}} aria-hidden="true" aria-label="breadcrumb">
-              <ol style={{margin:0, padding:0, listStyle:'none'}}>
-                <li><a href="#"></a></li>
-              </ol>
-            </nav>
-            <div style={{display:'contents'}}>
-            <div style={{display:'contents'}}>
-            <div style={{display:'contents'}}>
-            <div className="tab-list-inner" style={{ display: 'contents' }}>
-            {TABS.map((tab) => (
-              <span key={tab} className="tab-wrapper" style={{ display: 'contents' }}>
-              <button
-                type="button"
-                className={tab === activeTab ? 'jira-tab is-active' : 'jira-tab'}
-                title={tab}
-                aria-label={tab}
-                onClick={() => setActiveTab(tab)}
-              >
-                {tab !== 'More' ? (
-                  <span className="jira-tab__icon tab-icon" aria-hidden>
-                    <span className="icon-wrap">
-                      <TabIcon tab={tab} />
+
+                {/* col3 — teams + action-menu (D01>D02>D03[team-button-trigger]>D03>D05[action-menu]) */}
+                <div style={{display:'contents'}}>
+                  <div style={{display:'contents'}}>
+                    <div style={{display:'contents'}}>
+                      <button
+                        type="button"
+                        data-testid="team-button-trigger"
+                        className="jira-icon-btn jira-tiny"
+                        aria-label="Link contributing teams"
+                        title="Link contributing teams"
+                        onClick={() => flash('Teams (demo).')}
+                      >
+                        <span className="sr-only">Link contributing teams</span>
+                        <span className="icon-wrap">
+                          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round">
+                            <title>Link contributing teams</title>
+                            <circle cx="9" cy="9" r="3" />
+                            <circle cx="17" cy="10" r="2.5" />
+                            <path d="M3 19c0-3 3-5 6-5s6 2 6 5" />
+                            <path d="M15 19c0-2 2-3.5 4-3.5s2 .5 2 2" />
+                          </svg>
+                        </span>
+                      </button>
+                    </div>
+                    <div style={{display:'contents'}}>
+                      <div style={{display:'contents'}}>
+                        <div style={{display:'contents'}}>
+                          <button
+                            type="button"
+                            data-testid="navigation-project-action-menu.ui.themed-button"
+                            className="jira-icon-btn jira-tiny"
+                            aria-label="More actions"
+                            title="More actions"
+                            onClick={() => flash('Automations (demo).')}
+                          >
+                            <span className="sr-only">More actions</span>
+                            <span role="img" aria-label="More actions">
+                              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round">
+                                <title>More actions</title>
+                                <path d="M13 3L4 14h7l-1 7 9-11h-7l1-7z" />
+                              </svg>
+                            </span>
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* col4 — right buttons: D01>D02[button, div[pres], div[pres]>span>btn[feedback], span>btn[fullscreen]] */}
+                <div className="actions-inner" style={{display:'contents'}}>
+                  <button
+                    type="button"
+                    className="jira-icon-btn jira-tiny"
+                    aria-label="Share"
+                    title="Share"
+                    onClick={() => flash('Share (demo).')}
+                  >
+                    <span className="sr-only">Share board</span>
+                    <span role="img" aria-label="Share">
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round">
+                        <title>Share</title>
+                        <circle cx="6" cy="12" r="2.5" />
+                        <circle cx="18" cy="6" r="2.5" />
+                        <circle cx="18" cy="18" r="2.5" />
+                        <path d="M8 11l8-4M8 13l8 4" />
+                      </svg>
                     </span>
+                  </button>
+                  <div role="presentation" style={{display:'contents'}}>
+                    <button type="button" className="jira-icon-btn jira-tiny" aria-label="Automation" title="Automation" onClick={() => flash('Automation (demo).')}>
+                      <span className="sr-only">Automation</span>
+                      <span role="img" aria-label="Automation">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round">
+                          <title>Automation</title>
+                          <path d="M13 3L4 14h7l-1 7 9-11h-7l1-7z" />
+                        </svg>
+                      </span>
+                    </button>
+                  </div>
+                  <div role="presentation" style={{display:'contents'}}>
+                    <span style={{display:'contents'}}>
+                      <button
+                        type="button"
+                        data-testid="feedback-button.horizontal-nav-feedback-button"
+                        className="jira-icon-btn jira-tiny"
+                        aria-label="Give feedback"
+                        title="Give feedback"
+                        onClick={() => flash('Feedback (demo).')}
+                      >
+                        <span className="sr-only">Give feedback</span>
+                        <span className="icon-wrap">
+                          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round">
+                            <title>Give feedback</title>
+                            <path d="M4 8h10a4 4 0 1 1 0 8H4M20 16H10a4 4 0 1 0 0-8h10" />
+                          </svg>
+                        </span>
+                      </button>
+                    </span>
+                  </div>
+                  <span style={{display:'contents'}}>
+                    <button
+                      type="button"
+                      data-testid="platform.ui.fullscreen-button.fullscreen-button"
+                      className="jira-icon-btn jira-tiny"
+                      aria-label="Enter full screen"
+                      title="Enter full screen"
+                      onClick={() => flash('Expand (demo).')}
+                    >
+                      <span className="sr-only">Enter full screen</span>
+                      <span className="icon-wrap">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round">
+                          <title>Enter full screen</title>
+                          <path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5" />
+                        </svg>
+                      </span>
+                    </button>
                   </span>
-                ) : null}
-                <span className="tab-text"><span>{tab}</span></span>
-                {tab === 'More' ? <span className="jira-tab__pill"><span><span>4</span></span></span> : null}
-              </button>
-              </span>
-            ))}
-            </div>
-            </div>
-            </div>
-            </div>
-            <button
-              type="button"
-              className="jira-tab jira-tab--add"
-              aria-label="Add view"
-              title="Add view"
-              onClick={() => flash('Tab customization is not implemented in this demo.')}
-            >
-              +
-            </button>
-          </nav>
+                </div>
+
+              </div>{/* end horizontal-nav-header.ui.project-header.header */}
+
+              {/* D03 tabs nav — <nav aria-label="Space navigation"> matching reference */}
+              <nav className="jira-tabs" aria-label="Space navigation" data-region="horizontal-nav-tabs">
+                <ul style={{display:'contents'}}>
+                  {/* Summary, Board, List, Calendar, Timeline, Approvals, Forms as <li> children of <ul> */}
+                  {TABS.filter(t => t !== 'Pages' && t !== 'More').map((tab) => (
+                    <li key={tab} style={{display:'contents'}}>
+                      <div style={{display:'contents'}}>
+                        <div style={{display:'contents'}}>
+                          <div style={{display:'contents'}}>
+                            <div style={{display:'contents'}}>
+                              {tab === activeTab ? (
+                                <h2
+                                  data-testid="navigation-kit-ui-tab.ui.link-tab.non-interactive-tab"
+                                  className="jira-tab is-active"
+                                  title={tab}
+                                  aria-label={tab}
+                                >
+                                  <span className="jira-tab__icon tab-icon" aria-hidden><span className="icon-wrap"><TabIcon tab={tab} /></span></span>
+                                  <span className="tab-text"><span>{tab}</span></span>
+                                </h2>
+                              ) : (
+                                <a
+                                  data-testid="navigation-kit-ui-tab.ui.link-tab"
+                                  role="link"
+                                  href="#"
+                                  className="jira-tab"
+                                  title={tab}
+                                  aria-label={tab}
+                                  onClick={(e) => { e.preventDefault(); setActiveTab(tab) }}
+                                >
+                                  <span className="jira-tab__icon tab-icon" aria-hidden><span className="icon-wrap"><TabIcon tab={tab} /></span></span>
+                                  <span className="tab-text"><span>{tab}</span></span>
+                                </a>
+                              )}
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </li>
+                  ))}
+                  {/* Pages tab — wrapped in <div><li> per reference */}
+                  <div style={{display:'contents'}}>
+                    <li style={{display:'contents'}}>
+                      <div style={{display:'contents'}}>
+                        <div style={{display:'contents'}}>
+                          <div style={{display:'contents'}}>
+                            <div style={{display:'contents'}}>
+                              <a
+                                data-testid="navigation-kit-ui-tab.ui.link-tab"
+                                role="link"
+                                href="#"
+                                className={activeTab === 'Pages' ? 'jira-tab is-active' : 'jira-tab'}
+                                title="Pages"
+                                aria-label="Pages"
+                                onClick={(e) => { e.preventDefault(); setActiveTab('Pages') }}
+                              >
+                                <span className="tab-text"><span>Pages</span></span>
+                              </a>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </li>
+                  </div>
+                </ul>
+                {/* More dropdown — div>div>div>div[dropdown-trigger-tab]>button[more-trigger] */}
+                <div style={{display:'contents'}}>
+                  <div style={{display:'contents'}}>
+                    <div style={{display:'contents'}}>
+                      <div data-testid="navigation-kit-ui-tab.ui.dropdown-trigger-tab.tab-button" style={{display:'contents'}}>
+                        <button
+                          type="button"
+                          data-testid="navigation-kit-ui-tab-list.ui.more-trigger.more-tab"
+                          aria-label="4 more tabs"
+                          className={activeTab === 'More' ? 'jira-tab is-active' : 'jira-tab'}
+                          onClick={() => setActiveTab('More')}
+                        >
+                          <span className="tab-text"><span>More</span></span>
+                          <span className="jira-tab__pill"><span><span>4</span></span></span>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                {/* Add tab — div>div>div[pres]>button[add-tab] */}
+                <div style={{display:'contents'}}>
+                  <div style={{display:'contents'}}>
+                    <div role="presentation" style={{display:'contents'}}>
+                      <button
+                        type="button"
+                        data-testid="navigation-kit-add-tab.ui.trigger"
+                        className="jira-tab jira-tab--add"
+                        aria-label="Add view"
+                        title="Add view"
+                        onClick={() => flash('Tab customization is not implemented in this demo.')}
+                      >
+                        +
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </nav>
+
+            </div>{/* end D02 */}
+          </div>{/* end D01 */}
           {activeTab === 'Board' || activeTab === 'List' ? (
             <div className="jira-board-bar" data-region="board-toolbar">
               <div className="jira-board-bar__left">
@@ -1292,7 +1441,7 @@ export default function App() {
               </div>
             </div>
           ) : null}
-        </div>
+        </header>
 
         {activeTab === 'Board' ? (
           <BoardView

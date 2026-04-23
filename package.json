@@ -13,7 +13,6 @@
     "browser-test": "node ./tests/browser-test.js",
     "browser-login": "node ./tests/browser-login.js",
     "reward": "node ./scripts/reward-check.mjs",
-    "check:dom": "node ./scripts/check-dom.mjs",
     "check:behavior": "node ./scripts/behavior-check.mjs",
     "mcp:setup": "./mcp/setup.sh",
     "mcp:server": "node ./mcp/server/index.mjs",

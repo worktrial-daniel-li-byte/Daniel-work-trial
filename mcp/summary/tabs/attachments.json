@@ -1,7 +1,0 @@
-{
-  "tab": "Attachments",
-  "url": "/jira/core/projects/{key}/attachments",
-  "purpose": "Central view of all attachments on work items in the space",
-  "toolbar": ["Search attachments", "Added by", "Attachment type", "Date added"],
-  "empty_state": { "title": "There are no attachments" }
-}

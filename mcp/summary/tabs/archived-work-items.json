@@ -1,9 +1,0 @@
-{
-  "tab": "Archived work items",
-  "url": "/jira/core/projects/{key}/archived-work-items",
-  "purpose": "View work items that have been archived out of the active space",
-  "empty_state": {
-    "title": "There are no archived work items",
-    "link": "More about archiving work items"
-  }
-}
